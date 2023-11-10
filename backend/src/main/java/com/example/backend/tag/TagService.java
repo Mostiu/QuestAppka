@@ -1,6 +1,7 @@
 package com.example.backend.tag;
 
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +37,7 @@ public class TagService {
         tagRepository.deleteById(tagId);
     }
 
+    @Transactional
     public void updateTag(Long tagId, String name) {
         Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new IllegalStateException(
                 "tag with id " + tagId + " does not exists"
