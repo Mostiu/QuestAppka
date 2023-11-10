@@ -46,6 +46,7 @@ public class CityChallengeService {
 
         if(title != null && title.length() > 0 && !cityChallenge.getTitle().equals(title)){
             Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByTitle(title);
+
             if(cityChallengeOptional.isPresent()){
                 throw new IllegalStateException("title taken");
             }
