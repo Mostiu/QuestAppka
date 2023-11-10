@@ -39,25 +39,26 @@ public class CityChallengeService {
     }
 
     @Transactional
-    public void updateCityChallenge(Long cityChallengeId, String name, String description, String author) {
+    public void updateCityChallenge(Long cityChallengeId, String title, String description, String created_by) {
         CityChallenge cityChallenge = app_cityChallengeRepository.findById(cityChallengeId).orElseThrow(() -> new IllegalStateException(
                 "cityChallenge with id " + cityChallengeId + " does not exists"
         ));
 
-        if(name != null && name.length() > 0 && !cityChallenge.getTitle().equals(name)){
-            Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByTitle(name);
+        if(title != null && title.length() > 0 && !cityChallenge.getTitle().equals(title)){
+            Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByTitle(title);
+
             if(cityChallengeOptional.isPresent()){
-                throw new IllegalStateException("name taken");
+                throw new IllegalStateException("title taken");
             }
-            cityChallenge.setTitle(name);
+            cityChallenge.setTitle(title);
         }
 
         if(description != null && description.length() > 0 && !cityChallenge.getDescription().equals(description)){
             cityChallenge.setDescription(description);
         }
 
-        if(author != null && author.length() > 0 && !cityChallenge.getCreated_by().equals(author)){
-            cityChallenge.setCreated_by(author);
+        if(created_by != null && created_by.length() > 0 && !cityChallenge.getCreated_by().equals(created_by)){
+            cityChallenge.setCreated_by(created_by);
         }
     }
 
