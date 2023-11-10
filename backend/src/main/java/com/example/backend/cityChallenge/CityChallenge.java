@@ -23,6 +23,8 @@ private String title;
 private String description;
 private String created_by;
 
+public CityChallenge() {
+}
 public CityChallenge(String title, String description, String created_by) {
     this.title = title;
     this.description = description;
