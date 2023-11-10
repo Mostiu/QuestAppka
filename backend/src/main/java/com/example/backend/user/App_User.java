@@ -1,13 +1,29 @@
 package com.example.backend.user;
 
-public class User {
+import jakarta.persistence.*;
+
+@Entity
+@Table
+public class App_User {
+    @Id
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
     private Long id;
     private String name;
     private String email;
     private String password;
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
+    public App_User() {
+    }
+    public App_User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -48,7 +64,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "App_User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
