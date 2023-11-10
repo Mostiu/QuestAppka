@@ -63,6 +63,7 @@ public class Course {
         this.difficulty = difficulty;
     }
 
+    @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +

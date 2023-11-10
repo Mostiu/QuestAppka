@@ -35,10 +35,10 @@ public class CityChallengeController{
     @PutMapping(path="{cityChallengeId}")
     public void updateCityChallenge(
     		@PathVariable("cityChallengeId") Long cityChallengeId,
-    		@RequestParam(required=false) String name,
+    		@RequestParam(required=false) String title,
     		@RequestParam(required=false) String description,
-    		@RequestParam(required=false) String author) {
-    	cityChallengeService.updateCityChallenge(cityChallengeId, name, description, author);
+    		@RequestParam(required=false) String created_by) {
+    	cityChallengeService.updateCityChallenge(cityChallengeId, title, description, created_by);
     }
 
 

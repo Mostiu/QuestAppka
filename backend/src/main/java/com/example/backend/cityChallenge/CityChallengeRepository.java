@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface CityChallengeRepository extends JpaRepository<CityChallenge,Long> {
 
-        @Query("SELECT s FROM CityChallenge s WHERE s.name = ?1")
-        Optional<CityChallenge> findCityChallengeByName(String name);
+        @Query("SELECT s FROM CityChallenge s WHERE s.title = ?1")
+        Optional<CityChallenge> findCityChallengeByTitle(String title);
 }
