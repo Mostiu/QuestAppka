@@ -22,7 +22,7 @@ public class CityChallengeService {
     }
 
     public void addNewCityChallenge(CityChallenge cityChallenge) {
-        Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByName(cityChallenge.getTitle());
+        Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByTitle(cityChallenge.getTitle());
 
         if(cityChallengeOptional.isPresent()){
             throw new IllegalStateException("name taken");
@@ -45,7 +45,7 @@ public class CityChallengeService {
         ));
 
         if(name != null && name.length() > 0 && !cityChallenge.getTitle().equals(name)){
-            Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByName(name);
+            Optional<CityChallenge> cityChallengeOptional = app_cityChallengeRepository.findCityChallengeByTitle(name);
             if(cityChallengeOptional.isPresent()){
                 throw new IllegalStateException("name taken");
             }
