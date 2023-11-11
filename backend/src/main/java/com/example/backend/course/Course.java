@@ -1,6 +1,20 @@
 package com.example.backend.course;
 
+import com.example.backend.course_technologies.CourseTechnologies;
+import com.example.backend.quest.Quest;
+import com.example.backend.user_courses.UserCourses;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
+
+enum Difficulty {
+    EASY,
+    MEDIUM,
+    HARD
+}
 
 @Entity
 @Table
@@ -20,12 +34,25 @@ public class Course {
     private Long id;
     private String title;
     private String description;
-    private String difficulty;
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value="course-movement")
+    private Set<UserCourses> userCourses = new HashSet<>();
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value="course-movement-2")
+    private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value="course-movement-3")
+    private Set<Quest> quests = new HashSet<>();
 
     public Course() {
     }
 
-    public Course(String title, String description, String difficulty) {
+    public Course(String title, String description, Difficulty difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -55,21 +82,62 @@ public class Course {
         this.description = description;
     }
 
-    public String getDifficulty() {
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
+    public Set<UserCourses> getUserCourses() {
+        return userCourses;
+    }
+
+    public void setUserCourses(Set<UserCourses> userCourses) {
+        this.userCourses = userCourses;
+    }
+
+    public void addUserCourses(UserCourses userCourses) {
+        this.userCourses.add(userCourses);
+    }
+
+    public Set<CourseTechnologies> getCourseTechnologies() {
+        return courseTechnologies;
+    }
+
+    public void setCourseTechnologies(Set<CourseTechnologies> courseTechnologies) {
+        this.courseTechnologies = courseTechnologies;
+    }
+
+    public void addCourseTechnologies(CourseTechnologies courseTechnologies) {
+        this.courseTechnologies.add(courseTechnologies);
+    }
+
+    public Set<Quest> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(Set<Quest> quests) {
+        this.quests = quests;
+    }
+
+    public void addQuests(Quest quest) {
+        this.quests.add(quest);
+    }
+
+
+
     @Override
+
     public String toString() {
         return "Course{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", difficulty='" + difficulty + '\'' +
+                ", userCourses=" + userCourses + '\'' +
+                ", courseTechnologies=" + courseTechnologies +
                 '}';
     }
 }

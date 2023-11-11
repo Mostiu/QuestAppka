@@ -41,5 +41,10 @@ public class CityChallengeController{
     	cityChallengeService.updateCityChallenge(cityChallengeId, title, description, created_by);
     }
 
+    @PutMapping(path="{cityChallengeId}/add/technology/{technologyId}")
+    public void addTechnologyToCityChallenge(@PathVariable Long cityChallengeId, @PathVariable Long technologyId) {
+    	cityChallengeService.addTechnologyToCityChallenge(cityChallengeId, technologyId);
+    }
+
 
 }

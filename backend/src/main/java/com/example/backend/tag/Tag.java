@@ -1,7 +1,12 @@
 package com.example.backend.tag;
 
 
+import com.example.backend.technology_tags.TechnologyTags;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -19,6 +24,11 @@ public class Tag {
     )
     private Long id;
     private String name;
+
+    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "tag-movement")
+    private Set<TechnologyTags> technologyTags = new HashSet<>();
+
 
     public Tag() {
     }
@@ -42,11 +52,24 @@ public class Tag {
         this.name = name;
     }
 
+    public Set<TechnologyTags> getTechnologyTags() {
+        return technologyTags;
+    }
+
+    public void setTechnologyTags(Set<TechnologyTags> technologyTags) {
+        this.technologyTags = technologyTags;
+    }
+
+    public void addTechnologyTags(TechnologyTags technologyTags) {
+        this.technologyTags.add(technologyTags);
+    }
+
     @Override
     public String toString() {
         return "Tag{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", technologyTags=" + technologyTags +
                 '}';
     }
 }

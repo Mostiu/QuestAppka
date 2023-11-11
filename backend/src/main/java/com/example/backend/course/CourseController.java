@@ -37,8 +37,24 @@ public class CourseController {
             @PathVariable("courseId") Long courseId,
             @RequestParam(required=false) String title,
             @RequestParam(required=false) String description,
-            @RequestParam(required=false) String difficulty) {
+            @RequestParam(required=false) Difficulty difficulty) {
         courseService.updateCourse(courseId, title, description, difficulty);
         System.out.println("Course updated");
+    }
+
+    @PutMapping(path="{courseId}/add_technology/{technologyId}")
+    public void addTechnologyToCourse(
+            @PathVariable("courseId") Long courseId,
+            @PathVariable("technologyId") Long technologyId) {
+        courseService.addTechnologyToCourse(courseId, technologyId);
+        System.out.println("Technology added to course");
+    }
+
+    @PutMapping(path="{courseId}/add_quest/{questId}")
+    public void addQuestToCourse(
+            @PathVariable("courseId") Long courseId,
+            @PathVariable("questId") Long questId) {
+        courseService.addQuestToCourse(courseId, questId);
+        System.out.println("Quest added to course");
     }
 }

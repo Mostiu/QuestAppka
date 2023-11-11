@@ -37,5 +37,12 @@ public class TechnologyController
         technologyService.updateTechnology(technologyId, name);
     }
 
+    @PutMapping(path = "{technologyId}/addTag/{tagId}")
+    public void addTagToTechnology(@PathVariable("technologyId") Long technologyId,
+                                 @PathVariable("tagId") Long tagId
+                                 ) {
+        technologyService.addTagToTechnology(technologyId, tagId);
+    }
+
 
 }
