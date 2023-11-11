@@ -1,4 +1,4 @@
-package com.example.backend.tag.course;
+package com.example.backend.course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

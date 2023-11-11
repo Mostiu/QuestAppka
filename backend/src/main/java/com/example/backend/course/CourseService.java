@@ -1,10 +1,12 @@
-package com.example.backend.tag.course;
+package com.example.backend.course;
 
 
 import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.course_technologies.CourseTechnologiesRepository;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
+import com.example.backend.user.App_User;
+import com.example.backend.user_courses.UserCourses;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,19 @@ public class CourseService {
                 courseTechnology.setTechnology(null);
             }
             courseTechnologies.clear();
+        }
+
+        //disassociate UserCourses from App_User
+        Set<UserCourses> userCourses = c.getUserCourses();
+        if(userCourses != null && !((Set<?>) userCourses).isEmpty()){
+            for(UserCourses userCourse : userCourses){
+                App_User user = userCourse.getUser();
+                if(user != null){
+                    user.getUserCourses().remove(userCourse);
+                }
+                userCourse.setUser(null);
+            }
+            userCourses.clear();
         }
 
 

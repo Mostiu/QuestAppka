@@ -1,6 +1,6 @@
 package com.example.backend.course_technologies;
 
-import com.example.backend.tag.course.Course;
+import com.example.backend.course.Course;
 import com.example.backend.technology.Technology;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

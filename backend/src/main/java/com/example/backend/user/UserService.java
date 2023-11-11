@@ -2,8 +2,8 @@ package com.example.backend.user;
 
 import com.example.backend.cityChallenge.CityChallenge;
 import com.example.backend.cityChallenge.CityChallengeRepository;
-import com.example.backend.tag.course.Course;
-import com.example.backend.tag.course.CourseRepository;
+import com.example.backend.course.Course;
+import com.example.backend.course.CourseRepository;
 import com.example.backend.quest.Quest;
 import com.example.backend.quest.QuestRepository;
 import com.example.backend.user_city_challenges.UserCityChallenges;

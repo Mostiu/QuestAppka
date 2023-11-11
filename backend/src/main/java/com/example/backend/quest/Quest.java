@@ -27,7 +27,8 @@ public class Quest {
     private boolean is_completed;
     private String comment;
 
-    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="quest-movement")
     private Set<UserQuests> userQuests = new HashSet<>();
 
@@ -94,5 +95,10 @@ public class Quest {
 
     public void addUserQuests(UserQuests userQuests) {
         this.userQuests.add(userQuests);
+    }
+
+    public Set<UserQuests> getUserQuests()
+    {
+        return userQuests;
     }
 }

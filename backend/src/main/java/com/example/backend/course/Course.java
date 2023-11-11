@@ -1,4 +1,4 @@
-package com.example.backend.tag.course;
+package com.example.backend.course;
 
 import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.user_courses.UserCourses;
@@ -36,7 +36,7 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="course-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
 

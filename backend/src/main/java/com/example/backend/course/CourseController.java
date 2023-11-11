@@ -1,4 +1,4 @@
-package com.example.backend.tag.course;
+package com.example.backend.course;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

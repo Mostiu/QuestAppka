@@ -1,10 +1,13 @@
 package com.example.backend.quest;
 
+import com.example.backend.user.App_User;
+import com.example.backend.user_quests.UserQuests;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class QuestService {
@@ -29,6 +32,27 @@ public class QuestService {
         if(!exists){
             throw new IllegalStateException("quest with id " + questId + " does not exists");
         }
+
+        //disassociate Quest from UserQuests
+        Quest q = questRepository.findById(questId).orElseThrow(() -> new IllegalStateException(
+                "quest with id " + questId + " does not exists"
+        ));
+
+        Set<UserQuests> userQuests = q.getUserQuests();
+        if(userQuests != null && !((Set<?>) userQuests).isEmpty()){
+            for(UserQuests userQuest : userQuests){
+                App_User user = userQuest.getUser();
+                if(user != null){
+                    user.getUserQuests().remove(userQuest);
+                }
+                userQuest.setUser(null);
+            }
+            userQuests.clear();
+        }
+
+
+
+
         questRepository.deleteById(questId);
     }
 
