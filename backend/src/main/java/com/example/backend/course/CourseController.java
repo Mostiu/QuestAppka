@@ -37,7 +37,7 @@ public class CourseController {
             @PathVariable("courseId") Long courseId,
             @RequestParam(required=false) String title,
             @RequestParam(required=false) String description,
-            @RequestParam(required=false) String difficulty) {
+            @RequestParam(required=false) Difficulty difficulty) {
         courseService.updateCourse(courseId, title, description, difficulty);
         System.out.println("Course updated");
     }

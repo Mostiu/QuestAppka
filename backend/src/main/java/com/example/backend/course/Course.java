@@ -9,6 +9,13 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
+enum Difficulty {
+    EASY,
+    MEDIUM,
+    HARD
+}
+
 @Entity
 @Table
 public class Course {
@@ -27,7 +34,8 @@ public class Course {
     private Long id;
     private String title;
     private String description;
-    private String difficulty;
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
 
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value="course-movement")
@@ -40,7 +48,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, String description, String difficulty) {
+    public Course(String title, String description, Difficulty difficulty) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -70,11 +78,11 @@ public class Course {
         this.description = description;
     }
 
-    public String getDifficulty() {
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 

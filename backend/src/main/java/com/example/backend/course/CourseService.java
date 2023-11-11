@@ -43,7 +43,7 @@ public class CourseService {
     }
 
     @Transactional
-    public void updateCourse(Long courseId, String title, String description, String difficulty) {
+    public void updateCourse(Long courseId, String title, String description, Difficulty difficulty) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"
         ));
@@ -56,7 +56,7 @@ public class CourseService {
             course.setDescription(description);
         }
 
-        if(difficulty != null && difficulty.length() > 0 && !course.getDifficulty().equals(difficulty)){
+        if(difficulty != null  && !course.getDifficulty().equals(difficulty)){
             course.setDifficulty(difficulty);
         }
     }
