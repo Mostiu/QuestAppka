@@ -1,4 +1,4 @@
-package com.example.backend.course;
+package com.example.backend.tag.course;
 
 
 import com.example.backend.course_technologies.CourseTechnologies;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CourseService {
@@ -39,6 +40,25 @@ public class CourseService {
         if(!exists){
             throw new IllegalStateException("course with id " + courseId + " does not exists");
         }
+
+        Course c = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+                "course with id " + courseId + " does not exists"
+        ));
+
+        //disassociate CourseTechnologies from Technology
+        Set<CourseTechnologies> courseTechnologies = c.getCourseTechnologies();
+        if(courseTechnologies != null && !((Set<?>) courseTechnologies).isEmpty()){
+            for(CourseTechnologies courseTechnology : courseTechnologies){
+                Technology technology = courseTechnology.getTechnology();
+                if(technology != null){
+                    technology.getCourseTechnologies().remove(courseTechnology);
+                }
+                courseTechnology.setTechnology(null);
+            }
+            courseTechnologies.clear();
+        }
+
+
         courseRepository.deleteById(courseId);
     }
 

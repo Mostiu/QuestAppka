@@ -19,7 +19,7 @@ public class UserCityChallenges {
     @JsonBackReference(value="user-movement-3")
     private App_User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "city_challenge_id", referencedColumnName = "id")
     @JsonBackReference(value="cityChallenge-movement")
     private CityChallenge cityChallenge;

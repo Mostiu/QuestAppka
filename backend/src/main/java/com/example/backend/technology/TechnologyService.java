@@ -1,5 +1,6 @@
 package com.example.backend.technology;
 
+import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.tag.Tag;
 import com.example.backend.tag.TagRepository;
 import com.example.backend.technology_tags.TechnologyTags;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TechnologyService
@@ -39,6 +41,23 @@ public class TechnologyService
         if (!exists) {
             throw new IllegalStateException("Technology with id " + technologyId + " does not exists");
         }
+
+
+        Technology technology = this.technologyRepository.findById(technologyId).orElseThrow(() -> new IllegalStateException("Technology with id " + technologyId + " does not exists"));
+
+
+        Set<TechnologyTags> technologyTags = technology.getTechnologyTags();
+        if (technologyTags != null && !((Set<?>) technologyTags).isEmpty()) {
+            for (TechnologyTags technologyTag : technologyTags) {
+                Tag tag = technologyTag.getTag();
+                if (tag != null) {
+                    tag.getTechnologyTags().remove(technologyTag);
+                }
+                technologyTag.setTag(null);
+            }
+            technologyTags.clear();
+        }
+        
         this.technologyRepository.deleteById(technologyId);
     }
 

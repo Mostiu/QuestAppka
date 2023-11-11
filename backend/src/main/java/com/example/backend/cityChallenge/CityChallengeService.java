@@ -4,6 +4,8 @@ import com.example.backend.city_challenge_technologies.CityChallengeTechnologies
 import com.example.backend.city_challenge_technologies.CityChallengeTechnologiesRepository;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
+import com.example.backend.user.App_User;
+import com.example.backend.user_city_challenges.UserCityChallenges;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,19 @@ public class CityChallengeService {
                 Technology technology = cityChallengeTechnology.getTechnology();
                 if (technology != null) {
                     technology.removeCityChallengeTechnologies(cityChallengeTechnology);
+                }
+            }
+        }
+
+
+      // Disassociate UserCityChallenge from User
+
+        Set<UserCityChallenges> userCityChallenges = cityChallenge.getUserCityChallenges();
+        if (userCityChallenges != null && !((Set<?>) userCityChallenges).isEmpty()) {
+            for (UserCityChallenges userCityChallenge : userCityChallenges) {
+                App_User user = userCityChallenge.getUser();
+                if (user != null) {
+                    user.removeUserCityChallenges(userCityChallenge);
                 }
             }
         }

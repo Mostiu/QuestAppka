@@ -132,4 +132,8 @@ public class App_User {
     public void addUserQuests(UserQuests userQuests) {
         this.userQuests.add(userQuests);
     }
+
+    public void removeUserCityChallenges(UserCityChallenges userCityChallenge) {
+        this.userCityChallenges.remove(userCityChallenge);
+    }
 }

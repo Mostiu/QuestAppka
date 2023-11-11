@@ -13,7 +13,7 @@ public class TechnologyTags {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
     @JsonBackReference(value = "technology-movement-3")
     private Technology technology;

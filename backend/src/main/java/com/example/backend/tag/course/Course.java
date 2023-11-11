@@ -1,8 +1,7 @@
-package com.example.backend.course;
+package com.example.backend.tag.course;
 
 import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.user_courses.UserCourses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -41,7 +40,7 @@ public class Course {
     @JsonManagedReference(value="course-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
 
-    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="course-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
