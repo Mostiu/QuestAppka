@@ -39,4 +39,9 @@ public class UserController {
     		@RequestParam(required=false) String email) {
     	userService.updateUser(userId, name, email);
     }
+
+    @PutMapping(path="{userId}/enroll/{courseId}")
+    public void enrollUser(@PathVariable Long userId, @PathVariable Long courseId) {
+    	userService.enrollUser(userId, courseId);
+    }
 }

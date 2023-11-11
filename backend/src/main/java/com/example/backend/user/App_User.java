@@ -1,6 +1,12 @@
 package com.example.backend.user;
 
+import com.example.backend.user_courses.UserCourses;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -20,6 +26,11 @@ public class App_User {
     private String name;
     private String email;
     private String password;
+
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<UserCourses> userCourses = new HashSet<>();
 
     public App_User() {
     }
@@ -61,6 +72,17 @@ public class App_User {
         this.password = password;
     }
 
+    public Set<UserCourses> getUserCourses() {
+        return userCourses;
+    }
+
+    public void setUserCourses(Set<UserCourses> userCourses) {
+        this.userCourses = userCourses;
+    }
+
+    public void addUserCourses(UserCourses userCourses) {
+        this.userCourses.add(userCourses);
+    }
 
     @Override
     public String toString() {
