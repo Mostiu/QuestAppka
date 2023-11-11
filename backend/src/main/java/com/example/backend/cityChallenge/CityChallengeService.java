@@ -1,5 +1,9 @@
 package com.example.backend.cityChallenge;
 
+import com.example.backend.city_challenge_technologies.CityChallengeTechnologies;
+import com.example.backend.city_challenge_technologies.CityChallengeTechnologiesRepository;
+import com.example.backend.technology.Technology;
+import com.example.backend.technology.TechnologyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +16,17 @@ public class CityChallengeService {
 
     private final CityChallengeRepository app_cityChallengeRepository;
 
+    private final CityChallengeTechnologiesRepository cityChallengeTechnologyRepository;
+
+    private final TechnologyRepository technologyRepository;
+
     @Autowired
-    public CityChallengeService(CityChallengeRepository app_cityChallengeRepository) {
+    public CityChallengeService(CityChallengeRepository app_cityChallengeRepository,
+                                CityChallengeTechnologiesRepository cityChallengeTechnologyRepository,
+                                TechnologyRepository technologyRepository) {
         this.app_cityChallengeRepository = app_cityChallengeRepository;
+        this.cityChallengeTechnologyRepository = cityChallengeTechnologyRepository;
+        this.technologyRepository = technologyRepository;
     }
 
     public List<CityChallenge> getCityChallenges() {
@@ -63,4 +75,23 @@ public class CityChallengeService {
     }
 
 
+    @Transactional
+    public void addTechnologyToCityChallenge(Long cityChallengeId, Long technologyId) {
+        CityChallenge cityChallenge = app_cityChallengeRepository.findById(cityChallengeId).orElseThrow(() -> new IllegalStateException(
+                "cityChallenge with id " + cityChallengeId + " does not exists"
+        ));
+        Technology technology = technologyRepository.findById(technologyId).orElseThrow(() -> new IllegalStateException(
+                "technology with id " + technologyId + " does not exists"
+        ));
+
+        CityChallengeTechnologies cityChallengeTechnology = new CityChallengeTechnologies(cityChallenge, technologyRepository.findById(technologyId).get());
+        cityChallenge.addCityChallengeTechnologies(cityChallengeTechnology);
+        technology.addCityChallengeTechnologies(cityChallengeTechnology);
+
+        cityChallengeTechnologyRepository.save(cityChallengeTechnology);
+        technologyRepository.save(technology);
+        app_cityChallengeRepository.save(cityChallenge);
+
+
+    }
 }
