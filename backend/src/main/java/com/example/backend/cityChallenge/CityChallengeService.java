@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CityChallengeService {
@@ -44,9 +45,25 @@ public class CityChallengeService {
 
     public void deleteCityChallenge(Long cityChallengeId) {
         boolean exists = app_cityChallengeRepository.existsById(cityChallengeId);
-        if(!exists){
-            throw new IllegalStateException("cityChallenge with id " + cityChallengeId + " does not exists");
+        if (!exists) {
+            throw new IllegalStateException("CityChallenge with id " + cityChallengeId + " does not exist");
         }
+
+        CityChallenge cityChallenge = app_cityChallengeRepository.findById(cityChallengeId)
+                .orElseThrow(() -> new IllegalStateException("CityChallenge not found"));
+
+        // Disassociate CityChallengeTechnologies from Technology
+        Set<CityChallengeTechnologies> cityChallengeTechnologies = cityChallenge.getCityChallengeTechnologies();
+        if (cityChallengeTechnologies != null && !((Set<?>) cityChallengeTechnologies).isEmpty()) {
+            for (CityChallengeTechnologies cityChallengeTechnology : cityChallengeTechnologies) {
+                Technology technology = cityChallengeTechnology.getTechnology();
+                if (technology != null) {
+                    technology.removeCityChallengeTechnologies(cityChallengeTechnology);
+                }
+            }
+        }
+
+        // Delete the CityChallenge
         app_cityChallengeRepository.deleteById(cityChallengeId);
     }
 

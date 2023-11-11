@@ -109,4 +109,9 @@ public class Technology {
     public void addCityChallengeTechnologies(CityChallengeTechnologies cityChallengeTechnology) {
         this.cityChallengeTechnologies.add(cityChallengeTechnology);
     }
+
+    public void removeCityChallengeTechnologies(CityChallengeTechnologies cityChallengeTechnology)
+    {
+        this.cityChallengeTechnologies.remove(cityChallengeTechnology);
+    }
 }

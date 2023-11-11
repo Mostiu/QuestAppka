@@ -33,7 +33,7 @@ private String created_by;
 @JsonManagedReference(value="cityChallenge-movement")
 private Set<UserCityChallenges> userCityChallenges = new HashSet<>();
 
-@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 @JsonManagedReference(value="cityChallenge-movement-2")
 private Set<CityChallengeTechnologies> cityChallengeTechnologies = new HashSet<>();
 

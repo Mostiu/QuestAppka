@@ -19,7 +19,7 @@ public class CityChallengeTechnologies {
     @JsonBackReference(value="cityChallenge-movement-2")
     private CityChallenge cityChallenge;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
     @JsonBackReference(value="technology-movement")
     private Technology technology;
