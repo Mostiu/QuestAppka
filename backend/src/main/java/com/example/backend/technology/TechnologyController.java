@@ -25,6 +25,18 @@ public class TechnologyController
         technologyService.addNewTechnology(technology);
     }
 
+    @PostMapping(path = "/{technologyId}/tags/{tagId}")
+    public void addTagToTechnology(@PathVariable("technologyId") Long technologyId,
+                                   @PathVariable("tagId") Long tagId) {
+        technologyService.addTagToTechnology(technologyId, tagId);
+    }
+
+    @DeleteMapping(path = "/{technologyId}/tags/{tagId}")
+    public void removeTagFromTechnology(@PathVariable("technologyId") Long technologyId,
+                                        @PathVariable("tagId") Long tagId) {
+        technologyService.removeTagFromTechnology(technologyId, tagId);
+    }
+
     @DeleteMapping(path = "{technologyId}")
     public void deleteTechnology(@PathVariable("technologyId") Long technologyId) {
         technologyService.deleteTechnology(technologyId);

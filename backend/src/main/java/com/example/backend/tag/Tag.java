@@ -1,7 +1,11 @@
 package com.example.backend.tag;
 
 
+import com.example.backend.technology.Technology;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -19,6 +23,11 @@ public class Tag {
     )
     private Long id;
     private String name;
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Technology> technologies = new HashSet<Technology>();
+
+
 
     public Tag() {
     }

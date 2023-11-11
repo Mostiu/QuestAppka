@@ -1,6 +1,13 @@
 package com.example.backend.technology;
 
+import com.example.backend.tag.Tag;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -20,6 +27,16 @@ public class Technology {
 
     private Long id;
     private String name;
+
+
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "technology_tags",
+            joinColumns = @JoinColumn(name = "technologyId"),
+            inverseJoinColumns = @JoinColumn(name = "tagId"))
+    @JsonManagedReference
+    private Set<Tag> tags = new HashSet<Tag>();
 
     public Technology() {
     }
@@ -44,6 +61,18 @@ public class Technology {
         this.name = name;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Technology{");
@@ -52,7 +81,6 @@ public class Technology {
         sb.append('}');
         return sb.toString();
     }
-
 
 
 }
