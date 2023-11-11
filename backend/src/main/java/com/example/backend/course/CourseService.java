@@ -1,6 +1,10 @@
 package com.example.backend.course;
 
 
+import com.example.backend.course_technologies.CourseTechnologies;
+import com.example.backend.course_technologies.CourseTechnologiesRepository;
+import com.example.backend.technology.Technology;
+import com.example.backend.technology.TechnologyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +15,15 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final TechnologyRepository technologyRepository;
+
+    private final CourseTechnologiesRepository courseTechnologiesRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, TechnologyRepository technologyRepository, CourseTechnologiesRepository courseTechnologiesRepository) {
         this.courseRepository = courseRepository;
+        this.technologyRepository = technologyRepository;
+        this.courseTechnologiesRepository = courseTechnologiesRepository;
     }
 
     public List<Course> getCourses() {
@@ -52,4 +61,20 @@ public class CourseService {
         }
     }
 
+    @Transactional
+    public void addTechnologyToCourse(Long courseId, Long technologyId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+                "course with id " + courseId + " does not exists"
+        ));
+
+        Technology technology = technologyRepository.findById(technologyId).orElseThrow(() -> new IllegalStateException(
+                "technology with id " + technologyId + " does not exists"
+        ));
+
+        CourseTechnologies courseTechnologies = new CourseTechnologies(course, technology);
+
+        courseRepository.save(course);
+        technologyRepository.save(technology);
+        courseTechnologiesRepository.save(courseTechnologies);
+    }
 }

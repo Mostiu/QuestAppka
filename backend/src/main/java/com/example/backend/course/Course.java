@@ -1,5 +1,6 @@
 package com.example.backend.course;
 
+import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.user_courses.UserCourses;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -31,6 +32,10 @@ public class Course {
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<UserCourses> userCourses = new HashSet<>();
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
     public Course() {
     }
@@ -85,6 +90,18 @@ public class Course {
         this.userCourses.add(userCourses);
     }
 
+    public Set<CourseTechnologies> getCourseTechnologies() {
+        return courseTechnologies;
+    }
+
+    public void setCourseTechnologies(Set<CourseTechnologies> courseTechnologies) {
+        this.courseTechnologies = courseTechnologies;
+    }
+
+    public void addCourseTechnologies(CourseTechnologies courseTechnologies) {
+        this.courseTechnologies.add(courseTechnologies);
+    }
+
 
 
     @Override
@@ -95,7 +112,8 @@ public class Course {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", userCourses=" + userCourses +
+                ", userCourses=" + userCourses + '\'' +
+                ", courseTechnologies=" + courseTechnologies +
                 '}';
     }
 }

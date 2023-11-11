@@ -1,6 +1,10 @@
 package com.example.backend.technology;
 
+import com.example.backend.course_technologies.CourseTechnologies;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -8,18 +12,20 @@ public class Technology {
 
     @Id
     @SequenceGenerator(
-        name = "technology_sequence",
-        sequenceName = "technology_sequence",
-        allocationSize = 1
+            name = "technology_sequence",
+            sequenceName = "technology_sequence",
+            allocationSize = 1
     )
 
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "technology_sequence"
+            strategy = GenerationType.SEQUENCE,
+            generator = "technology_sequence"
     )
-
     private Long id;
     private String name;
+
+    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
     public Technology() {
     }
@@ -44,15 +50,20 @@ public class Technology {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Technology{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public Set<CourseTechnologies> getCourseTechnologies() {
+        return courseTechnologies;
     }
 
+    public void setCourseTechnologies(Set<CourseTechnologies> courseTechnologies) {
+        this.courseTechnologies = courseTechnologies;
+    }
 
-
+    @Override
+    public String toString() {
+        return "Technology{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", courseTechnologies=" + courseTechnologies +
+                '}';
+        }
 }
