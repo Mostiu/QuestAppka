@@ -1,5 +1,6 @@
 package com.example.backend.user;
 
+import com.example.backend.user_city_challenges.UserCityChallenges;
 import com.example.backend.user_courses.UserCourses;
 import com.example.backend.user_quests.UserQuests;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,11 @@ public class App_User {
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     @JsonManagedReference(value="user-movement-2")
     private Set<UserQuests> userQuests = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @JsonManagedReference(value="user-movement-3")
+    private Set<UserCityChallenges> userCityChallenges = new HashSet<>();
+
 
 
     public App_User() {
@@ -98,6 +104,18 @@ public class App_User {
         this.userQuests = userQuests;
     }
 
+    public Set<UserCityChallenges> getUserCityChallenges() {
+        return userCityChallenges;
+    }
+
+    public void setUserCityChallenges(Set<UserCityChallenges> userCityChallenges) {
+        this.userCityChallenges = userCityChallenges;
+    }
+
+    public void addUserCityChallenges(UserCityChallenges userCityChallenges) {
+        this.userCityChallenges.add(userCityChallenges);
+    }
+
     @Override
     public String toString() {
         return "App_User{" +
@@ -105,6 +123,9 @@ public class App_User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", userCourses=" + userCourses + '\'' +
+                ", userQuests=" + userQuests + '\'' +
+                ", userCityChallenges=" + userCityChallenges +
                 '}';
     }
 

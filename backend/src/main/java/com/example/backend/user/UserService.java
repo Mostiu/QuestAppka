@@ -1,9 +1,13 @@
 package com.example.backend.user;
 
+import com.example.backend.cityChallenge.CityChallenge;
+import com.example.backend.cityChallenge.CityChallengeRepository;
 import com.example.backend.course.Course;
 import com.example.backend.course.CourseRepository;
 import com.example.backend.quest.Quest;
 import com.example.backend.quest.QuestRepository;
+import com.example.backend.user_city_challenges.UserCityChallenges;
+import com.example.backend.user_city_challenges.UserCityChallengesRepository;
 import com.example.backend.user_courses.UserCourses;
 import com.example.backend.user_courses.UserCoursesRepository;
 import com.example.backend.user_quests.UserQuests;
@@ -28,14 +32,21 @@ public class UserService {
 
     private final QuestRepository questRepository;
 
+    private final CityChallengeRepository cityChallengeRepository;
+
+    private final UserCityChallengesRepository userCityChallengeRepository;
+
     @Autowired
     public UserService(UserRepository app_userRepository, CourseRepository courseRepository, UserCoursesRepository userCoursesRepository,
-                       UserQuestsRepository userQuestsRepository, QuestRepository questRepository) {
+                       UserQuestsRepository userQuestsRepository, QuestRepository questRepository, CityChallengeRepository cityChallengeRepository,
+                       UserCityChallengesRepository userCityChallengeRepository) {
         this.app_userRepository = app_userRepository;
         this.courseRepository = courseRepository;
         this.userCoursesRepository = userCoursesRepository;
         this.userQuestsRepository = userQuestsRepository;
         this.questRepository = questRepository;
+        this.cityChallengeRepository = cityChallengeRepository;
+        this.userCityChallengeRepository = userCityChallengeRepository;
     }
 
     public List<App_User> getUsers() {
@@ -102,6 +113,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public void completeQuest(Long userId, Long questId) {
         App_User user = app_userRepository.findById(userId).orElseThrow(() -> new IllegalStateException(
                 "user with id " + userId + " does not exists"
@@ -122,5 +134,28 @@ public class UserService {
         userQuestsRepository.save(userQuests);
         app_userRepository.save(user);
         questRepository.save(quest);
+    }
+
+    @Transactional
+    public void completeCityChallenge(Long userId, Long cityChallengeId) {
+        App_User user = app_userRepository.findById(userId).orElseThrow(() -> new IllegalStateException(
+                "user with id " + userId + " does not exists"
+        ));
+        CityChallenge cityChallenge = cityChallengeRepository.findById(cityChallengeId).orElseThrow(() -> new IllegalStateException(
+                "cityChallenge with id " + cityChallengeId + " does not exists"
+        ));
+
+        UserCityChallenges userCityChallenge = new UserCityChallenges();
+        userCityChallenge.setUser(user);
+        userCityChallenge.setCityChallenge(cityChallenge);
+        userCityChallenge.setCompleted(false);
+
+        user.addUserCityChallenges(userCityChallenge);
+        cityChallenge.addUserCityChallenges(userCityChallenge);
+
+        userCityChallengeRepository.save(userCityChallenge);
+        app_userRepository.save(user);
+        cityChallengeRepository.save(cityChallenge);
+
     }
 }

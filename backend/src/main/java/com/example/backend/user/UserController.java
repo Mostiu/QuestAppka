@@ -45,8 +45,13 @@ public class UserController {
     	userService.enrollUser(userId, courseId);
     }
 
-    @PutMapping(path="{userId}/complete/{questId}")
+    @PutMapping(path="{userId}/complete/quest/{questId}")
     public void completeQuest(@PathVariable Long userId, @PathVariable Long questId) {
     	userService.completeQuest(userId, questId);
+    }
+
+    @PutMapping(path="{userId}/complete/challenge/{cityChallengeId}")
+    public void completeCityChallenge(@PathVariable Long userId, @PathVariable Long cityChallengeId) {
+    	userService.completeCityChallenge(userId, cityChallengeId);
     }
 }
