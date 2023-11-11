@@ -14,12 +14,12 @@ public class UserCityChallenges {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonBackReference(value="user-movement-3")
     private App_User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "city_challenge_id", referencedColumnName = "id")
     @JsonBackReference(value="cityChallenge-movement")
     private CityChallenge cityChallenge;

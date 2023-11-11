@@ -13,12 +13,12 @@ public class TechnologyTags {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
     @JsonBackReference(value = "technology-movement-3")
     private Technology technology;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id", referencedColumnName = "id")
     @JsonBackReference(value = "tag-movement")
     private Tag tag;

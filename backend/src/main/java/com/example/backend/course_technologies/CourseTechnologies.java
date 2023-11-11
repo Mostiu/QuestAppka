@@ -13,12 +13,12 @@ public class CourseTechnologies {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     @JsonBackReference(value="course-movement-2")
     private Course course;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
     @JsonBackReference(value="technology-movement-2")
     private Technology technology;
