@@ -15,13 +15,13 @@ public class UserCourses {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value="user-movement")
     private App_User user;
 
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value="course-movement")
     private Course course;
 
     private String comment;

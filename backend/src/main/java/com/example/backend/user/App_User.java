@@ -1,6 +1,7 @@
 package com.example.backend.user;
 
 import com.example.backend.user_courses.UserCourses;
+import com.example.backend.user_quests.UserQuests;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -29,8 +30,13 @@ public class App_User {
 
 
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="user-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @JsonManagedReference(value="user-movement-2")
+    private Set<UserQuests> userQuests = new HashSet<>();
+
 
     public App_User() {
     }
@@ -84,6 +90,14 @@ public class App_User {
         this.userCourses.add(userCourses);
     }
 
+    public Set<UserQuests> getUserQuests() {
+        return userQuests;
+    }
+
+    public void setUserQuests(Set<UserQuests> userQuests) {
+        this.userQuests = userQuests;
+    }
+
     @Override
     public String toString() {
         return "App_User{" +
@@ -92,5 +106,9 @@ public class App_User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public void addUserQuests(UserQuests userQuests) {
+        this.userQuests.add(userQuests);
     }
 }

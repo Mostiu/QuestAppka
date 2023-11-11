@@ -1,6 +1,11 @@
 package com.example.backend.quest;
 
+import com.example.backend.user_quests.UserQuests;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -21,6 +26,10 @@ public class Quest {
     private String description;
     private boolean is_completed;
     private String comment;
+
+    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER)
+    @JsonManagedReference(value="quest-movement")
+    private Set<UserQuests> userQuests = new HashSet<>();
 
     public Quest() {
     }
@@ -81,5 +90,9 @@ public class Quest {
                 ", is_completed=" + is_completed +
                 ", comment='" + comment + '\'' +
                 '}';
+    }
+
+    public void addUserQuests(UserQuests userQuests) {
+        this.userQuests.add(userQuests);
     }
 }

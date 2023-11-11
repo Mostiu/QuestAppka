@@ -15,12 +15,12 @@ public class CourseTechnologies {
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value="course-movement-2")
     private Course course;
 
     @ManyToOne
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value="technology-movement-2")
     private Technology technology;
 
     public CourseTechnologies() {

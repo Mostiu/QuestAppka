@@ -1,6 +1,7 @@
 package com.example.backend.technology;
 
 import com.example.backend.course_technologies.CourseTechnologies;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class Technology {
     private String name;
 
     @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "technology-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
     public Technology() {

@@ -44,4 +44,9 @@ public class UserController {
     public void enrollUser(@PathVariable Long userId, @PathVariable Long courseId) {
     	userService.enrollUser(userId, courseId);
     }
+
+    @PutMapping(path="{userId}/complete/{questId}")
+    public void completeQuest(@PathVariable Long userId, @PathVariable Long questId) {
+    	userService.completeQuest(userId, questId);
+    }
 }

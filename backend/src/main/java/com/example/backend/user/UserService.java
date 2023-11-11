@@ -2,8 +2,12 @@ package com.example.backend.user;
 
 import com.example.backend.course.Course;
 import com.example.backend.course.CourseRepository;
+import com.example.backend.quest.Quest;
+import com.example.backend.quest.QuestRepository;
 import com.example.backend.user_courses.UserCourses;
 import com.example.backend.user_courses.UserCoursesRepository;
+import com.example.backend.user_quests.UserQuests;
+import com.example.backend.user_quests.UserQuestsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +24,18 @@ public class UserService {
 
     private final UserCoursesRepository userCoursesRepository;
 
+    private final UserQuestsRepository userQuestsRepository;
+
+    private final QuestRepository questRepository;
+
     @Autowired
-    public UserService(UserRepository app_userRepository, CourseRepository courseRepository, UserCoursesRepository userCoursesRepository) {
+    public UserService(UserRepository app_userRepository, CourseRepository courseRepository, UserCoursesRepository userCoursesRepository,
+                       UserQuestsRepository userQuestsRepository, QuestRepository questRepository) {
         this.app_userRepository = app_userRepository;
         this.courseRepository = courseRepository;
         this.userCoursesRepository = userCoursesRepository;
+        this.userQuestsRepository = userQuestsRepository;
+        this.questRepository = questRepository;
     }
 
     public List<App_User> getUsers() {
@@ -89,5 +100,27 @@ public class UserService {
         app_userRepository.save(user);
         courseRepository.save(course);
 
+    }
+
+    public void completeQuest(Long userId, Long questId) {
+        App_User user = app_userRepository.findById(userId).orElseThrow(() -> new IllegalStateException(
+                "user with id " + userId + " does not exists"
+        ));
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new IllegalStateException(
+                "quest with id " + questId + " does not exists"
+        ));
+
+        UserQuests userQuests = new UserQuests();
+        userQuests.setUser(user);
+        userQuests.setQuest(quest);
+        userQuests.setCompleted(true);
+        userQuests.setComment("");
+
+        user.addUserQuests(userQuests);
+        quest.addUserQuests(userQuests);
+
+        userQuestsRepository.save(userQuests);
+        app_userRepository.save(user);
+        questRepository.save(quest);
     }
 }

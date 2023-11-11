@@ -30,11 +30,11 @@ public class Course {
     private String difficulty;
 
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="course-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
 
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="course-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
     public Course() {
