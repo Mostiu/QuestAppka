@@ -2,6 +2,7 @@ package com.example.backend.technology;
 
 import com.example.backend.city_challenge_technologies.CityChallengeTechnologies;
 import com.example.backend.course_technologies.CourseTechnologies;
+import com.example.backend.technology_tags.TechnologyTags;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -33,6 +34,11 @@ public class Technology {
     @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
     @JsonManagedReference(value = "technology-movement")
     private Set<CityChallengeTechnologies> cityChallengeTechnologies = new HashSet<>();
+
+    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "technology-movement-3")
+    private Set<TechnologyTags> technologyTags = new HashSet<>();
+
 
     public Technology() {
     }
@@ -77,6 +83,18 @@ public class Technology {
         this.courseTechnologies.add(courseTechnologies);
     }
 
+    public void addTechnologyTags(TechnologyTags technologyTags) {
+        this.technologyTags.add(technologyTags);
+    }
+
+    public Set<TechnologyTags> getTechnologyTags() {
+        return technologyTags;
+    }
+
+    public void setTechnologyTags(Set<TechnologyTags> technologyTags) {
+        this.technologyTags = technologyTags;
+    }
+
     @Override
     public String toString() {
         return "Technology{" +
@@ -84,6 +102,7 @@ public class Technology {
                 ", name='" + name + '\'' +
                 ", courseTechnologies=" + courseTechnologies + '\'' +
                 ", cityChallengeTechnologies=" + cityChallengeTechnologies +
+                ", technologyTags=" + technologyTags +
                 '}';
         }
 
