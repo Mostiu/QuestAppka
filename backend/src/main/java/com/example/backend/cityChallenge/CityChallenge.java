@@ -29,11 +29,11 @@ private String title;
 private String description;
 private String created_by;
 
-@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER)
+@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 @JsonManagedReference(value="cityChallenge-movement")
 private Set<UserCityChallenges> userCityChallenges = new HashSet<>();
 
-@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER)
+@OneToMany(mappedBy = "cityChallenge",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 @JsonManagedReference(value="cityChallenge-movement-2")
 private Set<CityChallengeTechnologies> cityChallengeTechnologies = new HashSet<>();
 
