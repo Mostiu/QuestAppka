@@ -47,4 +47,11 @@ public class TagService {
             tag.setName(name);
         }
     }
+
+    public void getTechnologiesByTag(Long tagId) {
+        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new IllegalStateException(
+                "tag with id " + tagId + " does not exists"
+        ));
+        tag.getTechnologies();
+    }
 }

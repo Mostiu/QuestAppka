@@ -2,6 +2,8 @@ package com.example.backend.tag;
 
 
 import com.example.backend.technology.Technology;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -25,6 +27,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private Set<Technology> technologies = new HashSet<Technology>();
 
 
@@ -49,6 +52,10 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Technology> getTechnologies() {
+        return technologies;
     }
 
     @Override

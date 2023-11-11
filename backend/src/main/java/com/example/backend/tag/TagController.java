@@ -27,6 +27,11 @@ public class TagController {
         tagService.addNewTag(tag);
     }
 
+    @GetMapping(path="{tagId}")
+    public void getTechnologiesByTag(@PathVariable("tagId") Long tagId) {
+        tagService.getTechnologiesByTag(tagId);
+    }
+
     @DeleteMapping(path="{tagId}")
     public void deleteTag(@PathVariable Long tagId) {
         tagService.deleteTag(tagId);

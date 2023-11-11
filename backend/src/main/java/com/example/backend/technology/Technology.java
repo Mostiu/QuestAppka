@@ -35,7 +35,6 @@ public class Technology {
     @JoinTable(name = "technology_tags",
             joinColumns = @JoinColumn(name = "technologyId"),
             inverseJoinColumns = @JoinColumn(name = "tagId"))
-    @JsonManagedReference
     private Set<Tag> tags = new HashSet<Tag>();
 
     public Technology() {
