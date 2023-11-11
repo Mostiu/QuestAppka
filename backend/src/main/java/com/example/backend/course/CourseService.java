@@ -3,6 +3,8 @@ package com.example.backend.course;
 
 import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.course_technologies.CourseTechnologiesRepository;
+import com.example.backend.quest.Quest;
+import com.example.backend.quest.QuestRepository;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
 import com.example.backend.user.App_User;
@@ -22,11 +24,14 @@ public class CourseService {
 
     private final CourseTechnologiesRepository courseTechnologiesRepository;
 
+    private final QuestRepository questRepository;
+
     @Autowired
-    public CourseService(CourseRepository courseRepository, TechnologyRepository technologyRepository, CourseTechnologiesRepository courseTechnologiesRepository) {
+    public CourseService(CourseRepository courseRepository, TechnologyRepository technologyRepository, CourseTechnologiesRepository courseTechnologiesRepository, QuestRepository questRepository) {
         this.courseRepository = courseRepository;
         this.technologyRepository = technologyRepository;
         this.courseTechnologiesRepository = courseTechnologiesRepository;
+        this.questRepository = questRepository;
     }
 
     public List<Course> getCourses() {
@@ -111,5 +116,21 @@ public class CourseService {
         courseRepository.save(course);
         technologyRepository.save(technology);
         courseTechnologiesRepository.save(courseTechnologies);
+    }
+
+    public void addQuestToCourse(Long courseId, Long questId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+                "course with id " + courseId + " does not exists"
+        ));
+
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new IllegalStateException(
+                "quest with id " + questId + " does not exists"
+        ));
+
+
+        course.addQuests(quest);
+        quest.setCourse(course);
+        courseRepository.save(course);
+        questRepository.save(quest);
     }
 }

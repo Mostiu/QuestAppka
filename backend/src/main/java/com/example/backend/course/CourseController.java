@@ -49,4 +49,12 @@ public class CourseController {
         courseService.addTechnologyToCourse(courseId, technologyId);
         System.out.println("Technology added to course");
     }
+
+    @PutMapping(path="{courseId}/add_quest/{questId}")
+    public void addQuestToCourse(
+            @PathVariable("courseId") Long courseId,
+            @PathVariable("questId") Long questId) {
+        courseService.addQuestToCourse(courseId, questId);
+        System.out.println("Quest added to course");
+    }
 }

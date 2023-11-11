@@ -1,6 +1,7 @@
 package com.example.backend.course;
 
 import com.example.backend.course_technologies.CourseTechnologies;
+import com.example.backend.quest.Quest;
 import com.example.backend.user_courses.UserCourses;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -43,6 +44,10 @@ public class Course {
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="course-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value="course-movement-3")
+    private Set<Quest> quests = new HashSet<>();
 
     public Course() {
     }
@@ -107,6 +112,18 @@ public class Course {
 
     public void addCourseTechnologies(CourseTechnologies courseTechnologies) {
         this.courseTechnologies.add(courseTechnologies);
+    }
+
+    public Set<Quest> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(Set<Quest> quests) {
+        this.quests = quests;
+    }
+
+    public void addQuests(Quest quest) {
+        this.quests.add(quest);
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.backend.quest;
 
+import com.example.backend.course.CourseRepository;
 import com.example.backend.user.App_User;
 import com.example.backend.user_quests.UserQuests;
 import jakarta.transaction.Transactional;
@@ -14,9 +15,12 @@ public class QuestService {
 
     private final QuestRepository questRepository;
 
+    private final CourseRepository courseRepository;
+
     @Autowired
-    public QuestService(QuestRepository questRepository) {
+    public QuestService(QuestRepository questRepository, CourseRepository courseRepository) {
         this.questRepository = questRepository;
+        this.courseRepository = courseRepository;
     }
 
     public List<Quest> getQuests() {
@@ -27,6 +31,7 @@ public class QuestService {
         questRepository.save(quest);
     }
 
+    @Transactional
     public void deleteQuest(Long questId) {
         boolean exists = questRepository.existsById(questId);
         if(!exists){
@@ -50,9 +55,8 @@ public class QuestService {
             userQuests.clear();
         }
 
-
-
-
+        q.getCourse().getQuests().remove(q);
+        
         questRepository.deleteById(questId);
     }
 

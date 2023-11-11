@@ -1,6 +1,8 @@
 package com.example.backend.quest;
 
+import com.example.backend.course.Course;
 import com.example.backend.user_quests.UserQuests;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -31,6 +33,12 @@ public class Quest {
     @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="quest-movement")
     private Set<UserQuests> userQuests = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    @JsonBackReference(value="course-movement-3")
+    private Course course = null;
 
     public Quest() {
     }
@@ -82,6 +90,14 @@ public class Quest {
         this.comment = comment;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     @Override
     public String toString() {
         return "Quest{" +
@@ -90,6 +106,8 @@ public class Quest {
                 ", description='" + description + '\'' +
                 ", is_completed=" + is_completed +
                 ", comment='" + comment + '\'' +
+                ", userQuests=" + userQuests +
+                ", course=" + course +
                 '}';
     }
 
