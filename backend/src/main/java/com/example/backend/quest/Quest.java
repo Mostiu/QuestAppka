@@ -27,7 +27,7 @@ public class Quest {
     private boolean is_completed;
     private String comment;
 
-    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value="quest-movement")
     private Set<UserQuests> userQuests = new HashSet<>();
 

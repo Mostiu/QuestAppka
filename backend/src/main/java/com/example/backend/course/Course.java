@@ -29,11 +29,11 @@ public class Course {
     private String description;
     private String difficulty;
 
-    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value="course-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
 
-    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value="course-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 

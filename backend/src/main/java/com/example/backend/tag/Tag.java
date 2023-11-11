@@ -25,7 +25,7 @@ public class Tag {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "tag-movement")
     private Set<TechnologyTags> technologyTags = new HashSet<>();
 

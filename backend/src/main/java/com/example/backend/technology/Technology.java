@@ -27,15 +27,15 @@ public class Technology {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "technology-movement-2")
     private Set<CourseTechnologies> courseTechnologies = new HashSet<>();
 
-    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "technology-movement")
     private Set<CityChallengeTechnologies> cityChallengeTechnologies = new HashSet<>();
 
-    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "technology", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "technology-movement-3")
     private Set<TechnologyTags> technologyTags = new HashSet<>();
 
