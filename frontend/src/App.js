@@ -8,47 +8,52 @@ import CityChallengeBrowse from './Routes/CityChallengeBrowse';
 import CourseGenerator from './Routes/CourseGenerator';
 import CourseGenerated from './Routes/CourseGenerated';
 import WelcomePage from './Routes/WelcomePage';
+import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import 'react-pro-sidebar/dist/css/styles.css';
+import './Styles/App.css'; // Import your custom CSS file for styling
 
 class App extends React.Component {
     render() {
+        const routes = [
+            { path: "/", name: "WelcomePage" },
+            { path: "/home", name: "HomePage" },
+            { path: "/user", name: "User" },
+            { path: "/courses", name: "Courses" },
+            { path: "/cityChallenge", name: "CityChallenge" },
+            { path: "/cityChallengeBrowse", name: "CityChallengeBrowse" },
+            { path: "/courseGenerator", name: "CourseGenerator" },
+            { path: "/courseGenerated", name: "CourseGenerated" },
+        ];
+
         return (
             <Router>
-                <div>
+                <div className="app-container">
+                    <ProSidebar className="sidebar">
+                        <Menu iconShape="square">
+                            {routes.map((route, index) => (
+                                <MenuItem key={index}>
+                                    <Link to={route.path}>{route.name}</Link>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </ProSidebar>
 
-
-                    <Routes>
-                        <Route path="/" element={<WelcomePage />} />
-                        <Route path="/home" element={<HomePage />} />
-                        <Route path="/user" element={<User />} />
-                        <Route path="/courses" element={<Courses />} />
-                        <Route path="/cityChallenge" element={<CityChallenge />} />
-                        <Route path="/cityChallengeBrowse" element={<CityChallengeBrowse />} />
-                        <Route path="/courseGenerator" element={<CourseGenerator />} />
-                        <Route path="/courseGenerated" element={<CourseGenerated />} />
-                    </Routes>
-
-
-                    <h1>
-                        <Link to="/">Click me for WelcomePage</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/home">Click me for Home Page</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/user">Click me for User Page</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/courses">Click me for Courses Page</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/cityChallenge">Click me for City Challenge Page</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/cityChallengeBrowse">Click me for City Challenge Browse Page</Link>
-                    </h1>
-                    <h1>
-                        <Link to="/courseGenerator">Click me for Course Generator Page</Link>
-                    </h1>
+                    <div className="content-container">
+                        <Routes>
+                            {routes.map((route, index) => (
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    element={
+                                        <div className="centered-content">
+                                            <h1>{route.name}</h1>
+                                            {/* Render your route component here */}
+                                        </div>
+                                    }
+                                />
+                            ))}
+                        </Routes>
+                    </div>
                 </div>
             </Router>
         );
