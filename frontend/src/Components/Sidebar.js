@@ -8,14 +8,17 @@ export default props => {
             <a className="menu-item, bm-first-item" href="/user">
                 <span className="menu-text">User</span>
             </a>
-            <a className="menu-item" href="/">
-                User
+            <a className="menu-item" href="/home">
+                Home
             </a>
             <a className="menu-item" href="/courses">
-                Pizzas
+                Courses
             </a>
-            <a className="menu-item" href="/desserts">
-                Desserts
+            <a className="menu-item" href="/CityChallengeBrowse">
+                City Challenge Browse
+            </a>
+            <a className="menu-item" href="/CourseGenerator">
+                Course Generator
             </a>
         </Menu>
     );
