@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import HomePage from './Routes/HomePage';
 import User from './Routes/User';
 import Courses from './Routes/Courses';
@@ -8,11 +8,10 @@ import CityChallenge from './Routes/CityChallenge';
 import CityChallengeBrowse from './Routes/CityChallengeBrowse';
 import CourseGenerator from './Routes/CourseGenerator';
 import CourseGenerated from './Routes/CourseGenerated';
-import WelcomePage from './Routes/WelcomePage'; // Import WelcomePage component
-
-import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import WelcomePage from './Routes/WelcomePage';
+import Sidebar from "./Components/Sidebar";
 import 'react-pro-sidebar/dist/css/styles.css';
-import './Styles/App.css'; // Import your custom CSS file for styling
+import './Styles/App.css';
 
 class App extends React.Component {
     render() {
@@ -29,16 +28,8 @@ class App extends React.Component {
 
         return (
             <Router>
-                <div className="app-container">
-                    <ProSidebar className="sidebar">
-                        <Menu iconShape="square">
-                            {routes.map((route, index) => (
-                                <MenuItem key={index}>
-                                    <Link to={route.path}>{route.name}</Link>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </ProSidebar>
+                <div className="app-container" id="outer-containter">
+                    <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
 
                     <div className="content-container">
                         <Routes>
