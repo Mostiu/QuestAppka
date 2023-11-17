@@ -6,26 +6,26 @@ import axios from "axios";
 
 // requires a loader
 class HomePage extends React.Component {
-
-    state = {
-        cityChallenges: []
+    constructor(props) {
+        super(props);
+        this.state = {
+            cityChallenges: []
+        }
     }
+
     componentDidMount() {
-        try{
-            axios.get('http://localhost:8080/api/cityChallenges')
-                .then(response => {
-                    const cityChallenges = response.data;
-                    this.setState({ cityChallenges });
-                })
-        }
-        catch (e) {
-            console.log(e);
-        }
-
+        axios.get('http://localhost:8080/api/cityChallenges')
+            .then(response => {
+                this.setState({ cityChallenges: response.data })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
-
 
     render() {
+        console.log("City Challenges:", this.state.cityChallenges[0]);
+
         return (
             <div className="Home">
                 <div className={"LeftContainer"}>
@@ -33,21 +33,13 @@ class HomePage extends React.Component {
                         <Carousel infiniteLoop={true}
                             showIndicators={false}
                             showStatus={false}>
-                            <div>
-                                <ul>
-                                    this.state.cityChallenges[0].title)
-                                </ul>
-                                <p>City Challenge is a game where you have to find different locations in a city. You can play it alone or with friends. The goal is to find all the locations as fast as possible. You can also create your own City Challenge.</p>
-                            </div>
-                            <div>
-                                <h2>City Challenge2</h2>
-                                <p>City Challenge2 is a game where you have to find different locations in a city. You can play it alone or with friends. The goal is to find all the locations as fast as possible. You can also create your own City Challenge.</p>
-                            </div>
-                            <div>
-                                <h2>City Challenge3</h2>
-                                <p>City Challenge3 is a game where you have to find different locations in a city. You can play it alone or with friends. The goal is to find all the locations as fast as possible. You can also create your own City Challenge.</p>
-                            </div>
 
+                            {this.state.cityChallenges.map(challenge => (
+                                <div key={challenge.id}>
+                                    <h2>{challenge.title}</h2>
+                                    <p>{challenge.description}</p>
+                                </div>
+                            ))}
                         </Carousel>
                     </div>
 
