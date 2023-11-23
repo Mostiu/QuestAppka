@@ -4,7 +4,7 @@ import '../Styles/Card.css'
 function Card(){
     return(
         <div className="card">
-            <div className= "divider">
+            <div className= "dividerC">
                 <h2 className="card-title"> Maybe the man with the lighting has a point</h2>
                 <p className="tag">#we #ball #python #b #c #d #we #ball #python #b #c #d </p>
             </div>
