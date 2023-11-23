@@ -8,6 +8,21 @@ const LoginForm = () => {
     const handleLogin = () => {
         // Add your login logic and authentication here
         console.log('Logging in with:', username, password);
+
+        // Example: Make a POST request to create a new user
+        axios.post('http://localhost:8080/api/users', {
+            name:   "kermit",
+            username: username,
+            password: password,
+        })
+            .then(response => {
+                // Handle success, you might want to redirect the user or show a success message
+                console.log('User registered successfully:', response.data);
+            })
+            .catch(error => {
+                // Handle error, you might want to show an error message to the user
+                console.error('Error registering user:', error);
+            });
     };
 
     // Make a POST request to the API
