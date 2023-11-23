@@ -3,6 +3,7 @@ import '../Styles/Home.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import axios from "axios";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 // requires a loader
 class HomePage extends React.Component {
@@ -11,6 +12,28 @@ class HomePage extends React.Component {
         this.state = {
             cityChallenges: []
         }
+    }
+
+
+    fetchRandomWords = () => {
+        // Mock API call for random words
+        const mockRandomWords = [
+            'Apple', 'Banana', 'Carrot', 'Dolphin', 'Elephant',
+            'Flower', 'Giraffe', 'Happiness', 'Igloo', 'Jazz',
+            // Add more words as needed
+        ];
+        this.setState(prevState => ({
+            randomWords: [...prevState.randomWords, ...mockRandomWords],
+            hasMore: false // In this mock example, set hasMore to false since it's not a dynamic API
+        }));
+    }
+
+    fetchMoreData = () => {
+        // Mock API call for fetching more random words
+        this.fetchRandomWords();
+        this.setState(prevState => ({
+            page: prevState.page + 1
+        }));
     }
 
     componentDidMount() {
@@ -48,10 +71,20 @@ class HomePage extends React.Component {
                 </div>
 
                <div className={"RightContainer"}>
-                   <h1>Home Page</h1>
-                   <h1>Home Page</h1>
-                   <h1>Home Page</h1>
-                   <h1>Home Page</h1>
+                   <InfiniteScroll
+                       dataLength={this.state.randomWords.length}
+                       next={this.fetchMoreData}
+                       hasMore={this.state.hasMore}
+                       loader={<h4>Loading...</h4>}
+                       endMessage={<p>No more words to show.</p>}
+                   >
+                       {this.state.randomWords.map((word, index) => (
+                           <div key={index}>
+                               <h1>{word}</h1>
+                           </div>
+                       ))}
+                   </InfiniteScroll>
+
                </div>
 
 

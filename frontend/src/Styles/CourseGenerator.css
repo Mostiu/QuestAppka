@@ -1,0 +1,20 @@
+.CGmain {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns, each taking 50% of the width */
+    gap: 16px;
+    padding: 16px;
+}
+
+.CGLeftContainer, .CGRightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.CGLeftContainer {
+    padding-right: 8px; /* Add padding to separate left and right containers */
+}
+
+.CGRightContainer {
+    padding-left: 8px; /* Add padding to separate left and right containers */
+}
