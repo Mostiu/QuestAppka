@@ -1,0 +1,26 @@
+.CGmain {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns, each taking 50% of the width */
+    gap: 16px;
+    padding: 16px;
+}
+
+.CGLeftContainer, .CGRightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.CGLeftContainer {
+    padding-right: 8px; /* Add padding to separate left and right containers */
+}
+
+.CGRightContainer {
+    padding-left: 8px; /* Add padding to separate left and right containers */
+}
+
+.CGLeftContainer textarea {
+    width: 300px; /* Set the width to your desired size */
+    height: 100px; /* Set the height to your desired size */
+    padding: 8px; /* Optional: Add padding for better appearance */
+}

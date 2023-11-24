@@ -1,0 +1,21 @@
+.tile {
+    display: flex;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    height: 27px; /* Set the desired height */
+}
+
+.left-half,
+.right-half {
+    flex: auto;
+    padding: 8px; /* Adjust the padding as needed */
+}
+
+.divider {
+    width: 1px;
+    background-color: #ccc;
+}
+
+.left-half h3{
+    margin: 0;
+}
