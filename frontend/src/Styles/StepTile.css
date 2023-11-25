@@ -1,0 +1,29 @@
+.tileStep {
+    display: flex;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    height: 27px; /* Set the desired height */
+}
+
+.left-half-Step,
+.right-half-Step {
+    padding: 8px; /* Adjust the padding as needed */
+}
+
+.left-half-Step {
+    flex: 85%; /* Set left side to 70% */
+}
+
+.right-half-Step {
+    flex: 15%; /* Set right side to 30% */
+}
+
+.divider-Step {
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 8px; /* Adjust the margin as needed */
+}
+
+.left-half-Step h3{
+    margin: 0;
+}

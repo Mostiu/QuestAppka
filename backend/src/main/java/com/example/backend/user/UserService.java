@@ -13,14 +13,19 @@ import com.example.backend.user_courses.UserCoursesRepository;
 import com.example.backend.user_quests.UserQuests;
 import com.example.backend.user_quests.UserQuestsRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserService implements UserDetailsService {
 
     private final UserRepository app_userRepository;
 
@@ -35,19 +40,6 @@ public class UserService {
     private final CityChallengeRepository cityChallengeRepository;
 
     private final UserCityChallengesRepository userCityChallengeRepository;
-
-    @Autowired
-    public UserService(UserRepository app_userRepository, CourseRepository courseRepository, UserCoursesRepository userCoursesRepository,
-                       UserQuestsRepository userQuestsRepository, QuestRepository questRepository, CityChallengeRepository cityChallengeRepository,
-                       UserCityChallengesRepository userCityChallengeRepository) {
-        this.app_userRepository = app_userRepository;
-        this.courseRepository = courseRepository;
-        this.userCoursesRepository = userCoursesRepository;
-        this.userQuestsRepository = userQuestsRepository;
-        this.questRepository = questRepository;
-        this.cityChallengeRepository = cityChallengeRepository;
-        this.userCityChallengeRepository = userCityChallengeRepository;
-    }
 
     public List<App_User> getUsers() {
         return app_userRepository.findAll();
@@ -157,5 +149,16 @@ public class UserService {
         app_userRepository.save(user);
         cityChallengeRepository.save(cityChallenge);
 
+    }
+
+    public App_User loadUserByUsername(String userEmail) {
+        return app_userRepository.findUserByEmail(userEmail).orElseThrow(() -> new IllegalStateException(
+                "user with email " + userEmail + " does not exists"
+        ));
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

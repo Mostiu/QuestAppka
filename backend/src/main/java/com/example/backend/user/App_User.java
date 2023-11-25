@@ -3,16 +3,30 @@ package com.example.backend.user;
 import com.example.backend.user_city_challenges.UserCityChallenges;
 import com.example.backend.user_courses.UserCourses;
 import com.example.backend.user_quests.UserQuests;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+
+enum Role {
+    USER,
+    ADMIN
+}
+
+
 
 @Entity
 @Table
-public class App_User {
+@RequiredArgsConstructor
+public class App_User implements UserDetails {
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -43,13 +57,20 @@ public class App_User {
     private Set<UserCityChallenges> userCityChallenges = new HashSet<>();
 
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
-    public App_User() {
-    }
+
     public App_User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public App_User(String firstname, String lastname, String email, String encode) {
+        this.name = firstname + " " + lastname;
+        this.email = email;
+        this.password = encode;
     }
 
     public Long getId() {
@@ -76,8 +97,46 @@ public class App_User {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -125,7 +184,8 @@ public class App_User {
                 ", password='" + password + '\'' +
                 ", userCourses=" + userCourses + '\'' +
                 ", userQuests=" + userQuests + '\'' +
-                ", userCityChallenges=" + userCityChallenges +
+                ", userCityChallenges=" + userCityChallenges + '\'' +
+                ", role=" + role +
                 '}';
     }
 
