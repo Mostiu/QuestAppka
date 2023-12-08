@@ -68,7 +68,7 @@ class HomePage extends React.Component {
 
                     <Card></Card>
 
-                    <h1> EXXXXTRAA BALL</h1>
+                    <h1> City challenge</h1>
 
                     <div className={"RightContainer"} style={{ height: '250px', overflowY: 'scroll', paddingLeft: '40px' }}>
                         <InfiniteScroll
@@ -87,7 +87,7 @@ class HomePage extends React.Component {
                 </div>
 
                 <div className={"RightContainer"} >
-                    <h1>MULTI BALLZ</h1>
+                    <h1>Finished courses</h1>
                     <div style={{ height: '480px', overflowY: 'scroll' }}>
                         <InfiniteScroll
                             dataLength={randomWords ? randomWords.length : 0}
