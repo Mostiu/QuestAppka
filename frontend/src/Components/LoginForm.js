@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import "../Styles/LoginForm.css";
+import "../Styles/WelcomePage.css";
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -41,7 +43,6 @@ const LoginForm = () => {
 
     return (
         <div>
-            <h2>Login Form</h2>
             <form>
                 <label>
                     Username:
@@ -53,7 +54,7 @@ const LoginForm = () => {
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
                 <br />
-                <button type="button" onClick={handleLogin}>
+                <button className={"loginFormButton"} type="button" onClick={handleLogin}>
                     Login
                 </button>
             </form>
