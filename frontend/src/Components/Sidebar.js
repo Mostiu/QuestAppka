@@ -1,11 +1,27 @@
 import React from 'react';
-import {slide as Menu} from 'react-burger-menu';
+import { slide as Menu } from 'react-burger-menu';
 import '../Styles/Sidebar.css';
 
-export default props => {
+const Sidebar = (props) => {
+    const menuStyles = {
+        bmBurgerButton: {
+            position: 'fixed',
+            width: '36px',
+            height: '30px',
+            left: '20px',
+            top: '20px',
+        },
+        bmBurgerBars: {
+            background: 'white', // Change this to the desired color (white in this case)
+        },
+        bmBurgerBarsHover: {
+            background: 'white', // Change this to the desired hover color
+        },
+    };
+
     return (
-        <Menu width={'20%'}>
-            <a className="menu-item, bm-first-item" href="/user">
+        <Menu width={'20%'} styles={menuStyles}>
+            <a className="menu-item bm-first-item" href="/user">
                 <span className="menu-text">User</span>
             </a>
             <a className="menu-item" href="/home">
@@ -23,3 +39,5 @@ export default props => {
         </Menu>
     );
 };
+
+export default Sidebar;

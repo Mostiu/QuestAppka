@@ -1,0 +1,22 @@
+.WelcomeTitle
+{
+    font-size: 4em;
+    font-weight: bold;
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+}
+
+.WelcomeParagraph{
+    font-size: 1.15em;
+    margin-top: 0.8em;
+    margin-bottom: 2em;
+}
+
+.WelcomeTextInput{
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
