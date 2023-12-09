@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+//@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping(path="api/cityChallenges")
 public class CityChallengeController{
@@ -16,6 +18,7 @@ public class CityChallengeController{
     public CityChallengeController(CityChallengeService cityChallengeService) {
         this.cityChallengeService = cityChallengeService;
     }
+
 
     @GetMapping
     public List<CityChallenge> getCityChallenges() {
