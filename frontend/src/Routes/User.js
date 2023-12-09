@@ -4,6 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from "../Components/Card";
+import ImageCard from "../Components/ImageCard";
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -66,7 +67,7 @@ class HomePage extends React.Component {
             <div className="Home">
                 <div className={"LeftContainer"}>
 
-                    <Card></Card>
+                    <ImageCard></ImageCard>
 
                     <h1> City challenge</h1>
 
