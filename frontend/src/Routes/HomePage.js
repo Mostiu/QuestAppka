@@ -37,13 +37,15 @@ class HomePage extends React.Component {
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log('storage', localStorage.getItem('jwtToken'));
                     this.setState({ cityChallenges: data });
                 })
                 .catch(error => {
                     console.error('Error fetching city challenges:', error);
                 });
         } else {
-            console.error('No token found. User may not be authenticated.'); // Handle the case when no token is found
+            console.error('No token found. User may not be authenticated.');
+           // this.setState({cityChallenges: []})// Handle the case when no token is found
         }
     };
 
