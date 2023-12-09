@@ -5,6 +5,7 @@ import com.example.backend.course_technologies.CourseTechnologies;
 import com.example.backend.course_technologies.CourseTechnologiesRepository;
 import com.example.backend.quest.Quest;
 import com.example.backend.quest.QuestRepository;
+import com.example.backend.tag.Tag;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
 import com.example.backend.user.App_User;
@@ -132,5 +133,11 @@ public class CourseService {
         quest.setCourse(course);
         courseRepository.save(course);
         questRepository.save(quest);
+    }
+
+    public List<Tag> getTagsFromCourse(Long courseId) {
+        return courseRepository.getTagsFromCourse(courseId).orElseThrow(() -> new IllegalStateException(
+                "course with id " + courseId + " does not exists"
+        ));
     }
 }

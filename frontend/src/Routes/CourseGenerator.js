@@ -12,15 +12,37 @@ class CourseGenerator extends React.Component {
             technologies: [],
             generatedLines: [],
             newTechnology: {
-                title: '',
+                name: '',
             },
-            availableTechnologies: [
-                'Technology 1',
-                'Technology 2',
-                'Technology 3',
-                // Add more technologies as needed
-            ],
+            availableTechnologies: [],
         };
+    }
+
+
+    fetchAvailableTechnologies = () => {
+        const storedToken = localStorage.getItem('jwtToken');
+
+        if(storedToken) {
+            fetch('http://localhost:8080/api/technologies', {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({ availableTechnologies: data });
+                })
+                .catch(error => {
+                    console.error('Error fetching technologies:', error);
+                });
+        } else {
+            console.error('No token found. User may not be authenticated.');
+        }
+    }
+
+    componentDidMount() {
+        this.fetchAvailableTechnologies();
     }
 
     handleSelectChange = (e) => {
@@ -28,7 +50,7 @@ class CourseGenerator extends React.Component {
         this.setState((prevState) => ({
             newTechnology: {
                 ...prevState.newTechnology,
-                title: value,
+                name: value,
             },
         }));
     };
@@ -36,13 +58,13 @@ class CourseGenerator extends React.Component {
     handleAddTechnology = () => {
         const { newTechnology, technologies } = this.state;
 
-        if (newTechnology.title) {
-            if (!technologies.some((tech) => tech.title === newTechnology.title)) {
+        if (newTechnology.name) {
+            if (!technologies.some((tech) => tech.name === newTechnology.name)) {
                 this.setState(
                     (prevState) => ({
                         technologies: [...prevState.technologies, { ...prevState.newTechnology }],
                         newTechnology: {
-                            title: '',
+                            name: '',
                         },
                     }),
                     () => {
@@ -91,7 +113,7 @@ class CourseGenerator extends React.Component {
                         5. Opcjonalnie, dodaj obsługę błędów, np. sprawdź, czy użytkownik nie próbuje dzielić przez zero.
                         6. Uruchom program i przetestuj go, aby upewnić się, że działa zgodnie z oczekiwaniami.
 
-                        Zrób to dla poniższego promptu, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.title).join(', ')}: \n ${description}`;
+                        Zrób to dla poniższego promptu, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
 
             const messages = [
                 { role: 'system', content: 'You are a helpful assistant.' },
@@ -149,25 +171,25 @@ class CourseGenerator extends React.Component {
 
                 <div className={'CGRightContainer'}>
                     <text>Add Technologies</text>
-                    
+
                     <ul>
                         {technologies.map((technology) => (
-                        <TechnologyTile key={technology.title} name={technology.title} />
-                    ))}
+                            <TechnologyTile key={technology.id} name={technology.name} />
+                        ))}
                     </ul>
 
                     <div>
                         <select
-                            name="title"
-                            value={newTechnology.title}
+                            name="name"
+                            value={newTechnology.name}
                             onChange={this.handleSelectChange}
                         >
                             <option value="" disabled>
                                 Select Technology
                             </option>
                             {availableTechnologies.map((tech) => (
-                                <option key={tech} value={tech}>
-                                    {tech}
+                                <option key={tech.id} value={tech.name}>
+                                    {tech.name}
                                 </option>
                             ))}
                         </select>

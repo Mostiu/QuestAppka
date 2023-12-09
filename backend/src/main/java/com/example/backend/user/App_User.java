@@ -1,5 +1,6 @@
 package com.example.backend.user;
 
+import com.example.backend.course.Course;
 import com.example.backend.user_city_challenges.UserCityChallenges;
 import com.example.backend.user_courses.UserCourses;
 import com.example.backend.user_quests.UserQuests;
@@ -196,4 +197,5 @@ public class App_User implements UserDetails {
     public void removeUserCityChallenges(UserCityChallenges userCityChallenge) {
         this.userCityChallenges.remove(userCityChallenge);
     }
+
 }

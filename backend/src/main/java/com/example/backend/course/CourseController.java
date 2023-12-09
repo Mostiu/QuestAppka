@@ -1,10 +1,12 @@
 package com.example.backend.course;
 
 
+import com.example.backend.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/courses")
@@ -56,5 +58,10 @@ public class CourseController {
             @PathVariable("questId") Long questId) {
         courseService.addQuestToCourse(courseId, questId);
         System.out.println("Quest added to course");
+    }
+
+    @GetMapping(path="{courseId}/tags")
+    public List<Tag> getTagsFromCourse(@PathVariable Long courseId) {
+    	return courseService.getTagsFromCourse(courseId);
     }
 }

@@ -10,9 +10,8 @@ const LoginForm = () => {
     const handleLogin = () => {
         console.log('Logging in with:', username, password);
 
-        axios.post('http://localhost:8080/api/auth/register', {
-            firstname: "kermit",
-            lastname: "frog",
+        axios.post('http://localhost:8080/api/auth/authenticate', {
+
             email: username,
             password: password,
         })
@@ -22,30 +21,18 @@ const LoginForm = () => {
 
                 // Store the token in localStorage
                 localStorage.setItem('jwtToken', jwtToken);
+                localStorage.setItem('mail', username);
 
                 // Handle success, you might want to redirect the user or show a success message
-                console.log('User registered successfully:', response.data);
+                console.log('User authenticated successfully:', response.data);
             })
             .catch(error => {
                 // Handle error, you might want to show an error message to the user
-                console.error('Error registering user:', error);
+                console.error('Error authenticating user:', error);
             });
     };
 
-
-    // // Make a POST request to the API
-    // axios.post('http://localhost:8080/api/users', {
-    //     username: username,
-    //     password: password
-    // })
-    //     .then(response => {
-    //         // Handle the response as needed
-    //         console.log('API Response:', response.data);
-    //     })
-    //     .catch(error => {
-    //         // Handle errors
-    //         console.error('Error making API request:', error);
-    //     });
+    ;
 
     return (
         <div>

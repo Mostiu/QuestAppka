@@ -1,6 +1,7 @@
 package com.example.backend.user;
 
 
+import com.example.backend.course.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,5 +54,10 @@ public class UserController {
     @PutMapping(path="{userId}/complete/challenge/{cityChallengeId}")
     public void completeCityChallenge(@PathVariable Long userId, @PathVariable Long cityChallengeId) {
     	userService.completeCityChallenge(userId, cityChallengeId);
+    }
+
+    @GetMapping(path="{userMail}/courses")
+    public List<Course> getUserCourses(@PathVariable String userMail) {
+    	return userService.getUserCourses(userMail);
     }
 }

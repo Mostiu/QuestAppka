@@ -2,6 +2,7 @@ package com.example.backend.user;
 
 import com.example.backend.cityChallenge.CityChallenge;
 import com.example.backend.cityChallenge.CityChallengeRepository;
+import com.example.backend.config.JwtService;
 import com.example.backend.course.Course;
 import com.example.backend.course.CourseRepository;
 import com.example.backend.quest.Quest;
@@ -40,6 +41,7 @@ public class UserService implements UserDetailsService {
     private final CityChallengeRepository cityChallengeRepository;
 
     private final UserCityChallengesRepository userCityChallengeRepository;
+    private final JwtService jwtService;
 
     public List<App_User> getUsers() {
         return app_userRepository.findAll();
@@ -160,5 +162,10 @@ public class UserService implements UserDetailsService {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    public List<Course> getUserCourses(String userMail) {
+        App_User user = loadUserByUsername(userMail);
+        return user.getUserCourses().stream().map(UserCourses::getCourse).toList();
     }
 }
