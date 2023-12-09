@@ -6,16 +6,21 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Add your login logic and authentication here
         console.log('Logging in with:', username, password);
 
-        // Example: Make a POST request to create a new user
-        axios.post('http://localhost:8080/api/users', {
-            name:   "kermit",
-            username: username,
+        axios.post('http://localhost:8080/api/auth/register', {
+            firstname: "kermit",
+            lastname: "frog",
+            email: username,
             password: password,
         })
             .then(response => {
+                // Assuming the JWT token is in response.data.token, replace it with the actual property name
+                const jwtToken = response.data.token;
+
+                // Store the token in localStorage
+                localStorage.setItem('jwtToken', jwtToken);
+
                 // Handle success, you might want to redirect the user or show a success message
                 console.log('User registered successfully:', response.data);
             })
@@ -25,19 +30,20 @@ const LoginForm = () => {
             });
     };
 
-    // Make a POST request to the API
-    axios.post('http://localhost:8080/api/users', {
-        username: username,
-        password: password
-    })
-        .then(response => {
-            // Handle the response as needed
-            console.log('API Response:', response.data);
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Error making API request:', error);
-        });
+
+    // // Make a POST request to the API
+    // axios.post('http://localhost:8080/api/users', {
+    //     username: username,
+    //     password: password
+    // })
+    //     .then(response => {
+    //         // Handle the response as needed
+    //         console.log('API Response:', response.data);
+    //     })
+    //     .catch(error => {
+    //         // Handle errors
+    //         console.error('Error making API request:', error);
+    //     });
 
     return (
         <div>

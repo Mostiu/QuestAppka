@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull  FilterChain filterChain)
             throws ServletException, IOException
     {
+//        if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            return;
+//        }
+
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods","*");
+        response.setHeader("Access-Control-Allow-Headers","*");
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -52,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
         filterChain.doFilter(request,response);
     }
 }

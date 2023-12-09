@@ -22,17 +22,31 @@ class HomePage extends React.Component {
     }
 
     fetchCityChallenges = () => {
-        // Use a real API call for city challenges
-        // Assuming an endpoint like 'http://localhost:8080/api/cityChallenges'
-        fetch('http://localhost:8080/api/cityChallenges')
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ cityChallenges: data });
+        // Retrieve the stored token from localStorage
+        const storedToken = localStorage.getItem('jwtToken');
+
+        // Check if the token exists
+        if (storedToken) {
+            // Use a real API call for city challenges
+            // Assuming an endpoint like 'http://localhost:8080/api/cityChallenges'
+            fetch('http://localhost:8080/api/cityChallenges', {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`, // Include the stored token in the Authorization header
+                    'Content-Type': 'application/json',
+                }
             })
-            .catch(error => {
-                console.error('Error fetching city challenges:', error);
-            });
-    }
+                .then(response => response.json())
+                .then(data => {
+                    this.setState({ cityChallenges: data });
+                })
+                .catch(error => {
+                    console.error('Error fetching city challenges:', error);
+                });
+        } else {
+            console.error('No token found. User may not be authenticated.'); // Handle the case when no token is found
+        }
+    };
+
 
     fetchRandomWords = () => {
         // Mock API call for random words
