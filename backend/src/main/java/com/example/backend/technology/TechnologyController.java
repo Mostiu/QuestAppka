@@ -1,5 +1,6 @@
 package com.example.backend.technology;
 
+import com.example.backend.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -42,6 +43,11 @@ public class TechnologyController
                                  @PathVariable("tagId") Long tagId
                                  ) {
         technologyService.addTagToTechnology(technologyId, tagId);
+    }
+
+    @GetMapping(path = "{technologyId}/tags")
+    public List<Tag> getTagsFromTechnology(@PathVariable("technologyId") Long technologyId) {
+        return technologyService.getTagsFromTechnology(technologyId);
     }
 
 

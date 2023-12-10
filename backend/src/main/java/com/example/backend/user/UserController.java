@@ -1,6 +1,7 @@
 package com.example.backend.user;
 
 
+import com.example.backend.cityChallenge.CityChallenge;
 import com.example.backend.course.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,11 @@ public class UserController {
     @GetMapping
     public List<App_User> getUsers() {
         return userService.getUsers();
+    }
+
+    @GetMapping(path="{userMail}")
+    public App_User getUser(@PathVariable String userMail) {
+    	return userService.loadUserByUsername(userMail);
     }
 
     @PostMapping
@@ -59,5 +65,10 @@ public class UserController {
     @GetMapping(path="{userMail}/courses")
     public List<Course> getUserCourses(@PathVariable String userMail) {
     	return userService.getUserCourses(userMail);
+    }
+
+    @GetMapping(path="{userMail}/cityChallenges")
+    public List<CityChallenge> getUserCityChallenges(@PathVariable String userMail) {
+    	return userService.getUserCityChallenges(userMail);
     }
 }

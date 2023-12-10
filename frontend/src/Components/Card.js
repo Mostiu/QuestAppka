@@ -6,7 +6,7 @@ function Card({ title = "Default Title", tags = [], description = "Default Descr
         <div className="card">
             <div className="dividerC">
                 <h2 className="card-title">{title}</h2>
-                <p className="tag">{tags.map(tag => `#${tag} `)}</p>
+                <p className="tag">{tags.map(tag => `#${tag.name} `)}</p>
             </div>
 
             <div className="no-whitespace">

@@ -11,100 +11,201 @@ class HomePage extends React.Component {
         super(props);
         this.state = {
             cityChallenges: [],
-            randomWords: [],
+            userInfo: {},
+            userCourses: [],
             hasMore: true,
             page: 1
         };
     }
 
     componentDidMount() {
-        this.fetchCityChallenges();
-        this.fetchRandomWords();
+        this.fetchUserCityChallenges();
+        this.fetchUserInfo();
+        this.fetchUserCourses();
     }
 
-    fetchCityChallenges = () => {
-        // Use a real API call for city challenges
-        // Assuming an endpoint like 'http://localhost:8080/api/cityChallenges'
-        fetch('http://localhost:8080/api/cityChallenges')
+    fetchUserInfo = () => {
+        const token = localStorage.getItem('jwtToken');
+        const mail = localStorage.getItem('mail');
+
+        fetch(`http://localhost:8080/api/users/${mail}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => response.json())
             .then(data => {
-                this.setState({ cityChallenges: data });
+                this.setState({ userInfo: data });
             })
             .catch(error => {
-                console.error('Error fetching city challenges:', error);
+                console.error('Error fetching user info:', error);
             });
     }
 
-    fetchRandomWords = () => {
-        // Mock API call for random words
-        const mockRandomWords = [
-            'Apple', 'Banana', 'Carrot', 'Dolphin', 'Elephant',
-            'Flower', 'Giraffe', 'Happiness', 'Igloo', 'Jazz',
-            'Apple', 'Banana', 'Carrot', 'Dolphin', 'Elephant',
-            'Flower', 'Giraffe', 'Happiness', 'Igloo', 'Jazz',
-            'Apple', 'Banana', 'Carrot', 'Dolphin', 'Elephant',
-            'Flower', 'Giraffe', 'Happiness', 'Igloo', 'Jazz',
-            // Add more words as needed
-        ];
-        this.setState(prevState => ({
-            randomWords: [...prevState.randomWords, ...mockRandomWords],
-            hasMore: false // In this mock example, set hasMore to false since it's not a dynamic API
-        }));
-    }
+
+    getCityChallengeTags = async (id) => {
+        try {
+            const storedToken = localStorage.getItem('jwtToken');
+            const response = await fetch(`http://localhost:8080/api/cityChallenges/${id}/tags`, {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching tags:', error);
+            return [];
+        }
+    };
+
+
+
+    fetchUserCityChallenges = async () => {
+        const storedToken = localStorage.getItem('jwtToken');
+        const mail = localStorage.getItem('mail');
+        if (storedToken) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/users/${mail}/cityChallenges`, {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                // Fetch tags for each city challenge
+                const tagsPromises = data.map(async (cityChallenge) => {
+                    const tags = await this.getCityChallengeTags(cityChallenge.id);
+                    return { ...cityChallenge, tags }; // Combine city challenge data with tags
+                });
+
+                const cityChallengesWithData = await Promise.all(tagsPromises);
+
+                this.setState({
+                    cityChallenges: cityChallengesWithData,
+                });
+            } catch (error) {
+                console.error('Error fetching city challenges:', error);
+            }
+        } else {
+            console.error('No token found. User may not be authenticated.');
+        }
+    };
+
+    getCourseTags = async (id) => {
+        try {
+            const storedToken = localStorage.getItem('jwtToken');
+            const response = await fetch(`http://localhost:8080/api/courses/${id}/tags`, {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching tags:', error);
+            return [];
+        }
+    };
+
+
+    fetchUserCourses = async () => {
+        const storedToken = localStorage.getItem('jwtToken');
+        const mail = localStorage.getItem('mail');
+
+        if (storedToken) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/users/${mail}/courses`, {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                // Fetch tags for each user course
+                const tagsPromises = data.map(async (userCourse) => {
+                    const tags = await this.getCourseTags(userCourse.id);
+                    return { ...userCourse, tags }; // Combine user course data with tags
+                });
+
+                const userCoursesWithData = await Promise.all(tagsPromises);
+                console.log('userCoursesWithData', userCoursesWithData);
+                this.setState({
+                    userCourses: userCoursesWithData,
+                });
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        }
+    };
 
     fetchMoreData = () => {
-        // Mock API call for fetching more random words
-        this.fetchRandomWords();
         this.setState(prevState => ({
             page: prevState.page + 1
         }));
     }
 
     render() {
-        const { randomWords } = this.state;
-
         return (
             <div className="Home">
                 <div className={"LeftContainer"}>
 
-                    <ImageCard></ImageCard>
+                    <ImageCard name={this.state.userInfo.name} email={this.state.userInfo.email} />
 
                     <h1> City challenge</h1>
 
                     <div className={"RightContainer"} style={{ height: '250px', overflowY: 'scroll', paddingLeft: '40px' }}>
                         <InfiniteScroll
-                            dataLength={randomWords ? randomWords.length : 0}
+                            dataLength={this.state.cityChallenges ? this.state.cityChallenges.length : 0}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
                             loader={<h4>Loading...</h4>}
-                            endMessage={<p>No more words to show.</p>}
+                            endMessage={<p>No more challanges to show.</p>}
                             style={{ padding: '0 20px' }}
                         >
-                            {randomWords && randomWords.map((word, index) => (
-                                <Card></Card>
+                            {this.state.cityChallenges && this.state.cityChallenges.map((cityChallenge, index) => (
+                                <div key={index}>
+                                    <Card
+                                        title={cityChallenge.title}
+                                        description={cityChallenge.description}
+                                        tags={cityChallenge.tags}
+                                    />
+                                </div>
                             ))}
                         </InfiniteScroll>
                     </div>
                 </div>
 
                 <div className={"RightContainer"} >
-                    <h1>Finished courses</h1>
+                    <h1>Courses in progress</h1>
                     <div style={{ height: '480px', overflowY: 'scroll' }}>
                         <InfiniteScroll
-                            dataLength={randomWords ? randomWords.length : 0}
+                            dataLength={this.state.userCourses ? this.state.userCourses.length : 0}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
                             loader={<h4>Loading...</h4>}
-                            endMessage={<p>No more words to show.</p>}
+                            endMessage={<p>No more courses to show.</p>}
                             style={{ padding: '0 20px' }}
                         >
-                            {randomWords && randomWords.map((word, index) => (
+                            {this.state.userCourses && this.state.userCourses.map((userCourse, index) => (
                                 <div key={index}>
-                                    <h1>{word}</h1>
+                                    <Card
+                                        title={userCourse.title}
+                                        description={userCourse.description}
+                                        tags={userCourse.tags}
+                                    />
                                 </div>
                             ))}
                         </InfiniteScroll>
-
                     </div>
 
                 </div>

@@ -1,7 +1,7 @@
 import profilePic from '../Images/UserPic.png'
 import '../Styles/ImageCard.css'
 
-function ImageCard(){
+function ImageCard({name = "Default Name", email = "Default Email"}){
     return(
         <div className="imageCard">
             <div className= "dividerC">
@@ -9,8 +9,8 @@ function ImageCard(){
             </div>
 
             <div className="no-whitespace">
-                <h2>Huncho Kermito</h2>
-                <p className="card-text"> wordingtonUser@gmail.com </p>
+                <h2>{name}</h2>
+                <p className="card-text"> {email} </p>
 
             </div>
 

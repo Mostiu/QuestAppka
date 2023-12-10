@@ -13,58 +13,96 @@ class CourseGenerator extends React.Component {
             generatedLines: [],
             newTechnology: {
                 name: '',
+                tags: []
             },
             availableTechnologies: [],
         };
     }
 
-
-    fetchAvailableTechnologies = () => {
-        const storedToken = localStorage.getItem('jwtToken');
-
-        if(storedToken) {
-            fetch('http://localhost:8080/api/technologies', {
+    getTechnologiesTags = async (id) => {
+        try {
+            const storedToken = localStorage.getItem('jwtToken');
+            const response = await fetch(`http://localhost:8080/api/technologies/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    this.setState({ availableTechnologies: data });
-                })
-                .catch(error => {
-                    console.error('Error fetching technologies:', error);
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching tags:', error);
+            return [];
+        }
+    };
+
+    fetchAvailableTechnologies = async () => {
+        const storedToken = localStorage.getItem('jwtToken');
+
+        if (storedToken) {
+            try {
+                const response = await fetch('http://localhost:8080/api/technologies', {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
                 });
+
+                const data = await response.json();
+
+                // Fetch tags for each technology
+                const tagsPromises = data.map(async (technology) => {
+                    const tags = await this.getTechnologiesTags(technology.id);
+                    return { ...technology, tags }; // Combine technology data with tags
+                });
+
+                const technologiesWithData = await Promise.all(tagsPromises);
+                console.log('technologiesWithData', technologiesWithData)
+
+                this.setState({
+                    availableTechnologies: technologiesWithData,
+                });
+            } catch (error) {
+                console.error('Error fetching technologies:', error);
+            }
         } else {
             console.error('No token found. User may not be authenticated.');
         }
-    }
+    };
 
     componentDidMount() {
         this.fetchAvailableTechnologies();
     }
 
     handleSelectChange = (e) => {
-        const { value } = e.target;
+        const { value, options } = e.target;
+        const selectedTechnology = options[options.selectedIndex].dataset;
+
+        // Parse data-tags into an array
+        const tagsArray = selectedTechnology.tags ? selectedTechnology.tags.split(', ') : [];
+
         this.setState((prevState) => ({
             newTechnology: {
                 ...prevState.newTechnology,
-                name: value,
+                name: selectedTechnology.name || '',
+                tags: tagsArray,
             },
         }));
     };
 
+
     handleAddTechnology = () => {
         const { newTechnology, technologies } = this.state;
 
-        if (newTechnology.name) {
+        if (newTechnology) {
             if (!technologies.some((tech) => tech.name === newTechnology.name)) {
                 this.setState(
                     (prevState) => ({
                         technologies: [...prevState.technologies, { ...prevState.newTechnology }],
                         newTechnology: {
                             name: '',
+                            tags: []
                         },
                     }),
                     () => {
@@ -163,7 +201,7 @@ class CourseGenerator extends React.Component {
                         <h2>Generated Course:</h2>
                         <ul>
                             {generatedLines.map((line, index) => (
-                                <StepTile key={index} name={line} />
+                                <StepTile key={index} name={line}  />
                             ))}
                         </ul>
                     </div>
@@ -174,7 +212,7 @@ class CourseGenerator extends React.Component {
 
                     <ul>
                         {technologies.map((technology) => (
-                            <TechnologyTile key={technology.id} name={technology.name} />
+                            <TechnologyTile key={technology.id} name={technology.name} tags={technology.tags}/>
                         ))}
                     </ul>
 
@@ -188,7 +226,12 @@ class CourseGenerator extends React.Component {
                                 Select Technology
                             </option>
                             {availableTechnologies.map((tech) => (
-                                <option key={tech.id} value={tech.name}>
+                                <option
+                                    key={tech.id}
+                                    value={tech.name}
+                                    data-name={tech.name}
+                                    data-tags={tech.tags.map(tag => tag.name).join(', ')}  // Extract tag names from the array of objects
+                                >
                                     {tech.name}
                                 </option>
                             ))}

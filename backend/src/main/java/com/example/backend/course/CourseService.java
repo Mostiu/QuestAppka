@@ -8,12 +8,14 @@ import com.example.backend.quest.QuestRepository;
 import com.example.backend.tag.Tag;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
+import com.example.backend.technology_tags.TechnologyTags;
 import com.example.backend.user.App_User;
 import com.example.backend.user_courses.UserCourses;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -136,8 +138,21 @@ public class CourseService {
     }
 
     public List<Tag> getTagsFromCourse(Long courseId) {
-        return courseRepository.getTagsFromCourse(courseId).orElseThrow(() -> new IllegalStateException(
+        List<Technology> technologies = getTechnologiesFromCourse(courseId);
+        List<Tag> tags = new ArrayList<>();
+        for (Technology technology : technologies) {
+            tags.addAll(technology.getTechnologyTags().stream().map(TechnologyTags::getTag).toList());
+        }
+        return tags;
+
+    }
+
+    public List<Technology> getTechnologiesFromCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"
         ));
+
+        return course.getCourseTechnologies().stream().map(CourseTechnologies::getTechnology).toList();
+
     }
 }
