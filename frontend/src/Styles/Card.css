@@ -69,3 +69,7 @@ h2 {
     font-size: 1.25em;
 }
 
+.card-link{
+    text-decoration: none;
+    color: inherit;
+}

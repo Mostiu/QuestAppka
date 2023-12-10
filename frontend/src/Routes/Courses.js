@@ -5,9 +5,13 @@ import * as Progress from '@radix-ui/react-progress';
 import "../Styles/ProgressDemo.css";
 import CourseCard from "../Components/CourseCard";
 import SubmitCard from "../Components/SubmitCard";
+import { useSearchParams } from 'react-router-dom';
 
 const Courses = () => {
     const [progress, setProgress] = useState(15);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const courseId = searchParams.get('course_id');
 
     useEffect(() => {
         const timer = setTimeout(() => setProgress(66), 500);

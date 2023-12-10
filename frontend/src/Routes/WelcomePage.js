@@ -1,6 +1,6 @@
 // WelcomePage.js
 import React from 'react';
-import LoginForm from '../Components/LoginForm';
+import LoginForm from '../Components/AuthenticationForm';
 import "../Styles/WelcomePage.css";
 
 class WelcomePage extends React.Component {

@@ -205,6 +205,7 @@ class HomePage extends React.Component {
                                         title={userCourse.title}
                                         description={userCourse.description}
                                         tags={userCourse.tags}
+                                        //Input courseId to constructor
                                     />
                                 </div>
                             ))}

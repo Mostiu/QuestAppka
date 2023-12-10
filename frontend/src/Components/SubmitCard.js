@@ -8,8 +8,7 @@ function Card(){
 
                 <h2 className="card-title"> Submission </h2>
              <input
-                type="file"
-                accept=".png, .jpg, .jpeg"
+                type="url"
                 className="card-text"
              />
                 <button className="cardButton"> Send</button>
