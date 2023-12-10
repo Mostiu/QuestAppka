@@ -4,8 +4,8 @@
     overflow: hidden;
     background: var(--black-a9);
     border-radius: 99999px;
-    width: 300px;
-    height: 25px;
+    width: 25em;
+    height: 1.5em;
 
     transform: translateZ(0);
 }
@@ -20,4 +20,5 @@
 .centered-progress{
     display: flex;
     justify-content: center;
+
 }

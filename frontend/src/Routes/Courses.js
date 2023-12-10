@@ -3,6 +3,8 @@ import Card from "../Components/Card";
 import '../Styles/Courses.css';
 import * as Progress from '@radix-ui/react-progress';
 import "../Styles/ProgressDemo.css";
+import CourseCard from "../Components/CourseCard";
+import SubmitCard from "../Components/SubmitCard";
 
 const Courses = () => {
     const [progress, setProgress] = useState(15);
@@ -15,11 +17,11 @@ const Courses = () => {
     const renderContent = () => (
         <div className="Course">
             <div className={"LeftContainer"}>
-                <Card></Card>
+                <CourseCard></CourseCard>
             </div>
             <div className={"RightContainer"}>
-                <Card></Card>
-                <button> AAA</button>
+                <SubmitCard></SubmitCard>
+
             </div>
         </div>
     );
@@ -35,18 +37,20 @@ const Courses = () => {
     return (
         <div>
             {renderContent()}
-            <div className="centered-progress">
-                <Progress.Root className="ProgressRoot" value={progress}>
-                    <Progress.Indicator
-                        className="ProgressIndicator"
-                        style={{ transform: `translateX(-${100 - progress}%)` }}
-                    />
-                </Progress.Root>
-            </div>
-            <div className="Course">
-                <button onClick={decreaseProgress}> AAA</button>
-                <button onClick={increaseProgress}> BBB</button>
-            </div>
+
+            <h1 style={{ marginTop: '2em' }}>Progress</h1>
+                <div className="centered-progress">
+
+                    <Progress.Root className="ProgressRoot" value={progress}>
+                        <Progress.Indicator
+                            className="ProgressIndicator"
+                            style={{ transform: `translateX(-${100 - progress}%)` }}
+                        />
+                    </Progress.Root>
+
+                </div>
+
+
         </div>
     );
 };
