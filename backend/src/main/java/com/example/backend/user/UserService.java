@@ -168,4 +168,10 @@ public class UserService implements UserDetailsService {
         App_User user = loadUserByUsername(userMail);
         return user.getUserCourses().stream().map(UserCourses::getCourse).toList();
     }
+
+    public List<CityChallenge> getUserCityChallenges(String userMail) {
+        App_User user = loadUserByUsername(userMail);
+        return user.getUserCityChallenges().stream().map(UserCityChallenges::getCityChallenge).toList();
+    }
+
 }

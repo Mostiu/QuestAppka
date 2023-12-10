@@ -1,6 +1,7 @@
 package com.example.backend.cityChallenge;
 
 
+import com.example.backend.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,8 @@ public class CityChallengeController{
     	cityChallengeService.addTechnologyToCityChallenge(cityChallengeId, technologyId);
     }
 
-
+    @GetMapping(path="{cityChallengeId}/tags")
+    public List<Tag> getTagsFromCityChallenge(@PathVariable Long cityChallengeId) {
+    	return cityChallengeService.getTagsFromCityChallenge(cityChallengeId);
+    }
 }
