@@ -174,4 +174,8 @@ public class UserService implements UserDetailsService {
         return user.getUserCityChallenges().stream().map(UserCityChallenges::getCityChallenge).toList();
     }
 
+    public List<Quest> getUserQuestsFromCourse(String userMail, Long courseId) {
+        App_User user = loadUserByUsername(userMail);
+        return user.getUserQuests().stream().filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId)).map(UserQuests::getQuest).toList();
+    }
 }

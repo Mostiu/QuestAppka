@@ -3,6 +3,7 @@ package com.example.backend.user;
 
 import com.example.backend.cityChallenge.CityChallenge;
 import com.example.backend.course.Course;
+import com.example.backend.quest.Quest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,5 +71,10 @@ public class UserController {
     @GetMapping(path="{userMail}/cityChallenges")
     public List<CityChallenge> getUserCityChallenges(@PathVariable String userMail) {
     	return userService.getUserCityChallenges(userMail);
+    }
+
+    @GetMapping(path="{userMail}/course/{courseId}/quests")
+    public List<Quest> getUserQuestsFromCourse(@PathVariable String userMail, @PathVariable Long courseId) {
+    	return userService.getUserQuestsFromCourse(userMail, courseId);
     }
 }

@@ -155,4 +155,12 @@ public class CourseService {
         return course.getCourseTechnologies().stream().map(CourseTechnologies::getTechnology).toList();
 
     }
+
+    public List<Quest> getQuestsFromCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+                "course with id " + courseId + " does not exists"
+        ));
+
+        return course.getQuestsFromCourse().stream().toList();
+    }
 }
