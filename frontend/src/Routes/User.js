@@ -178,6 +178,8 @@ class HomePage extends React.Component {
                                         title={cityChallenge.title}
                                         description={cityChallenge.description}
                                         tags={cityChallenge.tags}
+                                        contentId={cityChallenge.id}
+                                        isCourse={false}
                                     />
                                 </div>
                             ))}
@@ -202,7 +204,8 @@ class HomePage extends React.Component {
                                         title={userCourse.title}
                                         description={userCourse.description}
                                         tags={userCourse.tags}
-                                        courseId={userCourse.id}
+                                        contentId={userCourse.id}
+                                        isCourse={true}
                                     />
                                 </div>
                             ))}

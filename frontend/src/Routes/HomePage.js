@@ -4,6 +4,7 @@ import {Carousel} from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from "../Components/Card";
+import {Link} from "react-router-dom";
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -180,11 +181,13 @@ class HomePage extends React.Component {
                                   showIndicators={false}
                                   showStatus={false}>
                             {this.state.cityChallenges && this.state.cityChallenges.map((cityChallenge, index) => (
+                                <Link to={`/cityChallenge?content_id=${cityChallenge.id}`} className="card-link">
                                 <div key={index}>
                                     <h2>{cityChallenge.title}</h2>
                                     <p>{cityChallenge.description}</p>
                                     <p>{cityChallenge.tags.map(tag => `#${tag.name} `)}</p>
                                 </div>
+                                </Link>
                             ))}
                         </Carousel>
                     </div>
@@ -205,7 +208,8 @@ class HomePage extends React.Component {
                                         title={userCourse.title}
                                         description={userCourse.description}
                                         tags={userCourse.tags}
-                                        courseId={userCourse.id}
+                                        contentId={userCourse.id}
+                                        isCourse={true}
                                     />
                                 </div>
                             ))}
@@ -229,7 +233,8 @@ class HomePage extends React.Component {
                                     title={course.title}
                                     description={course.description}
                                     tags={course.tags}
-                                    courseId={course.id}
+                                    contentId={course.id}
+                                    isCourse={true}
                                 />
                             </div>
                         ))}

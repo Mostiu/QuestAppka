@@ -8,10 +8,10 @@ import SubmitCard from "../Components/SubmitCard";
 import { useSearchParams } from 'react-router-dom';
 
 const Courses = () => {
-    const [progress, setProgress] = useState(15);
+    const [progress, setProgress] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const courseId = searchParams.get('course_id');
+    const courseId = searchParams.get('content_id');
 
     useEffect(() => {
         const timer = setTimeout(() => setProgress(66), 500);
@@ -63,8 +63,8 @@ const Courses = () => {
 
 
             <div className="Course">
-                <button onClick={decreaseProgress}> AAA</button>
-                <button onClick={increaseProgress}> BBB</button>
+                <button onClick={decreaseProgress}> Previous </button>
+                <button onClick={increaseProgress}> Next </button>
             </div>
 
 
