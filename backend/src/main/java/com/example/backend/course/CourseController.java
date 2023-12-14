@@ -1,6 +1,7 @@
 package com.example.backend.course;
 
 
+import com.example.backend.quest.Quest;
 import com.example.backend.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +64,10 @@ public class CourseController {
     @GetMapping(path="{courseId}/tags")
     public List<Tag> getTagsFromCourse(@PathVariable Long courseId) {
     	return courseService.getTagsFromCourse(courseId);
+    }
+
+    @GetMapping(path="{courseId}/quests")
+    public List<Quest> getQuestsFromCourse(Long courseId) {
+        return courseService.getQuestsFromCourse(courseId);
     }
 }

@@ -94,6 +94,10 @@ public class Course {
         return userCourses;
     }
 
+    public Set<Quest> getQuestsFromCourse() {
+        return quests;
+    }
+
     public void setUserCourses(Set<UserCourses> userCourses) {
         this.userCourses = userCourses;
     }
