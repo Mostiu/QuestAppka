@@ -1,30 +1,25 @@
 import profilePic from '../Images/UserIcon.png'
 import '../Styles/CourseCard.css'
+import PropTypes from "prop-types";
 
-function Card(){
-    return(
-
+function CourseCard({ title, text }) {
+    return (
         <div className="courseCard">
-
-                <h2 className="card-title"> Maybe the man with the lighting has a point</h2>
-
-            <p className="card-text"> Yeah they do that, my fans... oh my fans.... oh....... [...] my fans... Yeah they do that, my fans... oh my fans.... oh....... [...] my fans...Yeah they do that, my fans... oh my fans Yeah they do that, my fans... oh my fans </p>
-
-                <p className="tag">#we #ball #python #b #c #d #we #ball #python #b #c #d </p>
-
-
-
-
-
-
-
+            <h2 className="card-title">{title}</h2>
+            <p className="card-text">{text}</p>
 
         </div>
-
-
     );
 }
-export default Card
+
+CourseCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+
+};
+
+
+export default CourseCard
 
 
 

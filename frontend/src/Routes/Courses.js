@@ -21,10 +21,17 @@ const Courses = () => {
     const renderContent = () => (
         <div className="Course">
             <div className={"LeftContainer"}>
-                <CourseCard></CourseCard>
+                <CourseCard
+                    title="Maybe the man with the lighting has a point"
+                    text="Yeah they do that, my fans... oh my fans.... oh....... [...] my fans... Yeah they do that, my fans... oh my fans.... oh....... [...] my fans...Yeah they do that, my fans... oh my fans Yeah they do that, my fans... oh my fans"
+
+                />
             </div>
             <div className={"RightContainer"}>
-                <SubmitCard></SubmitCard>
+                <SubmitCard
+                    title="Submission"
+                    inputPlaceholder="Enter URL"
+                />
 
             </div>
         </div>
