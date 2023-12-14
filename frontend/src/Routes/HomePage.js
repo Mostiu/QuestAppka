@@ -205,7 +205,7 @@ class HomePage extends React.Component {
                                         title={userCourse.title}
                                         description={userCourse.description}
                                         tags={userCourse.tags}
-                                        //Input courseId to constructor
+                                        courseId={userCourse.id}
                                     />
                                 </div>
                             ))}
@@ -229,6 +229,7 @@ class HomePage extends React.Component {
                                     title={course.title}
                                     description={course.description}
                                     tags={course.tags}
+                                    courseId={course.id}
                                 />
                             </div>
                         ))}

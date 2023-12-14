@@ -55,6 +55,12 @@ const Courses = () => {
                 </div>
 
 
+            <div className="Course">
+                <button onClick={decreaseProgress}> AAA</button>
+                <button onClick={increaseProgress}> BBB</button>
+            </div>
+
+
         </div>
     );
 };
