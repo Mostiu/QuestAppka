@@ -30,6 +30,7 @@ const AuthenticationForm = () => {
 
 
                 console.log('User authenticated successfully:', response.data);
+                console.log('jwtToken:', jwtToken);
             })
             .catch(error => {
                 console.error('Authentication error:', error);
