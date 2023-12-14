@@ -10,11 +10,13 @@ import SubmitCard from '../Components/SubmitCard';
 import { useSearchParams } from 'react-router-dom';
 
 const Courses = () => {
+
     const [progress, setProgress] = useState(15);
     const [courseData, setCourseData] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
-    const courseId = searchParams.get('course_id');
+    const courseId = searchParams.get('content_id');
+
 
     useEffect(() => {
         console.log('Fetching course data...', courseId,questNumber);
@@ -59,12 +61,21 @@ const Courses = () => {
 
     const renderContent = () => (
         <div className="Course">
-            <div className={'LeftContainer'}>
-                {/* Pass the fetched course data to CourseCard */}
-                {courseData && <CourseCard title={courseData[questNumber].name} text={courseData[questNumber].description} />}
+
+            <div className={"LeftContainer"}>
+                <CourseCard
+                    title={courseData[questNumber].name}
+                    text={courseData[questNumber].description}
+
+                />
             </div>
-            <div className={'RightContainer'}>
-                <SubmitCard />
+            <div className={"RightContainer"}>
+                <SubmitCard
+                    title="Submission"
+                    inputPlaceholder="Enter URL"
+                />
+
+
             </div>
         </div>
     );
@@ -96,8 +107,10 @@ const Courses = () => {
             </div>
 
             <div className="Course">
-                <button onClick={decreaseProgress}>AAA</button>
-                <button onClick={increaseProgress}>BBB</button>
+
+                <button onClick={decreaseProgress}> Previous </button>
+                <button onClick={increaseProgress}> Next </button>
+
             </div>
         </div>
     );

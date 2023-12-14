@@ -1,25 +1,25 @@
-import profilePic from '../Images/UserIcon.png'
-import '../Styles/SubmitCard.css'
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import '../Styles/SubmitCard.css';
+import profilePic from '../Images/UserIcon.png';
 
-function Card(){
-    return(
+function SubmitCard({ title, inputPlaceholder }) {
+    return (
         <div className="submitCard">
-
-                <h2 className="card-title"> Submission </h2>
-             <input
+            <h2 className="card-title">{title}</h2>
+            <input
                 type="url"
                 className="card-text"
-             />
-                <button className="cardButton"> Send</button>
-
-
+                placeholder={inputPlaceholder}
+            />
+            <button className="cardButton">Send</button>
         </div>
-
-
     );
 }
-export default Card
 
+SubmitCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    inputPlaceholder: PropTypes.string.isRequired,
+};
 
-
+export default SubmitCard;
