@@ -178,4 +178,10 @@ public class UserService implements UserDetailsService {
         App_User user = loadUserByUsername(userMail);
         return user.getUserQuests().stream().filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId)).map(UserQuests::getQuest).toList();
     }
+
+
+    public List<String> getUserQuestsCommentsFromCourse(String userMail, Long courseId) {
+        App_User user = loadUserByUsername(userMail);
+        return user.getUserQuests().stream().filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId)).map(UserQuests::getComment).toList();
+    }
 }

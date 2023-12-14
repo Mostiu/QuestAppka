@@ -52,7 +52,7 @@ const Courses = () => {
             }
         };
 
-        fetchData();
+        fetchData().then(r => console.log('Done fetching course data'));
         // Simulating progress update after a delay
         const timer = setTimeout(() => setProgress(66), 500);
 
