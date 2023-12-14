@@ -16,6 +16,16 @@ const Courses = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
     const courseId = searchParams.get('content_id');
+    const [progressText, setProgressText] = useState('Loading...');
+
+    useEffect(() => {
+        // Update progress text based on the progress value
+        if (progress === 100) {
+            setProgressText('Completed!');
+        } else {
+            setProgressText(`Progress: ${progress}%`);
+        }
+    }, [progress]);
 
 
     useEffect(() => {
@@ -100,7 +110,7 @@ const Courses = () => {
         <div>
             {renderContent()}
 
-            <h1 style={{ marginTop: '2em' }}>Progress</h1>
+            <h1 style={{ marginTop: '2em' }}>{progressText}</h1>
             <div className="centered-progress">
                 <Progress.Root className="ProgressRoot" value={progress}>
                     <Progress.Indicator
@@ -111,10 +121,8 @@ const Courses = () => {
             </div>
 
             <div className="Course">
-
                 <button onClick={decreaseProgress}> Previous </button>
                 <button onClick={increaseProgress}> Next </button>
-
             </div>
         </div>
     );
