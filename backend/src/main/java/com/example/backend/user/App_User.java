@@ -17,10 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 
-enum Role {
-    USER,
-    ADMIN
-}
+
 
 
 

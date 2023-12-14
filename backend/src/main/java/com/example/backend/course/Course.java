@@ -10,11 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-enum Difficulty {
-    EASY,
-    MEDIUM,
-    HARD
-}
+
 
 @Entity
 @Table
