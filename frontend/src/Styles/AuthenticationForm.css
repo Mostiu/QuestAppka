@@ -13,3 +13,11 @@
     margin: 1em auto;
     width: 60%;
 }
+
+.signInText{
+    margin: 0.5em auto;
+}
+
+.signText{
+    text-decoration: underline;
+}

@@ -9,9 +9,8 @@ class CityChallenge extends React.Component {
                 <p className={"challengeDescription"}>Challenge description is a long one, but it is, whether one is long is however long the long one is, how long, long enough to long for longing whenever we long for longest of long longing, but so long, long of longs
                 </p>
                 <input
-                    type="file"
-                    accept=".png, .jpg, .jpeg"
-                    className="fileInput"
+                    type="url"
+                className="fileInput"
                 />
                 <button className={"submitChallenge"}>Submit</button>
             </div>
