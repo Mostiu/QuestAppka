@@ -42,4 +42,6 @@ public class QuestController {
         questService.updateQuest(questId, name, description, is_completed, comment);
         System.out.println("Quest updated");
     }
+
+
 }
