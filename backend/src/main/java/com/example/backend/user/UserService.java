@@ -182,6 +182,21 @@ public class UserService implements UserDetailsService {
 
     public List<String> getUserQuestsCommentsFromCourse(String userMail, Long courseId) {
         App_User user = loadUserByUsername(userMail);
-        return user.getUserQuests().stream().filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId)).map(UserQuests::getComment).toList();
+        return user.getUserQuests()
+                .stream()
+                .filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId))
+                .map(UserQuests::getComment)
+                .toList();
+    }
+
+
+    public String getUserCityChallengeComment(String userMail, Long cityChallengeId) {
+        App_User user = loadUserByUsername(userMail);
+        return user.getUserCityChallenges()
+                .stream()
+                .filter(userCityChallenges -> userCityChallenges.getCityChallenge().getId().equals(cityChallengeId))
+                .map(UserCityChallenges::getComment)
+                .toList()
+                .get(0);
     }
 }

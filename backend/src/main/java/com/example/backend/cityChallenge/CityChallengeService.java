@@ -147,4 +147,10 @@ public class CityChallengeService {
         }
         return tags;
     }
+
+    public CityChallenge getCityChallenge(Long cityChallengeId) {
+        return app_cityChallengeRepository.findById(cityChallengeId).orElseThrow(() -> new IllegalStateException(
+                "cityChallenge with id " + cityChallengeId + " does not exists"
+        ));
+    }
 }

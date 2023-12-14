@@ -26,6 +26,8 @@ public class UserCityChallenges {
 
     private boolean completed;
 
+    private String comment="";
+
 
     public UserCityChallenges() {
     }
@@ -68,6 +70,14 @@ public class UserCityChallenges {
         this.completed = completed;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment=comment;
+    }
+
     @Override
     public String toString() {
         return "UserCityChallenges{" +
@@ -75,6 +85,9 @@ public class UserCityChallenges {
                 ", user=" + user +
                 ", cityChallenge=" + cityChallenge +
                 ", completed=" + completed +
+                ", comment='" + comment + '\'' +
                 '}';
     }
+
+
 }

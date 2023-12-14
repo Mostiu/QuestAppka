@@ -59,26 +59,30 @@ const Courses = () => {
         }
     }, [questNumber, courseData]);
 
-    const renderContent = () => (
-        <div className="Course">
+    const renderContent = () => {
+        if (courseData && courseData.length > 0) {
+            return (
+                <div className="Course">
+                    <div className={"LeftContainer"}>
+                        <CourseCard
+                            title={courseData[questNumber].name}
+                            text={courseData[questNumber].description}
+                        />
+                    </div>
+                    <div className={"RightContainer"}>
+                        <SubmitCard
+                            title="Submission"
+                            inputPlaceholder="Enter URL"
+                        />
+                    </div>
+                </div>
 
-            <div className={"LeftContainer"}>
-                <CourseCard
-                    title={courseData[questNumber].name}
-                    text={courseData[questNumber].description}
-
-                />
-            </div>
-            <div className={"RightContainer"}>
-                <SubmitCard
-                    title="Submission"
-                    inputPlaceholder="Enter URL"
-                />
-
-
-            </div>
-        </div>
-    );
+            );
+        } else {
+            // Render a loading state or other fallback content
+            return <p>Loading...</p>;
+        }
+    };
 
     const decreaseProgress = () => {
         setProgress(prevProgress => Math.max(prevProgress - 10, 0));

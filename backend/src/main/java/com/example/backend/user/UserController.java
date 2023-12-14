@@ -82,4 +82,9 @@ public class UserController {
     public List<String> getUserQuestsCommentsFromCourse(@PathVariable String userMail, @PathVariable Long courseId) {
     	return userService.getUserQuestsCommentsFromCourse(userMail, courseId);
     }
+
+    @GetMapping(path="{userMail}/cityChallenge/{cityChallengeId}/comment")
+    public String getUserCityChallengeComment(@PathVariable String userMail, @PathVariable Long cityChallengeId) {
+    	return userService.getUserCityChallengeComment(userMail, cityChallengeId);
+    }
 }
