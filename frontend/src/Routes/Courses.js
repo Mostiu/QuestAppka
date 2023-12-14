@@ -16,6 +16,16 @@ const Courses = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
     const courseId = searchParams.get('content_id');
+    const [progressText, setProgressText] = useState('Loading...');
+
+    useEffect(() => {
+        // Update progress text based on the progress value
+        if (progress === 100) {
+            setProgressText('Completed!');
+        } else {
+            setProgressText(`Progress: ${progress}%`);
+        }
+    }, [progress]);
 
 
     useEffect(() => {
@@ -59,26 +69,30 @@ const Courses = () => {
         }
     }, [questNumber, courseData]);
 
-    const renderContent = () => (
-        <div className="Course">
+    const renderContent = () => {
+        if (courseData && courseData.length > 0) {
+            return (
+                <div className="Course">
+                    <div className={"LeftContainer"}>
+                        <CourseCard
+                            title={courseData[questNumber].name}
+                            text={courseData[questNumber].description}
+                        />
+                    </div>
+                    <div className={"RightContainer"}>
+                        <SubmitCard
+                            title="Submission"
+                            inputPlaceholder="Enter URL"
+                        />
+                    </div>
+                </div>
 
-            <div className={"LeftContainer"}>
-                <CourseCard
-                    title={courseData[questNumber].name}
-                    text={courseData[questNumber].description}
-
-                />
-            </div>
-            <div className={"RightContainer"}>
-                <SubmitCard
-                    title="Submission"
-                    inputPlaceholder="Enter URL"
-                />
-
-
-            </div>
-        </div>
-    );
+            );
+        } else {
+            // Render a loading state or other fallback content
+            return <p>Loading...</p>;
+        }
+    };
 
     const decreaseProgress = () => {
         setProgress(prevProgress => Math.max(prevProgress - 10, 0));
@@ -96,7 +110,7 @@ const Courses = () => {
         <div>
             {renderContent()}
 
-            <h1 style={{ marginTop: '2em' }}>Progress</h1>
+            <h1 style={{ marginTop: '2em' }}>{progressText}</h1>
             <div className="centered-progress">
                 <Progress.Root className="ProgressRoot" value={progress}>
                     <Progress.Indicator
@@ -107,10 +121,8 @@ const Courses = () => {
             </div>
 
             <div className="Course">
-
                 <button onClick={decreaseProgress}> Previous </button>
                 <button onClick={increaseProgress}> Next </button>
-
             </div>
         </div>
     );
