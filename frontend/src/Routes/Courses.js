@@ -13,6 +13,7 @@ const Courses = () => {
 
     const [progress, setProgress] = useState(15);
     const [courseData, setCourseData] = useState(null);
+    const [commentData, setCommentData] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
     const courseId = searchParams.get('content_id');
@@ -49,7 +50,25 @@ const Courses = () => {
                         console.error('Error fetching course:', error);
                     }
                 }
+
+
+                if (storedToken) {
+                    try {
+                        const response = await axios.get(`http://localhost:8080/api/users/${mail}/course/${courseId}/quests`, {
+                            headers: {
+                                'Authorization': `Bearer ${storedToken}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        console.log(response.data);
+                        setCommentData(response.data);
+                    } catch (error) {
+                        console.error('Error fetching comments:', error);
+                    }
+                }
             }
+
+
         };
 
         fetchData().then(r => console.log('Done fetching course data'));
@@ -70,7 +89,7 @@ const Courses = () => {
     }, [questNumber, courseData]);
 
     const renderContent = () => {
-        if (courseData && courseData.length > 0) {
+        if (courseData && courseData.length > 0 && commentData && commentData.length > 0) {
             return (
                 <div className="Course">
                     <div className={"LeftContainer"}>
@@ -82,7 +101,9 @@ const Courses = () => {
                     <div className={"RightContainer"}>
                         <SubmitCard
                             title="Submission"
-                            inputPlaceholder="Enter URL"
+                            questId={courseData[questNumber].id}
+                            courseId={courseId}
+                            inputPlaceholder={commentData.comment || 'Enter your answer here'}
                         />
                     </div>
                 </div>

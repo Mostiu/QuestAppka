@@ -78,13 +78,29 @@ public class UserController {
     	return userService.getUserQuestsFromCourse(userMail, courseId);
     }
 
-    @GetMapping(path="{userMail}/course/{courseId}/quests/comments")
-    public List<String> getUserQuestsCommentsFromCourse(@PathVariable String userMail, @PathVariable Long courseId) {
-    	return userService.getUserQuestsCommentsFromCourse(userMail, courseId);
+    @GetMapping(path="{userMail}/course/{courseId}/quests/{questId}/comments")
+    public String getUserQuestsCommentsFromCourse(@PathVariable String userMail, @PathVariable Long courseId, @PathVariable Long questId) {
+    	return userService.getUserQuestsCommentsFromCourse(userMail, courseId, questId);
     }
 
     @GetMapping(path="{userMail}/cityChallenge/{cityChallengeId}/comment")
     public String getUserCityChallengeComment(@PathVariable String userMail, @PathVariable Long cityChallengeId) {
     	return userService.getUserCityChallengeComment(userMail, cityChallengeId);
+    }
+
+    @PostMapping(path="{userMail}/cityChallenge/{cityChallengeId}/comment")
+    public void setUserCityChallengeComment(@PathVariable String userMail, @PathVariable Long cityChallengeId, @RequestBody String comment) {
+        if (comment == null || comment.length() == 0) {
+            comment = "";
+        }
+    	userService.setUserCityChallengeComment(userMail, cityChallengeId, comment);
+    }
+
+    @PostMapping(path="{userMail}/course/{courseId}/quest/{questId}/comment")
+    public void setUserQuestComment(@PathVariable String userMail, @PathVariable Long courseId, @PathVariable Long questId, @RequestBody String comment) {
+        if (comment == null || comment.length() == 0) {
+            comment = "";
+        }
+    	userService.setUserQuestComment(userMail, courseId, questId, comment);
     }
 }

@@ -8,6 +8,7 @@ const CityChallenge = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isLoading, setIsLoading] = useState(true);
     const [commentData, setCommentData] = useState('');
+    const [newComment, setNewComment] = useState('');
 
     const cityChallengeId = searchParams.get('content_id');
 
@@ -37,7 +38,7 @@ const CityChallenge = () => {
                     }
                 }
 
-                if(storedToken){
+                if (storedToken) {
                     try {
                         const response = await axios.get(`http://localhost:8080/api/users/${mail}/cityChallenge/${cityChallengeId}/comment`, {
                             headers: {
@@ -45,7 +46,7 @@ const CityChallenge = () => {
                                 "Content-Type": "application/json",
                             }
                         });
-
+                        console.log(response.data);
                         setCommentData(response.data);
                     } catch (error) {
                         console.error('Error fetching comments:', error);
@@ -56,18 +57,51 @@ const CityChallenge = () => {
 
         fetchData().then(() => console.log('Done fetching city challenge data'));
     }, [cityChallengeId]);
+
+    const handleSubmit = async () => {
+        const storedToken = localStorage.getItem('jwtToken');
+        const mail = localStorage.getItem('mail');
+
+        if (storedToken) {
+            try {
+                // Make a POST request to submit a new comment
+                await axios.post(
+                    `http://localhost:8080/api/users/${mail}/cityChallenge/${cityChallengeId}/comment`,
+                    { comment: newComment },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${storedToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+            }
+        }
+    };
+
     const renderContent = () => {
         if (isLoading) {
             return <p>Loading...</p>;
         }
 
-        if (cityChallengeData) {
+        if (cityChallengeData ) {
             return (
                 <div className={'Challenge'}>
                     <h1 className={'challengeTitle'}>{cityChallengeData.title}</h1>
                     <p className={'challengeDescription'}>{cityChallengeData.description}</p>
-                    <input type="url" className="fileInput" />
-                    <button className={'submitChallenge'}>Submit</button>
+                    <input
+                        type="text"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        className="commentInput"
+                        placeholder={commentData.comment ? commentData.comment : "Add comment"}
+                    />
+                    <button className={'submitChallenge'} onClick={handleSubmit}>
+                        Submit
+                    </button>
                 </div>
             );
         }

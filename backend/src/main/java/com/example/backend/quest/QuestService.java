@@ -78,9 +78,6 @@ public class QuestService {
             quest.setIs_completed(is_completed);
         }
 
-        if(comment != null && comment.length() > 0 && !quest.getComment().equals(comment)){
-            quest.setComment(comment);
-        }
     }
 
 }

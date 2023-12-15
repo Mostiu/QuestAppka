@@ -14,9 +14,9 @@ public class TechnologyConfig
     @Bean
     CommandLineRunner commandLineRunnerTechnology(TechnologyRepository repository){
         return args -> {
-            Technology technology1 = new Technology("T1");
-            Technology technology2 = new Technology("T2");
-            repository.saveAll(List.of(technology1, technology2));
+//            Technology technology1 = new Technology("T1");
+//            Technology technology2 = new Technology("T2");
+//            repository.saveAll(List.of(technology1, technology2));
         };
     }
 }

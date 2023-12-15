@@ -5,14 +5,12 @@ import com.example.backend.city_challenge_technologies.CityChallengeTechnologies
 import com.example.backend.tag.Tag;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
-import com.example.backend.technology_tags.TechnologyTags;
 import com.example.backend.user.App_User;
 import com.example.backend.user_city_challenges.UserCityChallenges;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -140,12 +138,7 @@ public class CityChallengeService {
 
 
     public List<Tag> getTagsFromCityChallenge(Long cityChallengeId) {
-        List<Technology> technologies = getTechnologiesFromCityChallenge(cityChallengeId);
-        List<Tag> tags = new ArrayList<>();
-        for (Technology technology : technologies) {
-            tags.addAll(technology.getTechnologyTags().stream().map(TechnologyTags::getTag).toList());
-        }
-        return tags;
+        return app_cityChallengeRepository.getTagsByCityChallengeId(cityChallengeId);
     }
 
     public CityChallenge getCityChallenge(Long cityChallengeId) {

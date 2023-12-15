@@ -13,9 +13,9 @@ public class TagConfig {
     @Bean
     CommandLineRunner commandLineRunnerTag(TagRepository repository){
         return args -> {
-            Tag tag1 = new Tag("T1");
-            Tag tag2 = new Tag("T2");
-            repository.saveAll(List.of(tag1, tag2));
+//            Tag tag1 = new Tag("T1");
+//            Tag tag2 = new Tag("T2");
+//            repository.saveAll(List.of(tag1, tag2));
         };
     }
 }

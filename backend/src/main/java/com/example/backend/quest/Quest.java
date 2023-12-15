@@ -27,7 +27,7 @@ public class Quest {
     private String name;
     private String description;
     private boolean is_completed;
-    private String comment;
+
 
 
     @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -43,11 +43,11 @@ public class Quest {
     public Quest() {
     }
 
-    public Quest(String name, String description, boolean is_completed, String comment) {
+    public Quest(String name, String description, boolean is_completed) {
         this.name = name;
         this.description = description;
         this.is_completed = is_completed;
-        this.comment = comment;
+
     }
 
     public Long getId() {
@@ -82,14 +82,6 @@ public class Quest {
         this.is_completed = is_completed;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public Course getCourse() {
         return course;
     }
@@ -105,7 +97,6 @@ public class Quest {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", is_completed=" + is_completed +
-                ", comment='" + comment + '\'' +
                 ", userQuests=" + userQuests +
                 ", course=" + course +
                 '}';
