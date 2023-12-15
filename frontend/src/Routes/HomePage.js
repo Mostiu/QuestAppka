@@ -165,84 +165,98 @@ class HomePage extends React.Component {
 
 
     fetchMoreData = () => {
-       // this.fetchCourses();
+      //  this.fetchCourses();
         this.setState(prevState => ({
             page: prevState.page + 1
         }));
     }
 
     render() {
-
         return (
             <div className="Home">
-                <div className={"LeftContainer"}>
-                    <div className={"CityChallenge"}>
-                        <Carousel infiniteLoop={true}
-                                  showIndicators={false}
-                                  showStatus={false}>
-                            {this.state.cityChallenges && this.state.cityChallenges.map((cityChallenge, index) => (
-                                <Link to={`/cityChallenge?content_id=${cityChallenge.id}`} className="card-link">
-                                <div key={index}>
-                                    <h2>{cityChallenge.title}</h2>
-                                    <p>{cityChallenge.description}</p>
-                                    <p>{cityChallenge.tags.map(tag => `#${tag.name} `)}</p>
-                                </div>
-                                </Link>
-                            ))}
-                        </Carousel>
+                <div className="MainContainer">
+                    {/* Left Container */}
+                    <div className="LeftContainer">
+                        <div className="CityChallenge">
+                            <Carousel
+                                infiniteLoop={true}
+                                showIndicators={false}
+                                showStatus={false}
+                            >
+                                {this.state.cityChallenges &&
+                                    this.state.cityChallenges.map((cityChallenge, index) => (
+                                        <Link
+                                            to={`/cityChallenge?content_id=${cityChallenge.id}`}
+                                            className="card-link"
+                                            key={index}
+                                        >
+                                            <div>
+                                                <h2>{cityChallenge.title}</h2>
+                                                <p>{cityChallenge.description}</p>
+                                                <p>{cityChallenge.tags.map((tag) => `#${tag.name} `)}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                            </Carousel>
+                        </div>
+
+                        <div className="InfiniteScrollContainer">
+                            <InfiniteScroll
+                                dataLength={
+                                    this.state.userCourses ? this.state.userCourses.length : 0
+                                }
+                                next={this.fetchMoreData}
+                                hasMore={this.state.hasMore}
+                                loader={<h4>Loading...</h4>}
+                                endMessage={<p>No more courses to show.</p>}
+                            >
+                                {this.state.userCourses &&
+                                    this.state.userCourses.map((userCourse, index) => (
+                                        <div key={index}>
+                                            <Card
+                                                title={userCourse.title}
+                                                description={userCourse.description}
+                                                tags={userCourse.tags}
+                                                contentId={userCourse.id}
+                                                isCourse={true}
+                                            />
+                                        </div>
+                                    ))}
+                            </InfiniteScroll>
+                        </div>
                     </div>
 
-
-                    <div className={"RightContainer"} style={{ height: '250px', overflowY: 'scroll', paddingLeft: '40px' }}>
+                    {/* Right Container */}
+                    <div className="RightContainer">
+                        <div className="RecommendedCourses">
+                            <h2>Recommended courses</h2>
+                        </div>
                         <InfiniteScroll
-                            dataLength={this.state.userCourses ? this.state.userCourses.length : 0}
+                            dataLength={this.state.courses ? this.state.courses.length : 0}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
                             loader={<h4>Loading...</h4>}
                             endMessage={<p>No more courses to show.</p>}
-                            style={{ padding: '0 20px' }}
                         >
-                            {this.state.userCourses && this.state.userCourses.map((userCourse, index) => (
-                                <div key={index}>
-                                    <Card
-                                        title={userCourse.title}
-                                        description={userCourse.description}
-                                        tags={userCourse.tags}
-                                        contentId={userCourse.id}
-                                        isCourse={true}
-                                    />
-                                </div>
-                            ))}
+                            {this.state.courses &&
+                                this.state.courses.map((course, index) => (
+                                    <div key={index}>
+                                        <Card
+                                            title={course.title}
+                                            description={course.description}
+                                            tags={course.tags}
+                                            contentId={course.id}
+                                            isCourse={true}
+                                        />
+                                    </div>
+                                ))}
                         </InfiniteScroll>
                     </div>
-                </div>
-
-                <div className={"RightContainer"} style={{ height: '480px', overflowY: 'scroll' }}>
-                    <InfiniteScroll
-                        dataLength={this.state.courses ? this.state.courses.length : 0}
-                        next={this.fetchMoreData}
-                        hasMore={this.state.hasMore}
-                        loader={<h4>Loading...</h4>}
-                        endMessage={<p>No more courses to show.</p>}
-                        style={{ padding: '0 20px' }}
-                    >
-                        {this.state.courses && this.state.courses.map((course, index) => (
-
-                            <div key={index}>
-                                <Card
-                                    title={course.title}
-                                    description={course.description}
-                                    tags={course.tags}
-                                    contentId={course.id}
-                                    isCourse={true}
-                                />
-                            </div>
-                        ))}
-                    </InfiniteScroll>
                 </div>
             </div>
         );
     }
+
 }
 
 export default HomePage;
