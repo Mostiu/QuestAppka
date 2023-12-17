@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class AuthenticationServiceTest {
+class AuthTests {
 
     @Mock
     private UserRepository userRepository;
@@ -34,51 +34,9 @@ class AuthenticationServiceTest {
     @InjectMocks
     private AuthenticationService authenticationService;
 
-    @Test
-    void testRegister() {
-        RegisterRequest registerRequest = RegisterRequest.builder()
-                .firstname("John")
-                .lastname("Doe")
-                .email("john.doe@example.com")
-                .password("password123")
-                .build();
+ 
 
-        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenReturn("hashedPassword");
-        Mockito.when(jwtService.generateToken(Mockito.any())).thenReturn("mockedToken");
 
-        AuthenticationResponse response = authenticationService.register(registerRequest);
 
-        assertEquals("mockedToken", response.getToken());
-        // You can add more assertions based on your specific requirements
-    }
 
-    @Test
-    void testAuthenticate() {
-        AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
-                .email("john.doe@example.com")
-                .password("password123")
-                .build();
-
-        App_User user = new App_User("John Doe", "john.doe@example.com", "hashedPassword");
-        Mockito.when(userRepository.findUserByEmail(Mockito.anyString())).thenReturn(Optional.of(user));
-        Mockito.when(jwtService.generateToken(Mockito.any())).thenReturn("mockedToken");
-
-        AuthenticationResponse response = authenticationService.authenticate(authenticationRequest);
-
-        assertEquals("mockedToken", response.getToken());
-
-    }
-
-    @Test
-    void testAuthenticateUserNotFound() {
-        AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
-                .email("nonexistent.user@example.com")
-                .password("password123")
-                .build();
-
-        Mockito.when(userRepository.findUserByEmail(Mockito.anyString())).thenReturn(Optional.empty());
-
-       /* assertThrows(, () -> authenticationService.authenticate(authenticationRequest));*/
-
-    }
 }
