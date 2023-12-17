@@ -172,7 +172,7 @@ public class UserService implements UserDetailsService {
         return userCityChallengeRepository.getCompletedCityChallengesByUserEmail(userMail);
     }
 
-    public List<Quest> getUserQuestsFromCourse(String userMail, Long courseId) {
+    public List<Object[]> getUserQuestsFromCourse(String userMail, Long courseId) {
        return userQuestsRepository.findQuestsForUserAndCourse(userMail, courseId);
     }
 

@@ -12,9 +12,13 @@ import java.util.List;
 @Repository
 public interface UserQuestsRepository extends JpaRepository<UserQuests, Long> {
 
-    @Query("SELECT uq.quest FROM UserQuests uq " +
-            "WHERE uq.user.email = :userMail AND uq.quest.course.id = :courseId")
-    List<Quest> findQuestsForUserAndCourse(@Param("userMail") String userMail, @Param("courseId") Long courseId);
+    @Query("SELECT quest.name, quest.description, uq.comment, quest.id, quest.course.id " +
+            "FROM UserQuests uq " +
+            "JOIN uq.quest quest " +
+            "WHERE uq.user.email = :userMail AND quest.course.id = :courseId")
+    List<Object[]> findQuestsForUserAndCourse(
+            @Param("userMail") String userMail,
+            @Param("courseId") Long courseId);
 
     @Query("SELECT uq.comment FROM UserQuests uq " +
             "WHERE uq.user.email = :userMail AND uq.quest.course.id = :courseId AND uq.quest.id = :questId")

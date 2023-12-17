@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping(path="{userMail}/course/{courseId}/quests")
-    public List<Quest> getUserQuestsFromCourse(@PathVariable String userMail, @PathVariable Long courseId) {
+    public List<Object[]> getUserQuestsFromCourse(@PathVariable String userMail, @PathVariable Long courseId) {
     	return userService.getUserQuestsFromCourse(userMail, courseId);
     }
 

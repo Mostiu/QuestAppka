@@ -13,11 +13,11 @@ const Courses = () => {
 
     const [progress, setProgress] = useState(15);
     const [courseData, setCourseData] = useState(null);
-    const [commentData, setCommentData] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
     const courseId = searchParams.get('content_id');
     const [progressText, setProgressText] = useState('Loading...');
+    const [newComment, setNewComment] = useState('');
 
     useEffect(() => {
         // Update progress text based on the progress value
@@ -44,28 +44,14 @@ const Courses = () => {
                                 'Content-Type': 'application/json',
                             },
                         });
-
+                        console.log(response.data);
                         setCourseData(response.data);
+                        setNewComment(courseData[questNumber][2])
                     } catch (error) {
                         console.error('Error fetching course:', error);
                     }
                 }
 
-
-                if (storedToken) {
-                    try {
-                        const response = await axios.get(`http://localhost:8080/api/users/${mail}/course/${courseId}/quests`, {
-                            headers: {
-                                'Authorization': `Bearer ${storedToken}`,
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                        console.log(response.data);
-                        setCommentData(response.data);
-                    } catch (error) {
-                        console.error('Error fetching comments:', error);
-                    }
-                }
             }
 
 
@@ -89,21 +75,21 @@ const Courses = () => {
     }, [questNumber, courseData]);
 
     const renderContent = () => {
-        if (courseData && courseData.length > 0 && commentData && commentData.length > 0) {
+        if (courseData && courseData.length > 0) {
             return (
                 <div className="Course">
                     <div className={"LeftContainer"}>
                         <CourseCard
-                            title={courseData[questNumber].name}
-                            text={courseData[questNumber].description}
+                            title={courseData[questNumber][0]}
+                            text={courseData[questNumber][1]}
                         />
                     </div>
                     <div className={"RightContainer"}>
                         <SubmitCard
                             title="Submission"
-                            questId={courseData[questNumber].id}
+                            questId={courseData[questNumber][3]}
                             courseId={courseId}
-                            inputPlaceholder={commentData.comment || 'Enter your answer here'}
+                            inputPlaceholder={courseData[questNumber][2] ? courseData[questNumber][2] : "Enter your answer here"}
                         />
                     </div>
                 </div>
@@ -118,13 +104,13 @@ const Courses = () => {
     const decreaseProgress = () => {
         setProgress(prevProgress => Math.max(prevProgress - 10, 0));
         setQuestNumber(prevQuestNumber => Math.max(prevQuestNumber - 1, 0));
-        window.location.reload(); // Refresh the page
+       // window.location.reload(); // Refresh the page
     };
 
     const increaseProgress = () => {
         setProgress(prevProgress => Math.min(prevProgress + 10, 100));
         setQuestNumber(prevQuestNumber => Math.min(prevQuestNumber + 1, courseData.length - 1));
-        window.location.reload(); // Refresh the page
+       // window.location.reload(); // Refresh the page
     };
 
     return (

@@ -4,7 +4,7 @@ import '../Styles/SubmitCard.css';
 import profilePic from '../Images/UserIcon.png';
 import axios from "axios";
 
-function SubmitCard({ title, inputPlaceholder, questId, courseId }) {
+function SubmitCard({ title, inputPlaceholder, questId, courseId,  }) {
     const [comment, setComment] = useState('');
 
     const handleButtonClick = async () => {
@@ -14,9 +14,10 @@ function SubmitCard({ title, inputPlaceholder, questId, courseId }) {
         if (storedToken) {
             try {
                 // Make a POST request to update the comment
+                console.log(comment);
                 await axios.post(
                     `http://localhost:8080/api/users/${mail}/course/${courseId}/quest/${questId}/comment`,
-                    { comment: comment },
+                    { comment },
                     {
                         headers: {
                             Authorization: `Bearer ${storedToken}`,
