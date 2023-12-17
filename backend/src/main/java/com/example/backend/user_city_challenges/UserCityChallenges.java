@@ -24,7 +24,7 @@ public class UserCityChallenges {
     @JsonBackReference(value="cityChallenge-movement")
     private CityChallenge cityChallenge;
 
-    private boolean completed;
+    private boolean completed=false;
 
     private String comment="";
 

@@ -145,7 +145,7 @@ class CourseGenerator extends React.Component {
                 return;
             }
             const OpenAi = require('openai');
-            const openai = new OpenAi({ apiKey: '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',
+            const openai = new OpenAi({ apiKey: '-',
                 dangerouslyAllowBrowser: true});
 
             const prompt = `W języku polskim, stwórz listę kroków niezbędnych do wykonania projektu podanego poniżej, na przykład:

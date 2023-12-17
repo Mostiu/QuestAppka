@@ -168,7 +168,7 @@ public class UserService implements UserDetailsService {
         return userCoursesRepository.getCoursesByUserEmail(userMail);
     }
 
-    public List<CityChallenge> getUserCityChallenges(String userMail) {
+    public List<Object[]> getUserCityChallenges(String userMail) {
         return userCityChallengeRepository.getCompletedCityChallengesByUserEmail(userMail);
     }
 

@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping(path="{userMail}/cityChallenges")
-    public List<CityChallenge> getUserCityChallenges(@PathVariable String userMail) {
+    public List<Object[]> getUserCityChallenges(@PathVariable String userMail) {
     	return userService.getUserCityChallenges(userMail);
     }
 

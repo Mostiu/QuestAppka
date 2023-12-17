@@ -56,17 +56,26 @@ public class CourseService {
 
         Course course = new Course(title, description, Difficulty.EASY);
         courseRepository.save(course);
+        Set<CourseTechnologies> courseTechnologiesList = new HashSet<>();
+        Set<Quest> questList = new HashSet<>();
 
         for (Long technology : technologies) {
-            addTechnologyToCourse(course.getId(), technology);
+            Technology t = technologyRepository.findById(technology).orElseThrow(() -> new IllegalStateException(
+                    "technology with id " + technology + " does not exists"
+            ));
+            CourseTechnologies courseTechnologies = new CourseTechnologies(course, t);
+            courseTechnologiesList.add(courseTechnologies);
 
         }
 
         for (String quest : quests) {
             Quest q = new Quest("Q" + quest.charAt(1), quest, false, course);
-           courseRepository.save(course);
-           addQuestToCourse(course.getId(), q.getId());
+            questList.add(q);
         }
+
+        course.setQuests(questList);
+        course.setCourseTechnologies(courseTechnologiesList);
+        courseRepository.save(course);
     }
 
     public void deleteCourse(Long courseId) {
@@ -145,7 +154,6 @@ public class CourseService {
         courseTechnologiesRepository.save(courseTechnologies);
     }
 
-    @Transactional
     public void addQuestToCourse(Long courseId, Long questId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"

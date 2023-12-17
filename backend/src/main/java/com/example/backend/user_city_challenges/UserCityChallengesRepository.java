@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface UserCityChallengesRepository extends JpaRepository<UserCityChallenges, Long> {
 
-    @Query("SELECT cc FROM CityChallenge cc " +
+    @Query("SELECT cc.id, cc.title, cc.description FROM CityChallenge cc " +
             "JOIN UserCityChallenges ucc ON cc.id = ucc.cityChallenge.id " +
             "JOIN App_User u ON u.id = ucc.user.id " +
             "WHERE u.email = :userEmail AND ucc.completed = true")
-    List<CityChallenge> getCompletedCityChallengesByUserEmail(@Param("userEmail") String userEmail);
+    List<Object[]> getCompletedCityChallengesByUserEmail(@Param("userEmail") String userEmail);
 
     @Query("SELECT cc.id, cc.title, cc.description, ucc.comment " +
             "FROM UserCityChallenges ucc " +
@@ -29,7 +29,7 @@ public interface UserCityChallengesRepository extends JpaRepository<UserCityChal
 
     @Modifying
     @Query(value = "UPDATE UserCityChallenges ucc " +
-            "SET ucc.comment = :newComment " +
+            "SET ucc.comment = :newComment, ucc.completed = true " +
             "WHERE ucc.user.email = :userMail AND ucc.cityChallenge.id = :cityChallengeId")
     void updateUserCommentOnCityChallenge(
             @Param("userMail") String userMail,
