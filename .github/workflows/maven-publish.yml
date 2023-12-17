@@ -23,6 +23,10 @@ jobs:
     - name: Build with Maven
       run: cd backend && mvn clean install
 
+    - name: Log to Docker
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" && echo "${{ secrets.DOCKER_USERNAME }}"
+      
+
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
