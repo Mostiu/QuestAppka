@@ -17,7 +17,7 @@ function SubmitCard({ title, inputPlaceholder, questId, courseId,  }) {
                 console.log(comment);
                 await axios.post(
                     `http://localhost:8080/api/users/${mail}/course/${courseId}/quest/${questId}/comment`,
-                    { comment },
+                    comment,
                     {
                         headers: {
                             Authorization: `Bearer ${storedToken}`,

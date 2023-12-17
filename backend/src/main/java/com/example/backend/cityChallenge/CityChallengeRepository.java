@@ -26,4 +26,7 @@ public interface CityChallengeRepository extends JpaRepository<CityChallenge,Lon
 
         @Query("SELECT id, title, description FROM CityChallenge")
         List<Object[]> getCityChallengesInfo();
+
+        @Query("SELECT c.id, c.title, c.description, c.created_by FROM CityChallenge c WHERE c.id = ?1")
+        Object[] findCityChallengeById(Long id);
 }

@@ -18,9 +18,11 @@ public interface UserCityChallengesRepository extends JpaRepository<UserCityChal
             "WHERE u.email = :userEmail AND ucc.completed = true")
     List<CityChallenge> getCompletedCityChallengesByUserEmail(@Param("userEmail") String userEmail);
 
-    @Query("SELECT ucc.comment FROM UserCityChallenges ucc " +
-            "WHERE ucc.user.email = :userMail AND ucc.cityChallenge.id = :cityChallengeId")
-    String findUserCommentOnCityChallenge(
+    @Query("SELECT cc.id, cc.title, cc.description, ucc.comment " +
+            "FROM UserCityChallenges ucc " +
+            "JOIN ucc.cityChallenge cc " +
+            "WHERE ucc.user.email = :userMail AND cc.id = :cityChallengeId ")
+    Object[] findUserCommentOnCityChallenge(
             @Param("userMail") String userMail,
             @Param("cityChallengeId") Long cityChallengeId
     );

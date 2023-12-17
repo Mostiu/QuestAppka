@@ -56,7 +56,7 @@ public class CityChallengeController{
     }
 
     @GetMapping(path="{cityChallengeId}")
-    public CityChallenge getCityChallenge(@PathVariable Long cityChallengeId) {
+    public Object[] getCityChallenge(@PathVariable Long cityChallengeId) {
     	return cityChallengeService.getCityChallenge(cityChallengeId);
     }
 }

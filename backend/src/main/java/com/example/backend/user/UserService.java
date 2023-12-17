@@ -182,7 +182,7 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public String getUserCityChallengeComment(String userMail, Long cityChallengeId) {
+    public Object[] getUserCityChallengeComment(String userMail, Long cityChallengeId) {
         return userCityChallengeRepository.findUserCommentOnCityChallenge(userMail, cityChallengeId);
     }
 

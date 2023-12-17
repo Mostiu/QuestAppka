@@ -141,9 +141,7 @@ public class CityChallengeService {
         return app_cityChallengeRepository.getTagsByCityChallengeId(cityChallengeId);
     }
 
-    public CityChallenge getCityChallenge(Long cityChallengeId) {
-        return app_cityChallengeRepository.findById(cityChallengeId).orElseThrow(() -> new IllegalStateException(
-                "cityChallenge with id " + cityChallengeId + " does not exists"
-        ));
+    public Object[] getCityChallenge(Long cityChallengeId) {
+        return app_cityChallengeRepository.findCityChallengeById(cityChallengeId);
     }
 }

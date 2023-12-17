@@ -83,8 +83,8 @@ public class UserController {
     	return userService.getUserQuestsCommentsFromCourse(userMail, courseId, questId);
     }
 
-    @GetMapping(path="{userMail}/cityChallenge/{cityChallengeId}/comment")
-    public String getUserCityChallengeComment(@PathVariable String userMail, @PathVariable Long cityChallengeId) {
+    @GetMapping(path="{userMail}/cityChallenge/{cityChallengeId}")
+    public Object[] getUserCityChallengeComment(@PathVariable String userMail, @PathVariable Long cityChallengeId) {
     	return userService.getUserCityChallengeComment(userMail, cityChallengeId);
     }
 
