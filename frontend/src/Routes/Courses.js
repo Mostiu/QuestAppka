@@ -104,13 +104,13 @@ const Courses = () => {
     const decreaseProgress = () => {
         setProgress(prevProgress => Math.max(prevProgress - 10, 0));
         setQuestNumber(prevQuestNumber => Math.max(prevQuestNumber - 1, 0));
-       // window.location.reload(); // Refresh the page
+        //window.location.reload(); // Refresh the page
     };
 
     const increaseProgress = () => {
         setProgress(prevProgress => Math.min(prevProgress + 10, 100));
         setQuestNumber(prevQuestNumber => Math.min(prevQuestNumber + 1, courseData.length - 1));
-       // window.location.reload(); // Refresh the page
+        //window.location.reload(); // Refresh the page
     };
 
     return (

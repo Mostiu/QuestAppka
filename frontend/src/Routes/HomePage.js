@@ -190,6 +190,7 @@ class HomePage extends React.Component {
 
             // Handle the response as needed
             console.log('Apply for course response:', response.data);
+            window.location.reload();
             // Add your custom logic based on the response, e.g., show a success message
         } catch (error) {
             console.error('Error applying for course:', error);
@@ -197,7 +198,11 @@ class HomePage extends React.Component {
         }
     };
 
+
     render() {
+        const filteredCourses = this.state.courses.filter(
+            course => !this.state.userCourses.some(userCourse => userCourse[0] === course[0])
+        );
         return (
             <div className="Home">
                 <div className="MainContainer">
@@ -258,30 +263,29 @@ class HomePage extends React.Component {
                             <h2>Recommended courses</h2>
                         </div>
                         <InfiniteScroll
-                            dataLength={this.state.courses ? this.state.courses.length : 0}
+                            dataLength={filteredCourses.length}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
                             loader={<h4>Loading...</h4>}
                             endMessage={<p>No more courses to show.</p>}
                         >
-                            {this.state.courses &&
-                                this.state.courses.map((course, index) => (
-                                    <div key={index}>
-                                        <Card
-                                            title={course[1]}
-                                            description={course[2]}
-                                            tags={course[4]}
-                                            contentId={course[0]}
-                                            isCourse={true}
-                                        />
-                                        <button
-                                            className="button"
-                                            onClick={() => this.handleApplyButtonClick(course[0])}
-                                        >
-                                            Apply for course
-                                        </button>
-                                    </div>
-                                ))}
+                            {filteredCourses.map((course, index) => (
+                                <div key={index}>
+                                    <Card
+                                        title={course[1]}
+                                        description={course[2]}
+                                        tags={course[4]}
+                                        contentId={course[0]}
+                                        isCourse={true}
+                                    />
+                                    <button
+                                        className="button"
+                                        onClick={() => this.handleApplyButtonClick(course[0])}
+                                    >
+                                        Apply for course
+                                    </button>
+                                </div>
+                            ))}
                         </InfiniteScroll>
                     </div>
                 </div>
