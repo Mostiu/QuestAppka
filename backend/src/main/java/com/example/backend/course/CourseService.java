@@ -35,8 +35,8 @@ public class CourseService {
         this.questRepository = questRepository;
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public List<Object[]> getCourses() {
+        return courseRepository.getCoursesInfo();
     }
 
     public void addNewCourse(Course course) {
@@ -135,7 +135,7 @@ public class CourseService {
         questRepository.save(quest);
     }
 
-    public List<Tag> getTagsFromCourse(Long courseId) {
+    public List<String> getTagsFromCourse(Long courseId) {
         return courseRepository.getTagsByCourseId(courseId);
     }
 

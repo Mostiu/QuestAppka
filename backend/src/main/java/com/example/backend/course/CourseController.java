@@ -20,7 +20,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getCourses() {
+    public List<Object[]> getCourses() {
         return courseService.getCourses();
     }
 
@@ -61,7 +61,7 @@ public class CourseController {
     }
 
     @GetMapping(path="{courseId}/tags")
-    public List<Tag> getTagsFromCourse(@PathVariable Long courseId) {
+    public List<String> getTagsFromCourse(@PathVariable Long courseId) {
     	return courseService.getTagsFromCourse(courseId);
     }
 

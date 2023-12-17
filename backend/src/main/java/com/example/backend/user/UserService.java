@@ -164,7 +164,7 @@ public class UserService implements UserDetailsService {
         return new BCryptPasswordEncoder();
     }
 
-    public List<Course> getUserCourses(String userMail) {
+    public List<Object[]> getUserCourses(String userMail) {
         return userCoursesRepository.getCoursesByUserEmail(userMail);
     }
 

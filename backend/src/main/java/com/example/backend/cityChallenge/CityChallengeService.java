@@ -33,8 +33,8 @@ public class CityChallengeService {
         this.technologyRepository = technologyRepository;
     }
 
-    public List<CityChallenge> getCityChallenges() {
-        return app_cityChallengeRepository.findAll();
+    public List<Object[]> getCityChallenges() {
+        return app_cityChallengeRepository.getCityChallengesInfo();
     }
 
     public void addNewCityChallenge(CityChallenge cityChallenge) {
@@ -137,7 +137,7 @@ public class CityChallengeService {
     }
 
 
-    public List<Tag> getTagsFromCityChallenge(Long cityChallengeId) {
+    public List<String> getTagsFromCityChallenge(Long cityChallengeId) {
         return app_cityChallengeRepository.getTagsByCityChallengeId(cityChallengeId);
     }
 

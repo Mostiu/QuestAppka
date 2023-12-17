@@ -12,12 +12,17 @@ import java.util.Optional;
 @Repository
 public interface CourseRepository extends JpaRepository<Course,Long> {
 
-    @Query("SELECT tag " +
+    @Query("SELECT tag.name " +
             "FROM Technology t " +
             "JOIN TechnologyTags tt ON t.id = tt.technology.id " +
             "JOIN Tag tag ON tt.tag.id = tag.id " +
             "JOIN CourseTechnologies ct ON t.id = ct.technology.id " +
             "WHERE ct.course.id = :courseId")
-    List<Tag> getTagsByCourseId(@Param("courseId") Long courseId);
+    List<String> getTagsByCourseId(@Param("courseId") Long courseId);
+
+
+    @Query("SELECT c.id, c.title, c.description, c.difficulty " +
+            "FROM Course c ")
+    List<Object[]> getCoursesInfo();
 
 }

@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping(path="{userMail}/courses")
-    public List<Course> getUserCourses(@PathVariable String userMail) {
+    public List<Object[]> getUserCourses(@PathVariable String userMail) {
     	return userService.getUserCourses(userMail);
     }
 

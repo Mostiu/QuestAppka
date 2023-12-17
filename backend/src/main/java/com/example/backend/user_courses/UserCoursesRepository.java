@@ -12,11 +12,11 @@ import java.util.List;
 public interface UserCoursesRepository extends JpaRepository<UserCourses,Long> {
 
 
-    @Query("SELECT c FROM Course c " +
+    @Query("SELECT c.id, c.title, c.description, c.difficulty FROM Course c " +
             "JOIN UserCourses uc ON c.id = uc.course.id " +
             "JOIN App_User u ON u.id = uc.user.id " +
             "WHERE u.email = :userEmail")
-    List<Course> getCoursesByUserEmail(@Param("userEmail") String userEmail);
+    List<Object[]> getCoursesByUserEmail(@Param("userEmail") String userEmail);
 
 
 
