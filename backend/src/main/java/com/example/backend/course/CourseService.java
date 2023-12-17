@@ -67,9 +67,10 @@ public class CourseService {
             courseTechnologiesList.add(courseTechnologies);
 
         }
-
+        int i = 0;
         for (String quest : quests) {
-            Quest q = new Quest("Q" + quest.charAt(1), quest, false, course);
+            i++;
+            Quest q = new Quest(String.valueOf(i), quest, false, course);
             questList.add(q);
         }
 

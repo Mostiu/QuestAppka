@@ -87,7 +87,6 @@ public class TechnologyService
     }
 
     public List<Tag> getTagsFromTechnology(Long technologyId) {
-        Technology technology = technologyRepository.findById(technologyId).orElseThrow(() -> new IllegalStateException("Technology with id " + technologyId + " does not exists"));
-        return technology.getTechnologyTags().stream().map(TechnologyTags::getTag).toList();
+        return technologyRepository.findTagsByTechnologyId(technologyId);
     }
 }

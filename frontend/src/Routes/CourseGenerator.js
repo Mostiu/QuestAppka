@@ -145,7 +145,7 @@ class CourseGenerator extends React.Component {
                 return;
             }
             const OpenAi = require('openai');
-            const openai = new OpenAi({ apiKey: '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',
+            const openai = new OpenAi({ apiKey: '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',
                 dangerouslyAllowBrowser: true});
 
             const prompt = `W języku polskim, stwórz listę kroków niezbędnych do wykonania projektu podanego poniżej, na przykład:
@@ -157,7 +157,7 @@ class CourseGenerator extends React.Component {
                         5. Opcjonalnie, dodaj obsługę błędów, np. sprawdź, czy użytkownik nie próbuje dzielić przez zero.
                         6. Uruchom program i przetestuj go, aby upewnić się, że działa zgodnie z oczekiwaniami.
 
-                        Zrób to dla poniższego polecenia, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
+                        Zrób to dla poniższego promptu, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
 
             const messages = [
                 { role: 'system', content: 'You are a helpful assistant.' },

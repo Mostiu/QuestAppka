@@ -15,7 +15,8 @@ public interface UserQuestsRepository extends JpaRepository<UserQuests, Long> {
     @Query("SELECT quest.name, quest.description, uq.comment, quest.id, quest.course.id " +
             "FROM UserQuests uq " +
             "JOIN uq.quest quest " +
-            "WHERE uq.user.email = :userMail AND quest.course.id = :courseId")
+            "WHERE uq.user.email = :userMail AND quest.course.id = :courseId " +
+            "ORDER BY CAST(quest.name AS INTEGER) ASC")
     List<Object[]> findQuestsForUserAndCourse(
             @Param("userMail") String userMail,
             @Param("courseId") Long courseId);
