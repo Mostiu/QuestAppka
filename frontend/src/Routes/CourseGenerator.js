@@ -5,6 +5,7 @@ import '../Styles/CourseGenerator.css';
 import TechnologyTile from '../Components/TechnologyTile';
 import "openai";
 import StepTile from "../Components/StepTile";
+import axios from "axios";
 class CourseGenerator extends React.Component {
     constructor(props) {
         super(props);
@@ -12,10 +13,13 @@ class CourseGenerator extends React.Component {
             technologies: [],
             generatedLines: [],
             newTechnology: {
+                id: null,
                 name: '',
                 tags: []
             },
             availableTechnologies: [],
+            courseTitle: '', // Add this line for the course title
+            submittedInfo: null,
         };
     }
 
@@ -85,6 +89,7 @@ class CourseGenerator extends React.Component {
         this.setState((prevState) => ({
             newTechnology: {
                 ...prevState.newTechnology,
+                id: selectedTechnology.id || null,
                 name: selectedTechnology.name || '',
                 tags: tagsArray,
             },
@@ -101,6 +106,7 @@ class CourseGenerator extends React.Component {
                     (prevState) => ({
                         technologies: [...prevState.technologies, { ...prevState.newTechnology }],
                         newTechnology: {
+                            id: null,
                             name: '',
                             tags: []
                         },
@@ -139,7 +145,7 @@ class CourseGenerator extends React.Component {
                 return;
             }
             const OpenAi = require('openai');
-            const openai = new OpenAi({ apiKey: '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',
+            const openai = new OpenAi({ apiKey: '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',
                 dangerouslyAllowBrowser: true});
 
             const prompt = `W języku polskim, stwórz listę kroków niezbędnych do wykonania projektu podanego poniżej, na przykład:
@@ -179,12 +185,53 @@ class CourseGenerator extends React.Component {
             this.setState({
                 generatedLines: lines,
             });
+
+            this.setState({
+                submittedInfo: {
+                    title: this.state.courseTitle,
+                    description: this.state.description,
+                    technologies: this.state.technologies.map((technology) => technology.id),
+                    quests: lines,
+                },
+            });
         } catch (error) {
             console.error(error);
             toast.error('Failed to generate course. Please try again.');
         }
     };
 
+
+    handleTitleChange = (e) => {
+        const { value } = e.target;
+        this.setState({
+            courseTitle: value,
+        });
+    };
+
+
+    submitToApi = async () => {
+        try {
+            const { title, description, technologies, questDescriptions } = this.state.submittedInfo;
+            console.log(this.state.submittedInfo)
+            // Make a POST API call here using fetch or your preferred library
+            const response = await axios.post('http://localhost:8080/api/courses', this.state.submittedInfo, {   headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Check if the API call was successful
+            if (response.status === 200) {
+                toast.success('Course submitted successfully!');
+            }
+            else {
+                toast.error('Failed to submit course information. Please try again.');
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to submit course information. Please try again.');
+        }
+    };
 
 
     render() {
@@ -193,6 +240,12 @@ class CourseGenerator extends React.Component {
         return (
             <div className={'CGmain'}>
                 <div className={'CGLeftContainer'}>
+                    <input
+                        type="text"
+                        placeholder="Enter Course Title"
+                        value={this.state.courseTitle}
+                        onChange={this.handleTitleChange}
+                    />
                     <textarea onChange={this.handleDescriptionChange}
                         placeholder={'Enter Course Description'}></textarea>
                     <button onClick={this.handleCourseGenerate}>Generate Course</button>
@@ -229,6 +282,7 @@ class CourseGenerator extends React.Component {
                                 <option
                                     key={tech.id}
                                     value={tech.name}
+                                    data-id={tech.id}
                                     data-name={tech.name}
                                     data-tags={tech.tags.map(tag => tag.name).join(', ')}  // Extract tag names from the array of objects
                                 >
@@ -238,6 +292,10 @@ class CourseGenerator extends React.Component {
                         </select>
 
                         <button onClick={this.handleAddTechnology}>Add Technology</button>
+
+                        <div className={'SubmitButtonContainer'}>
+                            <button onClick={this.submitToApi}>Submit</button>
+                        </div>
                     </div>
                 </div>
                 <ToastContainer />

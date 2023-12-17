@@ -49,6 +49,13 @@ public class Quest {
         this.is_completed = is_completed;
 
     }
+    public Quest(String name, String description, boolean is_completed, Course course) {
+        this.name = name;
+        this.description = description;
+        this.is_completed = is_completed;
+        this.course = course;
+
+    }
 
     public Long getId() {
         return id;

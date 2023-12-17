@@ -3,6 +3,7 @@ package com.example.backend.course;
 
 import com.example.backend.quest.Quest;
 import com.example.backend.tag.Tag;
+import com.example.backend.technology.Technology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +25,11 @@ public class CourseController {
         return courseService.getCourses();
     }
 
+
+
     @PostMapping
-    public void registerNewCourse(@RequestBody Course course) {
-        courseService.addNewCourse(course);
+    public void addNewCourse(@RequestBody CourseAddBody courseAddBody) {
+        courseService.addNewCourse(courseAddBody);
     }
 
     @DeleteMapping(path="{courseId}")

@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +43,30 @@ public class CourseService {
 
     public void addNewCourse(Course course) {
         courseRepository.save(course);
+    }
+
+    @Transactional
+    public void addNewCourse(CourseAddBody courseAddBody) {
+        String title = courseAddBody.getTitle();
+        String description = courseAddBody.getDescription();
+        List<Long> technologies = courseAddBody.getTechnologies();
+        List<String> quests = courseAddBody.getQuests();
+
+
+
+        Course course = new Course(title, description, Difficulty.EASY);
+        courseRepository.save(course);
+
+        for (Long technology : technologies) {
+            addTechnologyToCourse(course.getId(), technology);
+
+        }
+
+        for (String quest : quests) {
+            Quest q = new Quest("Q" + quest.charAt(1), quest, false, course);
+           courseRepository.save(course);
+           addQuestToCourse(course.getId(), q.getId());
+        }
     }
 
     public void deleteCourse(Long courseId) {
@@ -119,6 +145,7 @@ public class CourseService {
         courseTechnologiesRepository.save(courseTechnologies);
     }
 
+    @Transactional
     public void addQuestToCourse(Long courseId, Long questId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"
