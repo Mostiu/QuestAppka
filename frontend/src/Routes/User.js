@@ -5,6 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from "../Components/Card";
 import ImageCard from "../Components/ImageCard";
+import axios from "axios";
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -19,9 +20,10 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
+        this.fetchUserCourses();
         this.fetchUserCityChallenges();
         this.fetchUserInfo();
-        this.fetchUserCourses();
+
     }
 
     fetchUserInfo = () => {
@@ -47,14 +49,14 @@ class HomePage extends React.Component {
     getCityChallengeTags = async (id) => {
         try {
             const storedToken = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/cityChallenges/${id}/tags`, {
+            const response = await axios.get(`http://localhost:8080/api/cityChallenges/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
-
-            const data = await response.json();
+            console.log('responsetags', response.data);
+            const data = await response.data;
             return data;
         } catch (error) {
             console.error('Error fetching tags:', error);
@@ -69,23 +71,23 @@ class HomePage extends React.Component {
         const mail = localStorage.getItem('mail');
         if (storedToken) {
             try {
-                const response = await fetch(`http://localhost:8080/api/users/${mail}/cityChallenges`, {
+                const response = await axios.get(`http://localhost:8080/api/users/${mail}/cityChallenges`, {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
 
-                const data = await response.json();
+                const data = await response.data;
 
                 // Fetch tags for each city challenge
                 const tagsPromises = data.map(async (cityChallenge) => {
-                    const tags = await this.getCityChallengeTags(cityChallenge.id);
-                    return { ...cityChallenge, tags }; // Combine city challenge data with tags
+                    const tags = await this.getCityChallengeTags(cityChallenge[0]);
+                    return [ ...cityChallenge, tags ]; // Combine city challenge data with tags
                 });
 
                 const cityChallengesWithData = await Promise.all(tagsPromises);
-
+                console.log('cityChallengesWithData', cityChallengesWithData);
                 this.setState({
                     cityChallenges: cityChallengesWithData,
                 });
@@ -100,14 +102,14 @@ class HomePage extends React.Component {
     getCourseTags = async (id) => {
         try {
             const storedToken = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/courses/${id}/tags`, {
+            const response = await axios.get(`http://localhost:8080/api/courses/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
 
-            const data = await response.json();
+            const data = await response.data;
             return data;
         } catch (error) {
             console.error('Error fetching tags:', error);
@@ -122,19 +124,19 @@ class HomePage extends React.Component {
 
         if (storedToken) {
             try {
-                const response = await fetch(`http://localhost:8080/api/users/${mail}/courses`, {
+                const response = await axios.get(`http://localhost:8080/api/users/${mail}/courses`, {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
 
-                const data = await response.json();
+                const data = await response.data;
 
                 // Fetch tags for each user course
                 const tagsPromises = data.map(async (userCourse) => {
-                    const tags = await this.getCourseTags(userCourse.id);
-                    return { ...userCourse, tags }; // Combine user course data with tags
+                    const tags = await this.getCourseTags(userCourse[0]);
+                    return [ ...userCourse, tags ]; // Combine user course data with tags
                 });
 
                 const userCoursesWithData = await Promise.all(tagsPromises);
@@ -175,10 +177,10 @@ class HomePage extends React.Component {
                             {this.state.cityChallenges && this.state.cityChallenges.map((cityChallenge, index) => (
                                 <div key={index}>
                                     <Card
-                                        title={cityChallenge.title}
-                                        description={cityChallenge.description}
-                                        tags={cityChallenge.tags}
-                                        contentId={cityChallenge.id}
+                                        title={cityChallenge[1]}
+                                        description={cityChallenge[2]}
+                                        tags={cityChallenge[3]}
+                                        contentId={cityChallenge[0]}
                                         isCourse={false}
                                     />
                                 </div>
@@ -201,10 +203,10 @@ class HomePage extends React.Component {
                             {this.state.userCourses && this.state.userCourses.map((userCourse, index) => (
                                 <div key={index}>
                                     <Card
-                                        title={userCourse.title}
-                                        description={userCourse.description}
-                                        tags={userCourse.tags}
-                                        contentId={userCourse.id}
+                                        title={userCourse[1]}
+                                        description={userCourse[2]}
+                                        tags={userCourse[4]}
+                                        contentId={userCourse[0]}
                                         isCourse={true}
                                     />
                                 </div>

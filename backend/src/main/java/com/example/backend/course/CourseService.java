@@ -8,7 +8,6 @@ import com.example.backend.quest.QuestRepository;
 import com.example.backend.tag.Tag;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
-import com.example.backend.technology_tags.TechnologyTags;
 import com.example.backend.user.App_User;
 import com.example.backend.user_courses.UserCourses;
 import jakarta.transaction.Transactional;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +37,45 @@ public class CourseService {
         this.questRepository = questRepository;
     }
 
-    public List<Course> getCourses() {
-        return courseRepository.findAll();
+    public List<Object[]> getCourses() {
+        return courseRepository.getCoursesInfo();
     }
 
     public void addNewCourse(Course course) {
+        courseRepository.save(course);
+    }
+
+    @Transactional
+    public void addNewCourse(CourseAddBody courseAddBody) {
+        String title = courseAddBody.getTitle();
+        String description = courseAddBody.getDescription();
+        List<Long> technologies = courseAddBody.getTechnologies();
+        List<String> quests = courseAddBody.getQuests();
+
+
+
+        Course course = new Course(title, description, Difficulty.EASY);
+        courseRepository.save(course);
+        Set<CourseTechnologies> courseTechnologiesList = new HashSet<>();
+        Set<Quest> questList = new HashSet<>();
+
+        for (Long technology : technologies) {
+            Technology t = technologyRepository.findById(technology).orElseThrow(() -> new IllegalStateException(
+                    "technology with id " + technology + " does not exists"
+            ));
+            CourseTechnologies courseTechnologies = new CourseTechnologies(course, t);
+            courseTechnologiesList.add(courseTechnologies);
+
+        }
+        int i = 0;
+        for (String quest : quests) {
+            i++;
+            Quest q = new Quest(String.valueOf(i), quest, false, course);
+            questList.add(q);
+        }
+
+        course.setQuests(questList);
+        course.setCourseTechnologies(courseTechnologiesList);
         courseRepository.save(course);
     }
 
@@ -137,14 +171,8 @@ public class CourseService {
         questRepository.save(quest);
     }
 
-    public List<Tag> getTagsFromCourse(Long courseId) {
-        List<Technology> technologies = getTechnologiesFromCourse(courseId);
-        List<Tag> tags = new ArrayList<>();
-        for (Technology technology : technologies) {
-            tags.addAll(technology.getTechnologyTags().stream().map(TechnologyTags::getTag).toList());
-        }
-        return tags;
-
+    public List<String> getTagsFromCourse(Long courseId) {
+        return courseRepository.getTagsByCourseId(courseId);
     }
 
     public List<Technology> getTechnologiesFromCourse(Long courseId) {

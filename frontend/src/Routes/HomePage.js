@@ -5,6 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from "../Components/Card";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -28,14 +29,14 @@ class HomePage extends React.Component {
     getCityChallengeTags = async (id) => {
         try {
             const storedToken = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/cityChallenges/${id}/tags`, {
+            const response = await axios.get(`http://localhost:8080/api/cityChallenges/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
-
-            const data = await response.json();
+            console.log('responsetags', response.data);
+            const data = await response.data;
             return data;
         } catch (error) {
             console.error('Error fetching tags:', error);
@@ -48,23 +49,23 @@ class HomePage extends React.Component {
 
         if (storedToken) {
             try {
-                const response = await fetch('http://localhost:8080/api/cityChallenges', {
+                const response = await axios.get('http://localhost:8080/api/cityChallenges', {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
-
-                const data = await response.json();
+                console.log('responsecityChallenges', response.data)
+                const data = await response.data;
 
                 // Fetch tags for each city challenge
                 const tagsPromises = data.map(async (cityChallenge) => {
-                    const tags = await this.getCityChallengeTags(cityChallenge.id);
-                    return { ...cityChallenge, tags }; // Combine city challenge data with tags
+                    const tags = await this.getCityChallengeTags(cityChallenge[0]);
+                    return [ ...cityChallenge, tags ]; // Combine city challenge data with tags
                 });
 
                 const cityChallengesWithData = await Promise.all(tagsPromises);
-
+                console.log('cityChallengesWithData', cityChallengesWithData);
                 this.setState({
                     cityChallenges: cityChallengesWithData,
                 });
@@ -81,14 +82,14 @@ class HomePage extends React.Component {
     getCourseTags = async (id) => {
         try {
             const storedToken = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/courses/${id}/tags`, {
+            const response = await axios.get(`http://localhost:8080/api/courses/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
 
-            const data = await response.json();
+            const data = await response.data;
             return data;
         } catch (error) {
             console.error('Error fetching tags:', error);
@@ -101,19 +102,19 @@ class HomePage extends React.Component {
 
         if (storedToken) {
             try {
-                const response = await fetch('http://localhost:8080/api/courses', {
+                const response = await axios.get('http://localhost:8080/api/courses', {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
 
-                const data = await response.json();
+                const data = await response.data;
 
                 // Fetch tags for each course
                 const tagsPromises = data.map(async (course) => {
-                    const tags = await this.getCourseTags(course.id);
-                    return { ...course, tags }; // Combine course data with tags
+                    const tags = await this.getCourseTags(course[0]);
+                    return [ ...course, tags ]; // Combine course data with tags
                 });
 
                 const coursesWithData = await Promise.all(tagsPromises);
@@ -137,19 +138,19 @@ class HomePage extends React.Component {
 
         if (storedToken) {
             try {
-                const response = await fetch(`http://localhost:8080/api/users/${mail}/courses`, {
+                const response = await axios.get(`http://localhost:8080/api/users/${mail}/courses`, {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
 
-                const data = await response.json();
+                const data = await response.data;
 
                 // Fetch tags for each user course
                 const tagsPromises = data.map(async (userCourse) => {
-                    const tags = await this.getCourseTags(userCourse.id);
-                    return { ...userCourse, tags }; // Combine user course data with tags
+                    const tags = await this.getCourseTags(userCourse[0]);
+                    return [ ...userCourse, tags ]; // Combine user course data with tags
                 });
 
                 const userCoursesWithData = await Promise.all(tagsPromises);
@@ -165,84 +166,133 @@ class HomePage extends React.Component {
 
 
     fetchMoreData = () => {
-       // this.fetchCourses();
+        //  this.fetchCourses();
         this.setState(prevState => ({
             page: prevState.page + 1
         }));
     }
 
-    render() {
 
+    handleApplyButtonClick = async (courseId) => {
+        try {
+            const storedToken = localStorage.getItem('jwtToken');
+            const mail = localStorage.getItem('mail');
+            const response = await axios.post(
+                `http://localhost:8080/api/users/${mail}/enroll/${courseId}`,
+                { },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            // Handle the response as needed
+            console.log('Apply for course response:', response.data);
+            window.location.reload();
+            // Add your custom logic based on the response, e.g., show a success message
+        } catch (error) {
+            console.error('Error applying for course:', error);
+            // Handle errors, e.g., show an error message
+        }
+    };
+
+
+    render() {
+        const filteredCourses = this.state.courses.filter(
+            course => !this.state.userCourses.some(userCourse => userCourse[0] === course[0])
+        );
         return (
             <div className="Home">
-                <div className={"LeftContainer"}>
-                    <div className={"CityChallenge"}>
-                        <Carousel infiniteLoop={true}
-                                  showIndicators={false}
-                                  showStatus={false}>
-                            {this.state.cityChallenges && this.state.cityChallenges.map((cityChallenge, index) => (
-                                <Link to={`/cityChallenge?content_id=${cityChallenge.id}`} className="card-link">
-                                <div key={index}>
-                                    <h2>{cityChallenge.title}</h2>
-                                    <p>{cityChallenge.description}</p>
-                                    <p>{cityChallenge.tags.map(tag => `#${tag.name} `)}</p>
-                                </div>
-                                </Link>
-                            ))}
-                        </Carousel>
+                <div className="MainContainer">
+                    {/* Left Container */}
+                    <div className="LeftContainer">
+                        <div className="CityChallenge">
+                            <Carousel
+                                infiniteLoop={true}
+                                showIndicators={false}
+                                showStatus={false}
+                            >
+                                {this.state.cityChallenges &&
+                                    this.state.cityChallenges.map((cityChallenge, index) => (
+                                        <Link
+                                            to={`/cityChallenge?content_id=${cityChallenge[0]}`}
+                                            className="card-link"
+                                            key={index}
+                                        >
+                                            <div>
+                                                <h2>{cityChallenge[1]}</h2>
+                                                <p>{cityChallenge[2]}</p>
+                                                <p>{cityChallenge[3].map((tag) => `#${tag} `)}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                            </Carousel>
+                        </div>
+
+                        <div className="InfiniteScrollContainer">
+                            <InfiniteScroll
+                                dataLength={
+                                    this.state.userCourses ? this.state.userCourses.length : 0
+                                }
+                                next={this.fetchMoreData}
+                                hasMore={this.state.hasMore}
+                                loader={<h4>Loading...</h4>}
+                                endMessage={<p>No more courses to show.</p>}
+                            >
+                                {this.state.userCourses &&
+                                    this.state.userCourses.map((userCourse, index) => (
+                                        <div key={index}>
+                                            <Card
+                                                title={userCourse[1]}
+                                                description={userCourse[2]}
+                                                tags={userCourse[4]}
+                                                contentId={userCourse[0]}
+                                                isCourse={true}
+                                            />
+                                        </div>
+                                    ))}
+                            </InfiniteScroll>
+                        </div>
                     </div>
 
-
-                    <div className={"RightContainer"} style={{ height: '250px', overflowY: 'scroll', paddingLeft: '40px' }}>
+                    {/* Right Container */}
+                    <div className="RightContainer">
+                        <div className="RecommendedCourses">
+                            <h2>Recommended courses</h2>
+                        </div>
                         <InfiniteScroll
-                            dataLength={this.state.userCourses ? this.state.userCourses.length : 0}
+                            dataLength={filteredCourses.length}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
                             loader={<h4>Loading...</h4>}
                             endMessage={<p>No more courses to show.</p>}
-                            style={{ padding: '0 20px' }}
                         >
-                            {this.state.userCourses && this.state.userCourses.map((userCourse, index) => (
+                            {filteredCourses.map((course, index) => (
                                 <div key={index}>
                                     <Card
-                                        title={userCourse.title}
-                                        description={userCourse.description}
-                                        tags={userCourse.tags}
-                                        contentId={userCourse.id}
+                                        title={course[1]}
+                                        description={course[2]}
+                                        tags={course[4]}
+                                        contentId={course[0]}
                                         isCourse={true}
                                     />
+                                    <button
+                                        className="button"
+                                        onClick={() => this.handleApplyButtonClick(course[0])}
+                                    >
+                                        Apply for course
+                                    </button>
                                 </div>
                             ))}
                         </InfiniteScroll>
                     </div>
                 </div>
-
-                <div className={"RightContainer"} style={{ height: '480px', overflowY: 'scroll' }}>
-                    <InfiniteScroll
-                        dataLength={this.state.courses ? this.state.courses.length : 0}
-                        next={this.fetchMoreData}
-                        hasMore={this.state.hasMore}
-                        loader={<h4>Loading...</h4>}
-                        endMessage={<p>No more courses to show.</p>}
-                        style={{ padding: '0 20px' }}
-                    >
-                        {this.state.courses && this.state.courses.map((course, index) => (
-
-                            <div key={index}>
-                                <Card
-                                    title={course.title}
-                                    description={course.description}
-                                    tags={course.tags}
-                                    contentId={course.id}
-                                    isCourse={true}
-                                />
-                            </div>
-                        ))}
-                    </InfiniteScroll>
-                </div>
             </div>
         );
     }
+
 }
 
 export default HomePage;

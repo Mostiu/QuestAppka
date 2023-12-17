@@ -3,11 +3,11 @@ package com.example.backend.course;
 
 import com.example.backend.quest.Quest;
 import com.example.backend.tag.Tag;
+import com.example.backend.technology.Technology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/courses")
@@ -21,13 +21,15 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getCourses() {
+    public List<Object[]> getCourses() {
         return courseService.getCourses();
     }
 
+
+
     @PostMapping
-    public void registerNewCourse(@RequestBody Course course) {
-        courseService.addNewCourse(course);
+    public void addNewCourse(@RequestBody CourseAddBody courseAddBody) {
+        courseService.addNewCourse(courseAddBody);
     }
 
     @DeleteMapping(path="{courseId}")
@@ -62,7 +64,7 @@ public class CourseController {
     }
 
     @GetMapping(path="{courseId}/tags")
-    public List<Tag> getTagsFromCourse(@PathVariable Long courseId) {
+    public List<String> getTagsFromCourse(@PathVariable Long courseId) {
     	return courseService.getTagsFromCourse(courseId);
     }
 

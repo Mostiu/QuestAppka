@@ -42,15 +42,15 @@ public class App_User implements UserDetails {
     private String password;
 
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value="user-movement")
     private Set<UserCourses> userCourses = new HashSet<>();
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value="user-movement-2")
     private Set<UserQuests> userQuests = new HashSet<>();
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value="user-movement-3")
     private Set<UserCityChallenges> userCityChallenges = new HashSet<>();
 

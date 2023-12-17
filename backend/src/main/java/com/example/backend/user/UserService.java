@@ -84,26 +84,28 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void enrollUser(Long userId, Long courseId) {
-        App_User user = app_userRepository.findById(userId).orElseThrow(() -> new IllegalStateException(
-                "user with id " + userId + " does not exists"
-        ));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+    public void enrollUser(String mail, Long courseId) {
+         App_User user = app_userRepository.findUserByEmail(mail).orElseThrow(() -> new IllegalStateException(
+               "user with email " + mail + " does not exists"
+         ));
+
+         Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"
-        ));
+         ));
+         UserCourses userCourses = new UserCourses( user,course,"", false);
 
-        UserCourses userCourses = new UserCourses();
-        userCourses.setUser(user);
-        userCourses.setCourse(course);
-        userCourses.setCompleted(false);
-        userCourses.setComment("");
+         user.addUserCourses(userCourses);
+         course.addUserCourses(userCourses);
 
-        user.addUserCourses(userCourses);
-        course.addUserCourses(userCourses);
+         for(Quest quest : course.getQuests()){
+             UserQuests userQuests = new UserQuests(user, quest, false, "");
+             user.addUserQuests(userQuests);
+             quest.addUserQuests(userQuests);
+         }
 
-        userCoursesRepository.save(userCourses);
-        app_userRepository.save(user);
-        courseRepository.save(course);
+            userCoursesRepository.save(userCourses);
+            app_userRepository.save(user);
+            courseRepository.save(course);
 
     }
 
@@ -164,39 +166,42 @@ public class UserService implements UserDetailsService {
         return new BCryptPasswordEncoder();
     }
 
-    public List<Course> getUserCourses(String userMail) {
-        App_User user = loadUserByUsername(userMail);
-        return user.getUserCourses().stream().map(UserCourses::getCourse).toList();
+    public List<Object[]> getUserCourses(String userMail) {
+        return userCoursesRepository.getCoursesByUserEmail(userMail);
     }
 
-    public List<CityChallenge> getUserCityChallenges(String userMail) {
-        App_User user = loadUserByUsername(userMail);
-        return user.getUserCityChallenges().stream().map(UserCityChallenges::getCityChallenge).toList();
+    public List<Object[]> getUserCityChallenges(String userMail) {
+        return userCityChallengeRepository.getCompletedCityChallengesByUserEmail(userMail);
     }
 
-    public List<Quest> getUserQuestsFromCourse(String userMail, Long courseId) {
-        App_User user = loadUserByUsername(userMail);
-        return user.getUserQuests().stream().filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId)).map(UserQuests::getQuest).toList();
+    public List<Object[]> getUserQuestsFromCourse(String userMail, Long courseId) {
+       return userQuestsRepository.findQuestsForUserAndCourse(userMail, courseId);
     }
 
 
-    public List<String> getUserQuestsCommentsFromCourse(String userMail, Long courseId) {
-        App_User user = loadUserByUsername(userMail);
-        return user.getUserQuests()
-                .stream()
-                .filter(userQuests -> userQuests.getQuest().getCourse().getId().equals(courseId))
-                .map(UserQuests::getComment)
-                .toList();
+    public String getUserQuestsCommentsFromCourse(String userMail, Long courseId, Long questId) {
+        return userQuestsRepository.findUserCommentOnUserQuest(userMail, courseId, questId);
     }
 
 
-    public String getUserCityChallengeComment(String userMail, Long cityChallengeId) {
-        App_User user = loadUserByUsername(userMail);
-        return user.getUserCityChallenges()
-                .stream()
-                .filter(userCityChallenges -> userCityChallenges.getCityChallenge().getId().equals(cityChallengeId))
-                .map(UserCityChallenges::getComment)
-                .toList()
-                .get(0);
+    public Object[] getUserCityChallengeComment(String userMail, Long cityChallengeId) {
+        return userCityChallengeRepository.findUserCommentOnCityChallenge(userMail, cityChallengeId);
+    }
+
+    @Transactional
+    public void setUserCityChallengeComment(String userMail, Long cityChallengeId, String comment) {
+        userCityChallengeRepository.updateUserCommentOnCityChallenge(userMail, cityChallengeId, comment);
+    }
+
+    @Transactional
+    public void setUserQuestComment(String userMail, Long courseId, Long questId, String comment) {
+        userQuestsRepository.updateUserCommentOnQuest(userMail, courseId, questId, comment);
+    }
+
+
+    @Transactional
+    public void registerForCourses(App_User user){
+        app_userRepository.addUserToAllCourses(user);
+        app_userRepository.addUserToAllQuests(user);
     }
 }

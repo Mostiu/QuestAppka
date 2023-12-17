@@ -22,7 +22,7 @@ public class CityChallengeController{
 
 
     @GetMapping
-    public List<CityChallenge> getCityChallenges() {
+    public List<Object[]> getCityChallenges() {
         return cityChallengeService.getCityChallenges();
     }
 
@@ -51,12 +51,12 @@ public class CityChallengeController{
     }
 
     @GetMapping(path="{cityChallengeId}/tags")
-    public List<Tag> getTagsFromCityChallenge(@PathVariable Long cityChallengeId) {
+    public List<String> getTagsFromCityChallenge(@PathVariable Long cityChallengeId) {
     	return cityChallengeService.getTagsFromCityChallenge(cityChallengeId);
     }
 
     @GetMapping(path="{cityChallengeId}")
-    public CityChallenge getCityChallenge(@PathVariable Long cityChallengeId) {
+    public Object[] getCityChallenge(@PathVariable Long cityChallengeId) {
     	return cityChallengeService.getCityChallenge(cityChallengeId);
     }
 }
