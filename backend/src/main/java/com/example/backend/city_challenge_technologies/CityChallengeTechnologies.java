@@ -14,12 +14,12 @@ public class CityChallengeTechnologies {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_challenge_id", referencedColumnName = "id")
     @JsonBackReference(value="cityChallenge-movement-2")
     private CityChallenge cityChallenge;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "technology_id", referencedColumnName = "id")
     @JsonBackReference(value="technology-movement")
     private Technology technology;

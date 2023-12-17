@@ -84,26 +84,28 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void enrollUser(Long userId, Long courseId) {
-        App_User user = app_userRepository.findById(userId).orElseThrow(() -> new IllegalStateException(
-                "user with id " + userId + " does not exists"
-        ));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
+    public void enrollUser(String mail, Long courseId) {
+         App_User user = app_userRepository.findUserByEmail(mail).orElseThrow(() -> new IllegalStateException(
+               "user with email " + mail + " does not exists"
+         ));
+
+         Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalStateException(
                 "course with id " + courseId + " does not exists"
-        ));
+         ));
+         UserCourses userCourses = new UserCourses( user,course,"", false);
 
-        UserCourses userCourses = new UserCourses();
-        userCourses.setUser(user);
-        userCourses.setCourse(course);
-        userCourses.setCompleted(false);
-        userCourses.setComment("");
+         user.addUserCourses(userCourses);
+         course.addUserCourses(userCourses);
 
-        user.addUserCourses(userCourses);
-        course.addUserCourses(userCourses);
+         for(Quest quest : course.getQuests()){
+             UserQuests userQuests = new UserQuests(user, quest, false, "");
+             user.addUserQuests(userQuests);
+             quest.addUserQuests(userQuests);
+         }
 
-        userCoursesRepository.save(userCourses);
-        app_userRepository.save(user);
-        courseRepository.save(course);
+            userCoursesRepository.save(userCourses);
+            app_userRepository.save(user);
+            courseRepository.save(course);
 
     }
 
@@ -194,5 +196,12 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void setUserQuestComment(String userMail, Long courseId, Long questId, String comment) {
         userQuestsRepository.updateUserCommentOnQuest(userMail, courseId, questId, comment);
+    }
+
+
+    @Transactional
+    public void registerForCourses(App_User user){
+        app_userRepository.addUserToAllCourses(user);
+        app_userRepository.addUserToAllQuests(user);
     }
 }

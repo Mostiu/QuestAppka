@@ -26,14 +26,14 @@ class CourseGenerator extends React.Component {
     getTechnologiesTags = async (id) => {
         try {
             const storedToken = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/technologies/${id}/tags`, {
+            const response = await axios.get(`http://localhost:8080/api/technologies/${id}/tags`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
 
-            const data = await response.json();
+            const data = await response.data;
             return data;
         } catch (error) {
             console.error('Error fetching tags:', error);
@@ -46,14 +46,14 @@ class CourseGenerator extends React.Component {
 
         if (storedToken) {
             try {
-                const response = await fetch('http://localhost:8080/api/technologies', {
+                const response = await axios.get('http://localhost:8080/api/technologies', {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
                         'Content-Type': 'application/json',
                     },
                 });
 
-                const data = await response.json();
+                const data = await response.data;
 
                 // Fetch tags for each technology
                 const tagsPromises = data.map(async (technology) => {
@@ -145,7 +145,7 @@ class CourseGenerator extends React.Component {
                 return;
             }
             const OpenAi = require('openai');
-            const openai = new OpenAi({ apiKey: '-',
+            const openai = new OpenAi({ apiKey: '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',
                 dangerouslyAllowBrowser: true});
 
             const prompt = `W języku polskim, stwórz listę kroków niezbędnych do wykonania projektu podanego poniżej, na przykład:
@@ -157,7 +157,7 @@ class CourseGenerator extends React.Component {
                         5. Opcjonalnie, dodaj obsługę błędów, np. sprawdź, czy użytkownik nie próbuje dzielić przez zero.
                         6. Uruchom program i przetestuj go, aby upewnić się, że działa zgodnie z oczekiwaniami.
 
-                        Zrób to dla poniższego promptu, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
+                        Zrób to dla poniższego polecenia, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
 
             const messages = [
                 { role: 'system', content: 'You are a helpful assistant.' },
@@ -247,7 +247,7 @@ class CourseGenerator extends React.Component {
                         onChange={this.handleTitleChange}
                     />
                     <textarea onChange={this.handleDescriptionChange}
-                        placeholder={'Enter Course Description'}></textarea>
+                              placeholder={'Enter Course Description'}></textarea>
                     <button onClick={this.handleCourseGenerate}>Generate Course</button>
 
                     <div>
@@ -284,7 +284,7 @@ class CourseGenerator extends React.Component {
                                     value={tech.name}
                                     data-id={tech.id}
                                     data-name={tech.name}
-                                    data-tags={tech.tags.map(tag => tag.name).join(', ')}  // Extract tag names from the array of objects
+                                    data-tags={tech.tags.map(tag => tag.name).join(', ')}
                                 >
                                     {tech.name}
                                 </option>

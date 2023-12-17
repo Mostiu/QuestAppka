@@ -48,9 +48,9 @@ public class UserController {
     	userService.updateUser(userId, name, email);
     }
 
-    @PutMapping(path="{userId}/enroll/{courseId}")
-    public void enrollUser(@PathVariable Long userId, @PathVariable Long courseId) {
-    	userService.enrollUser(userId, courseId);
+    @PostMapping(path="{mail}/enroll/{courseId}")
+    public void enrollUser(@PathVariable String mail, @PathVariable Long courseId) {
+    	userService.enrollUser(mail, courseId);
     }
 
     @PutMapping(path="{userId}/complete/quest/{questId}")
@@ -103,4 +103,5 @@ public class UserController {
         }
     	userService.setUserQuestComment(userMail, courseId, questId, comment);
     }
+
 }

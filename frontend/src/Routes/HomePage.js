@@ -166,11 +166,36 @@ class HomePage extends React.Component {
 
 
     fetchMoreData = () => {
-      //  this.fetchCourses();
+        //  this.fetchCourses();
         this.setState(prevState => ({
             page: prevState.page + 1
         }));
     }
+
+
+    handleApplyButtonClick = async (courseId) => {
+        try {
+            const storedToken = localStorage.getItem('jwtToken');
+            const mail = localStorage.getItem('mail');
+            const response = await axios.post(
+                `http://localhost:8080/api/users/${mail}/enroll/${courseId}`,
+                { },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            // Handle the response as needed
+            console.log('Apply for course response:', response.data);
+            // Add your custom logic based on the response, e.g., show a success message
+        } catch (error) {
+            console.error('Error applying for course:', error);
+            // Handle errors, e.g., show an error message
+        }
+    };
 
     render() {
         return (
@@ -249,6 +274,12 @@ class HomePage extends React.Component {
                                             contentId={course[0]}
                                             isCourse={true}
                                         />
+                                        <button
+                                            className="button"
+                                            onClick={() => this.handleApplyButtonClick(course[0])}
+                                        >
+                                            Apply for course
+                                        </button>
                                     </div>
                                 ))}
                         </InfiniteScroll>

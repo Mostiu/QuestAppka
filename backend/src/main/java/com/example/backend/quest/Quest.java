@@ -30,12 +30,12 @@ public class Quest {
 
 
 
-    @OneToMany(mappedBy = "quest",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quest",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="quest-movement")
     private Set<UserQuests> userQuests = new HashSet<>();
 
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     @JsonBackReference(value="course-movement-3")
     private Course course = null;
