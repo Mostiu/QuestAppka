@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/CityChallengeBrowse.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const CityChallenge = () => {
     const [cityChallengeData, setCityChallengeData] = useState([]);
@@ -52,7 +53,7 @@ const CityChallenge = () => {
                 // Make a POST request to submit a new comment
                 await axios.post(
                     `http://localhost:8080/api/users/${mail}/cityChallenge/${cityChallengeId}/comment`,
-                     newComment ,
+                     newComment , // Assuming the API expects an object with a 'comment' property
                     {
                         headers: {
                             Authorization: `Bearer ${storedToken}`,
@@ -61,8 +62,10 @@ const CityChallenge = () => {
                     }
                 );
 
+                toast.success('Comment submitted successfully!');
             } catch (error) {
                 console.error('Error submitting comment:', error);
+                toast.error('Error submitting comment. Please try again.');
             }
         }
     };
@@ -75,6 +78,7 @@ const CityChallenge = () => {
         if (cityChallengeData && cityChallengeData.length > 0) {
             return (
                 <div className={'Challenge'}>
+                    <ToastContainer />
                     <h1 className={'challengeTitle'}>{cityChallengeData[1]}</h1>
                     <p className={'challengeDescription'}>{cityChallengeData[2]}</p>
                     <input

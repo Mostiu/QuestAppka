@@ -2,11 +2,11 @@ package com.example.backend.cityChallenge;
 
 import com.example.backend.city_challenge_technologies.CityChallengeTechnologies;
 import com.example.backend.city_challenge_technologies.CityChallengeTechnologiesRepository;
-import com.example.backend.tag.Tag;
 import com.example.backend.technology.Technology;
 import com.example.backend.technology.TechnologyRepository;
 import com.example.backend.user.App_User;
 import com.example.backend.user_city_challenges.UserCityChallenges;
+import com.example.backend.user_city_challenges.UserCityChallengesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,16 @@ public class CityChallengeService {
 
     private final TechnologyRepository technologyRepository;
 
+    private final UserCityChallengesRepository userCityChallengesRepository;
+
     @Autowired
     public CityChallengeService(CityChallengeRepository app_cityChallengeRepository,
                                 CityChallengeTechnologiesRepository cityChallengeTechnologyRepository,
-                                TechnologyRepository technologyRepository) {
+                                TechnologyRepository technologyRepository, UserCityChallengesRepository userCityChallengesRepository) {
         this.app_cityChallengeRepository = app_cityChallengeRepository;
         this.cityChallengeTechnologyRepository = cityChallengeTechnologyRepository;
         this.technologyRepository = technologyRepository;
+        this.userCityChallengesRepository = userCityChallengesRepository;
     }
 
     public List<Object[]> getCityChallenges() {
@@ -143,5 +146,9 @@ public class CityChallengeService {
 
     public Object[] getCityChallenge(Long cityChallengeId) {
         return app_cityChallengeRepository.findCityChallengeById(cityChallengeId);
+    }
+
+    public List<Object[]> getSubmittedCityChallenge(Long cityChallengeId) {
+        return userCityChallengesRepository.getSubmittedCityChallenge(cityChallengeId);
     }
 }

@@ -46,9 +46,14 @@ function SubmitCard({ title, inputPlaceholder, questId, courseId,  }) {
                 className="card-text"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder={inputPlaceholder}
+                placeholder="Enter your answer here"
             />
-            <button className="cardButton" onClick={handleButtonClick}>Send</button>
+            {inputPlaceholder !== "Enter your answer here" && (
+                <h2>{inputPlaceholder}</h2>
+            )}
+            <button className="cardButton" onClick={handleButtonClick}>
+                Send
+            </button>
         </div>
     );
 }

@@ -21,9 +21,12 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
+        if(userRepository.findUserByEmail(request.getEmail()).isPresent()){
+            throw new IllegalStateException("Email already taken");
+        }
         App_User user = new App_User(request.getFirstname(), request.getLastname(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        userService.registerForCourses(user);
+        userService.addUserToCityChallenges(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -31,8 +34,10 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        App_User user = userRepository.findUserByEmail(request.getEmail()).orElseThrow();
+        App_User user = userRepository.findUserByEmail(request.getEmail()).orElseThrow(()-> new IllegalStateException("User not found"));
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new IllegalStateException("Wrong password");
+        }
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
