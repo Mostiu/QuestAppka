@@ -40,6 +40,9 @@ const Sidebar = (props) => {
             <a className="menu-item" href="/CourseGenerator">
                 Course Generator
             </a>
+            <a className="menu-item" href="/CityChallengeBrowse">
+                City Challenge Browser
+            </a>
             <button className="menu-item" onClick={handleLogout}>
                 Logout
             </button>
