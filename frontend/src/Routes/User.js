@@ -170,7 +170,7 @@ class HomePage extends React.Component {
                             dataLength={this.state.cityChallenges ? this.state.cityChallenges.length : 0}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
-                            loader={<h4>Loading...</h4>}
+                            loader={<h4>Nothing to show yet</h4>}
                             endMessage={<p>No more challanges to show.</p>}
                             style={{ padding: '0 20px' }}
                         >

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/CityChallengeBrowse.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import SubmitTile from "../Components/SubmitTile";
 
 const CityChallengeBrowse = () => {
     const [cityChallengeData, setCityChallengeData] = useState([]);
@@ -96,12 +97,10 @@ const CityChallengeBrowse = () => {
             >
                 {cityChallengeData &&
                     cityChallengeData.map((cityChallenge) => (
-                        <div className="cityChallengeCard" key={cityChallenge.id}>
-                            <h2 className="card-title">{cityChallenge[0]}</h2>
-                            <h3 className="card-text">{cityChallenge[1]}</h3>
-                            <h4 className="card-text">{cityChallenge[2]}</h4>
-                            <h5 className="card-text">{cityChallenge[3]}</h5>
-                        </div>
+                        <SubmitTile
+                            name={cityChallenge[0]}
+                            desc={cityChallenge[1]}
+                        />
                     ))}
             </InfiniteScroll>
         </div>
