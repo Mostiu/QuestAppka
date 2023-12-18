@@ -18,7 +18,7 @@ class QuestTests {
         boolean isCompleted = false;
         String comment = "Test Comment";
 
-        Quest quest = new Quest(name, description, isCompleted, comment);
+        Quest quest = new Quest(name, description, isCompleted);
 
         Course course = new Course(/* inicjalizacja obiektu Course */);
         UserQuests userQuests = new UserQuests(/* inicjalizacja obiektu UserQuests */);
@@ -32,7 +32,6 @@ class QuestTests {
         assertEquals(name, quest.getName());
         assertEquals(description, quest.getDescription());
         assertEquals(isCompleted, quest.isIs_completed());
-        assertEquals(comment, quest.getComment());
         assertEquals(course, quest.getCourse());
 
         Set<UserQuests> userQuestsSet = new HashSet<>();

@@ -250,7 +250,7 @@ class CourseGenerator extends React.Component {
                               placeholder={'Enter Course Description'}></textarea>
                     <button onClick={this.handleCourseGenerate}>Generate Course</button>
 
-                    <div>
+                    <div style={{overflowY: 'scroll' }}>
                         <h2>Generated Course:</h2>
                         <ul>
                             {generatedLines.map((line, index) => (
@@ -274,6 +274,7 @@ class CourseGenerator extends React.Component {
                             name="name"
                             value={newTechnology.name}
                             onChange={this.handleSelectChange}
+                            style={{marginRight: '30px', marginBottom: '30px'}}
                         >
                             <option value="" disabled>
                                 Select Technology

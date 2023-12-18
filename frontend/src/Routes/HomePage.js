@@ -84,7 +84,7 @@ class HomePage extends React.Component {
             const storedToken = localStorage.getItem('jwtToken');
             const response = await axios.get(`http://localhost:8080/api/courses/${id}/tags`, {
                 headers: {
-                    'Authorization': `Bearer ${storedToken}`,
+                    'Authorization': `Bearer ${storedToken }`,
                     'Content-Type': 'application/json',
                 },
             });
@@ -205,9 +205,9 @@ class HomePage extends React.Component {
         );
         return (
             <div className="Home">
-                <div className="MainContainer">
+
                     {/* Left Container */}
-                    <div className="LeftContainer">
+                    <div className="LeftContainer" style={{ height: '500px', maxWidth:"525px" }}>
                         <div className="CityChallenge">
                             <Carousel
                                 infiniteLoop={true}
@@ -221,47 +221,49 @@ class HomePage extends React.Component {
                                             className="card-link"
                                             key={index}
                                         >
-                                            <div>
+
                                                 <h2>{cityChallenge[1]}</h2>
                                                 <p>{cityChallenge[2]}</p>
                                                 <p>{cityChallenge[3].map((tag) => `#${tag} `)}</p>
-                                            </div>
+
                                         </Link>
                                     ))}
                             </Carousel>
                         </div>
+                            <div className={{}} style={{ height: '500px', overflowY: 'scroll'}}>
 
-                        <div className="InfiniteScrollContainer">
-                            <InfiniteScroll
-                                dataLength={
-                                    this.state.userCourses ? this.state.userCourses.length : 0
-                                }
-                                next={this.fetchMoreData}
-                                hasMore={this.state.hasMore}
-                                loader={<h4>Loading...</h4>}
-                                endMessage={<p>No more courses to show.</p>}
-                            >
-                                {this.state.userCourses &&
-                                    this.state.userCourses.map((userCourse, index) => (
-                                        <div key={index}>
-                                            <Card
-                                                title={userCourse[1]}
-                                                description={userCourse[2]}
-                                                tags={userCourse[4]}
-                                                contentId={userCourse[0]}
-                                                isCourse={true}
-                                            />
-                                        </div>
-                                    ))}
-                            </InfiniteScroll>
-                        </div>
+                                <InfiniteScroll
+                                    dataLength={
+                                        this.state.userCourses ? this.state.userCourses.length : 0
+                                    }
+                                    next={this.fetchMoreData}
+                                    hasMore={this.state.hasMore}
+                                    loader={<h4>Loading...</h4>}
+                                    endMessage={<p>No more courses to show.</p>}
+                                >
+                                    {this.state.userCourses &&
+                                        this.state.userCourses.map((userCourse, index) => (
+                                            <div key={index} className="column" >
+                                                <Card
+                                                    title={userCourse[1]}
+                                                    description={userCourse[2]}
+                                                    tags={userCourse[4]}
+                                                    contentId={userCourse[0]}
+                                                    isCourse={true}
+                                                />
+                                            </div>
+                                        ))}
+                                </InfiniteScroll>
+                            </div>
+
+
                     </div>
 
                     {/* Right Container */}
-                    <div className="RightContainer">
-                        <div className="RecommendedCourses">
-                            <h2>Recommended courses</h2>
-                        </div>
+                    <div className="RightContainer" style={{ height: '500px', maxWidth:"400px" }}>
+                        <h2>Recommended courses</h2>
+                        <input style={{ width: '80%', margin: "5px auto 25px auto" }} type="text" placeholder="Search.." name="search" />
+                        <div style={{ height: '500px', overflowY: 'scroll' }}>
                         <InfiniteScroll
                             dataLength={filteredCourses.length}
                             next={this.fetchMoreData}
@@ -270,7 +272,7 @@ class HomePage extends React.Component {
                             endMessage={<p>No more courses to show.</p>}
                         >
                             {filteredCourses.map((course, index) => (
-                                <div key={index}>
+                                <div className={"column"} key={index}>
                                     <Card
                                         title={course[1]}
                                         description={course[2]}
@@ -287,9 +289,10 @@ class HomePage extends React.Component {
                                 </div>
                             ))}
                         </InfiniteScroll>
+                            </div>
                     </div>
                 </div>
-            </div>
+
         );
     }
 
