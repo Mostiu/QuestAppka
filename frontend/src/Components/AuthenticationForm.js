@@ -29,6 +29,7 @@ const AuthenticationForm = () => {
                 const jwtToken = response.data.token;
                 localStorage.setItem('jwtToken', jwtToken);
                 localStorage.setItem('mail', username);
+                console.log(requestData)
                 console.log('User authenticated successfully:', response.data);
                 navigate('/home', { replace: true });
             })
