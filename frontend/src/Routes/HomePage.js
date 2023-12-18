@@ -16,6 +16,7 @@ class HomePage extends React.Component {
             userCourses: [],
             coursesTags: [],
             hasMore: true,
+            searchInput: "",
             page: 1
         };
     }
@@ -198,11 +199,23 @@ class HomePage extends React.Component {
         }
     };
 
+    handleSearchInputChange = (event) => {
+        this.setState({ searchInput: event.target.value });
+    };
+
+
 
     render() {
-        const filteredCourses = this.state.courses.filter(
-            course => !this.state.userCourses.some(userCourse => userCourse[0] === course[0])
-        );
+        const filteredCourses = this.state.courses.filter((course) => {
+            const searchInputLowerCase = this.state.searchInput.toLowerCase();
+            const courseTitleLowerCase = course[1].toLowerCase();
+            const courseDescriptionLowerCase = course[2].toLowerCase();
+
+            return (
+                courseTitleLowerCase.includes(searchInputLowerCase) ||
+                courseDescriptionLowerCase.includes(searchInputLowerCase)
+            );
+        });
         return (
             <div className="Home">
 
@@ -262,13 +275,17 @@ class HomePage extends React.Component {
                     {/* Right Container */}
                     <div className="RightContainer" style={{ height: '500px', maxWidth:"400px" }}>
                         <h2>Recommended courses</h2>
-                        <input style={{ width: '80%', margin: "5px auto 25px auto" }} type="text" placeholder="Search.." name="search" />
+                        <input style={{ width: '80%', margin: "5px auto 25px auto" }}
+                               type="text" placeholder="Search.." name="search"
+                               value={this.state.searchInput}
+                               onChange={this.handleSearchInputChange}
+                        />
                         <div style={{ height: '500px', overflowY: 'scroll' }}>
                         <InfiniteScroll
                             dataLength={filteredCourses.length}
                             next={this.fetchMoreData}
                             hasMore={this.state.hasMore}
-                            loader={<h4>Loading...</h4>}
+
                             endMessage={<p>No more courses to show.</p>}
                         >
                             {filteredCourses.map((course, index) => (
