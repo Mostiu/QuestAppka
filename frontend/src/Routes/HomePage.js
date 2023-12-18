@@ -243,6 +243,7 @@ class HomePage extends React.Component {
                                     ))}
                             </Carousel>
                         </div>
+                        <h2>My courses</h2>
                             <div className={{}} style={{ height: '500px', overflowY: 'scroll'}}>
 
                                 <InfiniteScroll
