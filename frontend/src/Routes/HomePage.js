@@ -211,9 +211,15 @@ class HomePage extends React.Component {
             const courseTitleLowerCase = course[1].toLowerCase();
             const courseDescriptionLowerCase = course[2].toLowerCase();
 
+            // Check if the course is not in userCourses before including it in filteredCourses
+            const isNotInUserCourses = !this.state.userCourses.some(
+                (userCourse) => userCourse[0] === course[0]
+            );
+
             return (
-                courseTitleLowerCase.includes(searchInputLowerCase) ||
-                courseDescriptionLowerCase.includes(searchInputLowerCase)
+                (courseTitleLowerCase.includes(searchInputLowerCase) ||
+                    courseDescriptionLowerCase.includes(searchInputLowerCase)) &&
+                isNotInUserCourses
             );
         });
         return (
@@ -252,7 +258,7 @@ class HomePage extends React.Component {
                                     }
                                     next={this.fetchMoreData}
                                     hasMore={this.state.hasMore}
-                                    loader={<h4>Loading...</h4>}
+                                    loader={<h4>Nothing to show</h4>}
                                     endMessage={<p>No more courses to show.</p>}
                                 >
                                     {this.state.userCourses &&
@@ -297,6 +303,7 @@ class HomePage extends React.Component {
                                         tags={course[4]}
                                         contentId={course[0]}
                                         isCourse={true}
+                                        applied={false}
                                     />
                                     <button
                                         className="button"
