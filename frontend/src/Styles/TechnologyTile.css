@@ -2,13 +2,27 @@
     display: flex;
     border: 1px solid #ccc;
     overflow: hidden;
-    height: 27px; /* Set the desired height */
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
 }
 
 .left-half,
 .right-half {
     flex: auto;
-    padding: 8px; /* Adjust the padding as needed */
+    justify-content: center;
+    align-items: center;
+}
+
+.left-half {
+
+    padding: 0;
+    margin: 0;
+}
+
+.right-half {
+   margin: 0;
+    padding: 0;
 }
 
 .divider {

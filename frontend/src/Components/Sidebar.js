@@ -27,15 +27,7 @@ const Sidebar = (props) => {
             <a className="menu-item" href="/home">
                 Home
             </a>
-            <a className="menu-item" href="/courses">
-                Courses
-            </a>
-            <a className="menu-item" href="/CityChallengeBrowse">
-                City Challenge Browse
-            </a>
-            <a className="menu-item" href="/CityChallenge">
-                City Challenge
-            </a>
+
             <a className="menu-item" href="/CourseGenerator">
                 Course Generator
             </a>
