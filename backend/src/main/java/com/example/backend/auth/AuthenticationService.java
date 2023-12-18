@@ -26,7 +26,7 @@ public class AuthenticationService {
         }
         App_User user = new App_User(request.getFirstname(), request.getLastname(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        //userService.registerForCourses(user);
+        userService.addUserToCityChallenges(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

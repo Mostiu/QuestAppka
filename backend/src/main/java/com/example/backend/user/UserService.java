@@ -198,10 +198,24 @@ public class UserService implements UserDetailsService {
         userQuestsRepository.updateUserCommentOnQuest(userMail, courseId, questId, comment);
     }
 
-
     @Transactional
-    public void registerForCourses(App_User user){
-        app_userRepository.addUserToAllCourses(user);
-        app_userRepository.addUserToAllQuests(user);
+    public void addUserToCityChallenges(App_User user){
+        List<CityChallenge> cityChallenges = cityChallengeRepository.findAll();
+        for(CityChallenge cityChallenge : cityChallenges){
+            UserCityChallenges userCityChallenge = new UserCityChallenges();
+            userCityChallenge.setUser(user);
+            userCityChallenge.setCityChallenge(cityChallenge);
+            userCityChallenge.setCompleted(false);
+            userCityChallenge.setComment("");
+
+            user.addUserCityChallenges(userCityChallenge);
+            cityChallenge.addUserCityChallenges(userCityChallenge);
+
+            userCityChallengeRepository.save(userCityChallenge);
+            app_userRepository.save(user);
+            cityChallengeRepository.save(cityChallenge);
+        }
     }
+
+
 }
