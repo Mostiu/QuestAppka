@@ -28,6 +28,14 @@ const Sidebar = (props) => {
         console.log('Logging out...');
     };
 
+    if(localStorage.getItem('jwtToken') === null || localStorage.getItem('jwtToken') === '') return (
+        <Menu width={'20%'} styles={menuStyles}>
+            <a className="menu-item bm-first-item" href="/">
+                <span className="menu-text">Login/Register</span>
+            </a>
+        </Menu>
+    );
+    else
     return (
         <Menu width={'20%'} styles={menuStyles}>
             <a className="menu-item bm-first-item" href="/user">
