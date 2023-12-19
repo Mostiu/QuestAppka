@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom'; // Import Link
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css';
 import '../Styles/AuthenticationForm.css';
 import '../Styles/WelcomePage.css';
 
@@ -13,8 +15,6 @@ const AuthenticationForm = () => {
     const navigate = useNavigate();
 
     const handleAuthentication = () => {
-        console.log('Performing authentication:', username, password, firstName, lastName);
-
         const endpoint = isLogin
             ? 'http://localhost:8080/api/auth/authenticate'
             : 'http://localhost:8080/api/auth/register';
@@ -29,16 +29,23 @@ const AuthenticationForm = () => {
                 const jwtToken = response.data.token;
                 localStorage.setItem('jwtToken', jwtToken);
                 localStorage.setItem('mail', username);
+                console.log(requestData);
                 console.log('User authenticated successfully:', response.data);
                 navigate('/home', { replace: true });
+                toast.success('Authentication successful!');
             })
             .catch(error => {
                 console.error('Authentication error:', error);
+                if(isLogin) toast.error(`Authentication failed. Please check your credentials. ${error.response.data.message}`);
+                else toast.error(`Registration failed. Please check your credentials. ${error.response.data.message}`);
+
             });
     };
 
     return (
         <div>
+            {/* Add ToastContainer at the top level of your component */}
+            <ToastContainer />
             <form>
                 {!isLogin && (
                     <>
@@ -55,7 +62,7 @@ const AuthenticationForm = () => {
                     </>
                 )}
                 <label>
-                    Username:
+                    Email:
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </label>
                 <br />
@@ -66,7 +73,9 @@ const AuthenticationForm = () => {
                 <br />
                 <p className={'signInText'}>
                     {isLogin ? "Don't have an account? " : 'Already have an account? '}
-                    <span className={"signText"} onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Sign up' : 'Sign in'}</span>
+                    <span className={'signText'} onClick={() => setIsLogin(!isLogin)}>
+                        {isLogin ? 'Sign up' : 'Sign in'}
+                    </span>
                 </p>
                 <button className={'loginFormButton'} type="button" onClick={handleAuthentication}>
                     {isLogin ? 'Login' : 'Register'}

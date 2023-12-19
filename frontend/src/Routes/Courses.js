@@ -11,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 
 const Courses = () => {
 
-    const [progress, setProgress] = useState(15);
+    const [progress, setProgress] = useState(0);
     const [courseData, setCourseData] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [questNumber, setQuestNumber] = useState(0);
@@ -36,6 +36,8 @@ const Courses = () => {
                 const storedToken = localStorage.getItem('jwtToken');
                 const mail = localStorage.getItem('mail');
 
+
+
                 if (storedToken) {
                     try {
                         const response = await axios.get(`http://localhost:8080/api/users/${mail}/course/${courseId}/quests`, {
@@ -58,11 +60,8 @@ const Courses = () => {
         };
 
         fetchData().then(r => console.log('Done fetching course data'));
-        // Simulating progress update after a delay
-        const timer = setTimeout(() => setProgress(66), 500);
 
-        // Cleanup timer on component unmount
-        return () => clearTimeout(timer);
+
     }, [courseId]);
 
     useEffect(() => {
@@ -71,7 +70,9 @@ const Courses = () => {
             setQuestNumber(0);
         } else if (courseData && questNumber >= courseData.length) {
             setQuestNumber(courseData.length - 1);
+
         }
+
     }, [questNumber, courseData]);
 
     const renderContent = () => {
@@ -102,13 +103,13 @@ const Courses = () => {
     };
 
     const decreaseProgress = () => {
-        setProgress(prevProgress => Math.max(prevProgress - 10, 0));
+        setProgress(prevProgress => Math.max(prevProgress - (1/courseData.length)*100, 0));
         setQuestNumber(prevQuestNumber => Math.max(prevQuestNumber - 1, 0));
         //window.location.reload(); // Refresh the page
     };
 
     const increaseProgress = () => {
-        setProgress(prevProgress => Math.min(prevProgress + 10, 100));
+        setProgress(prevProgress => Math.min(prevProgress + (1/courseData.length)*100, 100));
         setQuestNumber(prevQuestNumber => Math.min(prevQuestNumber + 1, courseData.length - 1));
         //window.location.reload(); // Refresh the page
     };

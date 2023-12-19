@@ -1,17 +1,17 @@
 .Home {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two rows, first row adjusts to content height */
-    gap: 16px;
+    grid-template-columns: 50vw 35vw; /* Two rows, first row adjusts to content height */
     padding: 16px;
-    padding-left: 5em;
+    padding-left: 4em;
+    margin: 0;
 }
 
 .CityChallenge {
     display: inline-block;
     height: auto;
-    margin: 0px;
+    margin: 0px auto;
     padding: 0px;
-
+    width: 100%;
 }
 
 
@@ -20,6 +20,7 @@
     justify-content: space-between;
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
+
 }
 
 .Button {
@@ -29,23 +30,46 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+}
+
+.button{
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    margin: 0px auto 25px auto;
+    ;
 }
 
 .LeftContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 0px 0px 0px 0px;
+    margin: 0;
     padding: 0px 30px 0px 0px;
+
 }
 
 .RightContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 0;
+    padding: 0px 10px 0px 0px;
 }
 
 .CoursesStartedH1 {
     margin: 0px 0px 0px 0px;
 
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
 }

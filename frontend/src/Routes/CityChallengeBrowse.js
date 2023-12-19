@@ -1,78 +1,110 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import '../Styles/CityChallengeBrowse.css';
-import {useSearchParams} from "react-router-dom";
-import axios from "axios";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import SubmitTile from "../Components/SubmitTile";
 
 const CityChallengeBrowse = () => {
-
-
-    const [cityChallengeData, setCityChallengeData] = useState(null);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [commentData, setCommentData] = useState("");
-
-    const cityChallengeId = searchParams.get('content_id');
+    const [cityChallengeData, setCityChallengeData] = useState([]);
+    const [cityChallengeId, setCityChallengeId] = useState('');
+    const [page, setPage] = useState(1); // Start from page 1
+    const [options, setOptions] = useState([]);
+    const [chosenIndex, setChosenIndex] = useState(null);
 
     useEffect(() => {
-        console.log('Fetching city challenge data...', cityChallengeId);
-        const fetchData = async () => {
-            if(cityChallengeId) {
-                const storedToken = localStorage.getItem('jwtToken');
-                const mail = localStorage.getItem('mail');
-
-                if (storedToken) {
-                    try {
-                        const response = await axios.get(`http://localhost:8080/api/cityChallenges/${cityChallengeId}`, {
-                            headers: {
-                                'Authorization': `Bearer ${storedToken}`,
-                                'Content-Type': 'application/json',
-                            },
-                        });
-
-                        setCityChallengeData(response.data);
-                    } catch (error) {
-                        console.error('Error fetching city challenge:', error);
-                    }
+        const fetchOptions = async () => {
+            const storedToken = localStorage.getItem('jwtToken');
+            const mail = localStorage.getItem('mail');
+            if (storedToken) {
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/cityChallenges`, {
+                        headers: {
+                            Authorization: `Bearer ${storedToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    console.log(response.data);
+                    setOptions(response.data);
+                } catch (error) {
+                    console.error('Error fetching city challenges:', error);
                 }
-
-                if(storedToken){
-                    try{
-                        const response = await axios.get(`http://localhost:8080/api/users/${mail}/cityChallenge/${cityChallengeId}/comment`, {
-                            headers: {
-                                "Authorization": `Bearer ${storedToken}`,
-                                "Content-Type": "application/json",
-                            }
-                        }
-
-                        );
-                        setCommentData(response.data);
-                    }
-                    catch (error) {
-                        console.error('Error fetching comments:', error);
-                }
-
-
             }
         };
 
-        fetchData().then(r => console.log('Done fetching city challenge data'));
+        fetchOptions().then(() => console.log('Done fetching city challenge data'));
+    }, [page]);
 
-    }}, [cityChallengeId]);
+    const fetchMoreData = async () => {
+        setPage(page + 1);
+    };
 
+    const handleCityChallengeChange = async (e) => {
+        setChosenIndex(e.target.value);
+        const selectedCityChallengeId = options[e.target.value][0];
+        setCityChallengeId(selectedCityChallengeId);
+        setCityChallengeData([]); // Clear previous data
+        console.log(cityChallengeId);
+        console.log(chosenIndex);
+        const storedToken = localStorage.getItem('jwtToken');
+        const mail = localStorage.getItem('mail');
+        if (storedToken) {
+            try {
+                const response = await axios.get(
+                    `http://localhost:8080/api/cityChallenges/${selectedCityChallengeId}/submitted`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${storedToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+                console.log(response.data);
+                setCityChallengeData(response.data);
+            } catch (error) {
+                console.error('Error fetching city challenge:', error);
+            }
+        }
+    };
 
     return (
-        <div className={"Challenge"}>
-            <h1 className={"challengeTitle"}>{cityChallengeData.title}</h1>
-            {/*<p className={"authorText"}>Created by {cityChallengeData.created_by}</p>*/}
-            <p className={"challengeDescription"}>{cityChallengeData.description}</p>
-            <input
-                type="url"
-
-                className="fileInput"
-            />
-            <button className={"submitChallenge"}>Submit</button>
+        <div className="cityChallengeBrowse">
+            {cityChallengeId !== '' && (
+                <h1 className="cityChallengeTitle">Results for {options[chosenIndex][1]}</h1>
+            )}
+            <div>
+                <select
+                    name="selectedCityChallenge"
+                    value={chosenIndex}
+                    onChange={handleCityChallengeChange}
+                    style={{ marginRight: '30px', marginBottom: '30px' }}
+                >
+                    <option value="" disabled>
+                        Select City Challenge
+                    </option>
+                    {options.map((city, index) => (
+                        <option key={city[0]} value={index}>
+                            {city[1]}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <InfiniteScroll
+                next={fetchMoreData}
+                hasMore={true}
+                dataLength={cityChallengeData.length}
+                endMessage="No more to show"
+            >
+                {cityChallengeData &&
+                    cityChallengeData.map((cityChallenge) => (
+                        <SubmitTile
+                            name={cityChallenge[0]}
+                            desc={cityChallenge[1]}
+                        />
+                    ))}
+            </InfiniteScroll>
         </div>
     );
-
-}
+};
 
 export default CityChallengeBrowse;

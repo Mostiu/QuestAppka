@@ -38,5 +38,9 @@ public interface UserCityChallengesRepository extends JpaRepository<UserCityChal
     );
 
 
-
+    @Query("SELECT ucc.user.name, ucc.comment " +
+            "FROM UserCityChallenges ucc " +
+            "JOIN ucc.cityChallenge cc " +
+            "WHERE cc.id = :cityChallengeId AND ucc.completed = true")
+    List<Object[]> getSubmittedCityChallenge(Long cityChallengeId);
 }

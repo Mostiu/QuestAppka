@@ -1,6 +1,7 @@
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import '../Styles/Sidebar.css';
+import {Link, useNavigate} from "react-router-dom";
 
 const Sidebar = (props) => {
     const menuStyles = {
@@ -19,6 +20,22 @@ const Sidebar = (props) => {
         },
     };
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.setItem('jwtToken', '');
+        localStorage.setItem('mail', '')
+        navigate('/' , { replace: true })
+        console.log('Logging out...');
+    };
+
+    if(localStorage.getItem('jwtToken') === null || localStorage.getItem('jwtToken') === '') return (
+        <Menu width={'20%'} styles={menuStyles}>
+            <a className="menu-item bm-first-item" href="/">
+                <span className="menu-text">Login/Register</span>
+            </a>
+        </Menu>
+    );
+    else
     return (
         <Menu width={'20%'} styles={menuStyles}>
             <a className="menu-item bm-first-item" href="/user">
@@ -27,18 +44,16 @@ const Sidebar = (props) => {
             <a className="menu-item" href="/home">
                 Home
             </a>
-            <a className="menu-item" href="/courses">
-                Courses
-            </a>
-            <a className="menu-item" href="/CityChallengeBrowse">
-                City Challenge Browse
-            </a>
-            <a className="menu-item" href="/CityChallenge">
-                City Challenge
-            </a>
+
             <a className="menu-item" href="/CourseGenerator">
                 Course Generator
             </a>
+            <a className="menu-item" href="/CityChallengeBrowse">
+                City Challenge Browser
+            </a>
+            <button className="menu-item" onClick={handleLogout}>
+                Logout
+            </button>
         </Menu>
     );
 };

@@ -15,15 +15,7 @@ public interface UserRepository extends JpaRepository<App_User,Long> {
     Optional<App_User> findUserByEmail(String email);
 
 
-    @Modifying
-    @Query("INSERT INTO UserCourses (user, course, comment, completed) " +
-            "SELECT :user, c, null, false FROM Course c")
-    void addUserToAllCourses(@Param("user") App_User user);
 
-    @Modifying
-    @Query("INSERT INTO UserQuests (user, quest, comment, completed) " +
-            "SELECT :user, q, null, false FROM Quest q")
-    void addUserToAllQuests(@Param("user") App_User user);
 
 
 }
