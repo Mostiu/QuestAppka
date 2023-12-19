@@ -36,7 +36,7 @@ jobs:
         image: sianuga/questappka
         tags: latest
         registry: docker.io
-        dockerfile: Dockerfile
+        dockerfile: backend/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         directory: backend
