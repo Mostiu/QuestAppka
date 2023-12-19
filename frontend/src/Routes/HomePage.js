@@ -280,7 +280,7 @@ class HomePage extends React.Component {
                     </div>
 
                     {/* Right Container */}
-                    <div className="RightContainer" style={{ height: '500px', maxWidth:"400px" }}>
+                    <div className="RightContainer" style={{ height: '500px', maxWidth:"500px" }}>
                         <h2>Recommended courses</h2>
                         <input style={{ width: '80%', margin: "5px auto 25px auto" }}
                                type="text" placeholder="Search.." name="search"
