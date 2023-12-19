@@ -148,16 +148,16 @@ class CourseGenerator extends React.Component {
             const openai = new OpenAi({ apiKey: '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',
                 dangerouslyAllowBrowser: true});
 
-            const prompt = `W języku polskim, stwórz listę kroków niezbędnych do wykonania projektu podanego poniżej, na przykład:
-                        Dla 'programowania kalkulatora' powinno zwrócić odpowiedź podobną do:
-                        1. Zdefiniuj podstawowe operacje matematyczne jako funkcje (dodawanie, odejmowanie, mnożenie, dzielenie).
-                        2. Poproś użytkownika o wybór operacji i zapisz jego wybór.
-                        3. Poproś użytkownika o wprowadzenie dwóch liczb i zapisz je jako liczby zmiennoprzecinkowe.
-                        4. Na podstawie wyboru użytkownika wykonaj odpowiednią operację matematyczną i wyświetl wynik.
-                        5. Opcjonalnie, dodaj obsługę błędów, np. sprawdź, czy użytkownik nie próbuje dzielić przez zero.
-                        6. Uruchom program i przetestuj go, aby upewnić się, że działa zgodnie z oczekiwaniami.
+            const prompt = `create a list of steps necessary to complete the project provided below, for example:
+                For 'calculator programming,' it should return a response similar to:
+                1. Define basic mathematical operations as functions (addition, subtraction, multiplication, division).
+                2. Prompt the user to choose an operation and save their choice.
+                3. Ask the user to enter two numbers and save them as floating-point numbers.
+                4. Based on the user's choice, perform the appropriate mathematical operation and display the result.
+                5. Optionally, add error handling, e.g., check if the user is trying to divide by zero.
+                6. Run the program and test it to ensure it works as expected.
 
-                        Zrób to dla poniższego promptu, nie musisz się ograniczać do ilości kroków, użyj technologii ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
+                 Do this for the prompt below; you don't have to limit the number of steps, use the technologies: ${technologies.map((technology) => technology.name).join(', ')}: \n ${description}`;
 
             const messages = [
                 { role: 'system', content: 'You are a helpful assistant.' },
